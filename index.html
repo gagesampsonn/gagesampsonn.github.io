@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Gage Sampson | Entrepreneur, Creator, Co-Founder of TikTok Titans</title>
+    <meta name="description" content="Helping brands and creators generate millions in sales through TikTok Shop and AI-driven marketing. $5M+ GMV generated.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --gray-700: #3f3f46;
+            --gray-800: #262626;
+            --gray-900: #171717;
+            --accent: #2563eb;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: var(--white);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.125rem;
+            font-weight: 800;
+            color: var(--black);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--black);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+        }
+        
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gray-400);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.875rem 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+            border-radius: 6px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--gray-800);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: var(--white);
+            color: var(--black);
+            border: 1.5px solid var(--gray-300);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-100);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 3rem 2rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .stats-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--black);
+            letter-spacing: -0.02em;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-top: 0.25rem;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 5rem 2rem;
+            background: var(--gray-100);
+        }
+        
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+        
+        .about p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--gray-700);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Story Section */
+        .story {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+        
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .story p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--gray-700);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 5rem 2rem;
+            background: var(--gray-100);
+        }
+        
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .service-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .service-card h3 {
+            font-size: 1.375rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--black);
+        }
+        
+        .service-card p {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        /* Case Studies Section */
+        .case-studies {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+        
+        .case-studies-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .case-card {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .case-card:hover {
+            border-color: var(--gray-400);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .case-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+        
+        .case-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .case-label {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+        
+        .case-value {
+            font-weight: 600;
+            color: var(--black);
+        }
+        
+        .case-roi {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            text-align: center;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #16a34a;
+        }
+        
+        /* Placeholder Box */
+        .placeholder-box {
+            background: var(--gray-100);
+            border: 2px dashed var(--gray-300);
+            padding: 3rem;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 2rem;
+            background: var(--gray-100);
+        }
+        
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Content/Media Section */
+        .media {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+        
+        .media-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .media-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .media-link {
+            padding: 1.5rem;
+            background: var(--gray-100);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.2s;
+        }
+        
+        .media-link:hover {
+            background: var(--gray-200);
+            transform: translateY(-2px);
+        }
+        
+        .media-platform {
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .media-description {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 5rem 2rem;
+            background: var(--black);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .contact h2 {
+            color: var(--white);
+            margin-bottom: 3rem;
+        }
+        
+        .contact-info {
+            margin-top: 2rem;
+        }
+        
+        .contact-email {
+            color: var(--white);
+            font-size: 1.25rem;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+        
+        .contact-email:hover {
+            border-bottom-color: var(--white);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .social-link:hover {
+            color: var(--white);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 2rem;
+            background: var(--gray-900);
+            text-align: center;
+        }
+        
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-nav a {
+            color: var(--gray-400);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        
+        .footer-nav a:hover {
+            color: var(--white);
+        }
+        
+        .footer-text {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .mobile-menu span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--black);
+            margin: 5px 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">GAGE SAMPSON</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-image">GS</div>
+            <h1>Gage Sampson – Entrepreneur, Creator, Co-Founder of TikTok Titans</h1>
+            <p class="hero-subtitle">Helping brands and creators generate millions in sales through TikTok Shop and AI-driven marketing.</p>
+            <div class="cta-buttons">
+                <a href="mailto:gage@thetiktoktitans.com" class="btn btn-primary">Work With Me</a>
+                <a href="https://whop.com/c/tiktoktitans/ytdiscount" target="_blank" class="btn btn-secondary">Join Titans</a>
+                <a href="https://calendly.com/gagesampson" target="_blank" class="btn btn-secondary">Schedule a Call</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">$5M+</div>
+                <div class="stat-label">GMV driven for brands</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">410+</div>
+                <div class="stat-label">creators in network</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3,800+</div>
+                <div class="stat-label">videos delivered</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Me Section -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2>About Me</h2>
+            <p>I am Gage Sampson, an entrepreneur, marketer, and co-founder of TikTok Titans, a TikTok Shop Partnered Agency that has generated over $5 million in GMV for brands while helping hundreds of creators monetize their content.</p>
+            
+            <p>I grew up in Franklin Furnace, Ohio, a small town of about 1,500 people, as one of seven siblings. My dad was a barber who owned a shop in Willardburg, Ohio, and following in his footsteps I started my first career in barbering. Along the way, I discovered the power of digital platforms when a random skit I posted on TikTok hit 10 million views in 24 hours and grew my account to 230,000 followers in just a month.</p>
+            
+            <p>Those early experiences shaped my approach to business: blending creativity, sales psychology, and scalable systems. Today at TikTok Titans, I work with brands like Dude Wipes, Goli, Dr. Biocare, Selerb, Nello Supercalm, and NeuroGum, while also coaching creators through the Titans Inner Circle. Whether it is running high performing campaigns, leveraging AI to create new tools, or helping creators secure brand deals, my mission is simple: help creators win, help brands grow, and keep building the future of digital marketing.</p>
+        </div>
+    </section>
+    
+    <!-- My Story Section -->
+    <section class="story">
+        <div class="story-content">
+            <h2>My Story</h2>
+            <p>I grew up in Franklin Furnace, Ohio, a very small town with just around 1,500 people. As one of seven siblings — five brothers and one sister — I went to Green Local School District. Sports were everything. Basketball and football were not just hobbies, they were identity, and I earned All State honors in basketball. But even while chasing wins on the court, I always had one thing clear in my mind: I wanted to make money.</p>
+            
+            <p>After high school, I was pushed toward barbering because my dad was a barber and owned a barber shop in Willardburg, Ohio. Following in his footsteps, I went to barber school and started my first career cutting hair.</p>
+            
+            <p>In 2020, I posted a random skit video on TikTok, and within 24 hours it exploded. It got 10 million views, which led to more viral skits, and by the end of the month I had grown my account to about 230,000 followers. TikTok was not monetizable then, so I returned to the barber chair. But the spark for digital growth never left.</p>
+            
+            <p>By 2023, that spark turned into fire. I hit the road during Taylor Swift's Eras Tour, selling bracelets as a traveling vendor with my best friend. That experience taught me a huge lesson in sales: just because I would not buy something does not mean no one else will. There is a market out there for almost anything, and as long as you know how to sell it, you can make money.</p>
+            
+            <p>Then in early 2024, I saw TikTok Shop emerging, knew it was the future of e-commerce, and a few months later co-founded TikTok Titans. Ever since, we have been scaling creators and brands to entirely new levels.</p>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="services-container">
+            <h2>Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Brand Campaigns</h3>
+                    <p>We help brands launch, manage, and scale TikTok Shop campaigns by pairing them with proven creators who can drive real sales. From strategy to execution, everything is tracked and optimized.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Creator Coaching</h3>
+                    <p>Through the Titans Inner Circle, I teach creators how to monetize their content, land retainers, and scale their TikTok Shop earnings. Coaching is focused on systems, psychology, and long-term growth.</p>
+                </div>
+                <div class="service-card">
+                    <h3>AI Innovation</h3>
+                    <p>I build AI-driven tools that help creators and brands save time and scale faster. From AI-trained assistants to content automation, I am always finding ways to push the future of digital marketing.</p>
+                </div>
+                <div class="service-card">
+                    <h3>UGC & Video Systems</h3>
+                    <p>We provide scalable UGC and video content systems for brands. With hundreds of creators in our network, we can deliver high-volume, affordable content that is proven to convert.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Case Studies Section -->
+    <section class="case-studies">
+        <div class="case-studies-container">
+            <h2>Case Studies / Results</h2>
+            <div class="case-grid">
+                <div class="case-card">
+                    <div class="case-brand">Selerb</div>
+                    <div class="case-stat">
+                        <span class="case-label">Campaign GMV</span>
+                        <span class="case-value">$311,815</span>
+                    </div>
+                    <div class="case-stat">
+                        <span class="case-label">Investment</span>
+                        <span class="case-value">$6,750</span>
+                    </div>
+                    <div class="case-roi">46.2x ROI</div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-brand">Natural Stacks</div>
+                    <div class="case-stat">
+                        <span class="case-label">Campaign GMV</span>
+                        <span class="case-value">$149,278</span>
+                    </div>
+                    <div class="case-stat">
+                        <span class="case-label">Investment</span>
+                        <span class="case-value">$4,000</span>
+                    </div>
+                    <div class="case-roi">37.3x ROI</div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-brand">WhyNot Naturals</div>
+                    <div class="case-stat">
+                        <span class="case-label">Campaign GMV</span>
+                        <span class="case-value">$127,213</span>
+                    </div>
+                    <div class="case-stat">
+                        <span class="case-label">Investment</span>
+                        <span class="case-value">$6,750</span>
+                    </div>
+                    <div class="case-roi">18.8x ROI</div>
+                </div>
+                
+                <div class="case-card">
+                    <div class="case-brand">ZOOONE</div>
+                    <div class="case-stat">
+                        <span class="case-label">Campaign GMV</span>
+                        <span class="case-value">$111,958</span>
+                    </div>
+                    <div class="case-stat">
+                        <span class="case-label">Investment</span>
+                        <span class="case-value">$5,200</span>
+                    </div>
+                    <div class="case-roi">21.5x ROI</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://thetiktoktitans.com/agency-deck" target="_blank" class="btn btn-primary">View Full Agency Presentation</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <h2>Testimonials</h2>
+            <div class="placeholder-box">
+                <p style="font-weight: 600; margin-bottom: 1rem;">Testimonials Coming Soon</p>
+                <p>"Quote from client or creator about working with Gage or TikTok Titans."</p>
+                <p style="margin-top: 1rem;">"Another testimonial about growth or campaign success."</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Content/Media Section -->
+    <section class="media">
+        <div class="media-container">
+            <h2>Content / Media</h2>
+            <p style="color: var(--gray-600); margin-bottom: 2rem;">Connect with me online:</p>
+            
+            <div class="media-links">
+                <a href="https://youtube.com/@GageSampsonTTS" target="_blank" class="media-link">
+                    <div class="media-platform">YouTube</div>
+                    <div class="media-description">Breaking down TikTok Shop, AI, and digital marketing.</div>
+                </a>
+                
+                <a href="https://tiktok.com/@realgagesampson" target="_blank" class="media-link">
+                    <div class="media-platform">TikTok</div>
+                    <div class="media-description">Sharing creator growth strategies and campaign breakdowns.</div>
+                </a>
+                
+                <a href="https://twitter.com/gagesampson_" target="_blank" class="media-link">
+                    <div class="media-platform">Twitter/X</div>
+                    <div class="media-description">Daily insights and future of business conversations.</div>
+                </a>
+                
+                <a href="https://linkedin.com/in/gagesampson" target="_blank" class="media-link">
+                    <div class="media-platform">LinkedIn</div>
+                    <div class="media-description">Business development, case studies, and networking.</div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Let's Work Together</h2>
+        <div class="cta-buttons">
+            <a href="mailto:gage@thetiktoktitans.com" class="btn btn-primary" style="background: white; color: black;">Contact Now</a>
+            <a href="https://calendly.com/gagesampson" target="_blank" class="btn btn-secondary" style="border-color: white; color: white;">Schedule a Call</a>
+        </div>
+        
+        <div class="contact-info">
+            <p style="margin-top: 3rem;">Email:</p>
+            <a href="mailto:gage@thetiktoktitans.com" class="contact-email">gage@thetiktoktitans.com</a>
+            
+            <div class="social-links">
+                <a href="https://youtube.com/@GageSampsonTTS" target="_blank" class="social-link">YouTube</a>
+                <a href="https://tiktok.com/@realgagesampson" target="_blank" class="social-link">TikTok</a>
+                <a href="https://twitter.com/gagesampson_" target="_blank" class="social-link">Twitter/X</a>
+                <a href="https://linkedin.com/in/gagesampson" target="_blank" class="social-link">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-nav">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <p class="footer-text">©2025 Gage Sampson. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            nav.style.position = 'absolute';
+            nav.style.top = '100%';
+            nav.style.left = '0';
+            nav.style.right = '0';
+            nav.style.background = 'white';
+            nav.style.flexDirection = 'column';
+            nav.style.padding = '2rem';
+            nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
