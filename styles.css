@@ -619,10 +619,17 @@ strong {
     overflow: hidden;
 }
 
+.timeline-images {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
 .story-photo {
     width: 100%;
-    max-width: 300px;
-    height: auto;
+    max-width: 280px;
+    height: 350px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     border: 3px solid var(--white);
