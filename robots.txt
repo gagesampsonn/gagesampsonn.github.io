@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://gagesampson.com/sitemap.xml
+
+# Disallow specific files if needed
+# Disallow: /private/
+
+# Crawl-delay
+Crawl-delay: 1
+
