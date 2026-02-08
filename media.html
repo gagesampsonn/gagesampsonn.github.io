@@ -31,13 +31,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
     
     <!-- Theme -->
-    <meta name="theme-color" content="#FF6B4A">
+    <meta name="theme-color" content="#111827">
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23111827'/><text x='50' y='68' text-anchor='middle' fill='white' font-family='Inter,system-ui,sans-serif' font-size='46' font-weight='700'>GS</text></svg>">
     
     <!-- Structured Data — ImageGallery -->
     <script type="application/ld+json">
@@ -88,51 +88,51 @@
     <style>
         /* Media page specific styles */
         .media-hero {
-            padding: calc(80px + var(--spacing-xl)) 0 var(--spacing-xl);
+            padding: calc(72px + var(--spacing-xl)) 0 var(--spacing-xl);
             text-align: center;
         }
         .media-hero h1 {
             margin-bottom: var(--spacing-md);
         }
         .media-hero p {
-            max-width: 650px;
+            max-width: 580px;
             margin: 0 auto var(--spacing-lg);
-            font-size: 1.1rem;
+            font-size: 1.02rem;
         }
         .media-back {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--coral);
+            color: var(--gray-600);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
+            font-size: 0.9rem;
             margin-bottom: var(--spacing-lg);
             transition: var(--transition);
         }
         .media-back:hover {
-            color: var(--gold);
-            transform: translateX(-4px);
+            color: var(--black);
         }
         .media-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: var(--spacing-lg);
             padding-bottom: var(--spacing-3xl);
         }
         .media-item {
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-300);
             background: var(--white);
             transition: var(--transition);
         }
         .media-item:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-xl);
+            border-color: var(--gray-400);
+            box-shadow: var(--shadow-md);
         }
         .media-item img {
             width: 100%;
-            height: 360px;
+            height: 340px;
             object-fit: cover;
             display: block;
         }
@@ -141,14 +141,14 @@
         }
         .media-caption p {
             margin: 0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            color: var(--gray-dark);
+            color: var(--black);
         }
         .media-caption span {
             display: block;
             font-size: 0.8rem;
-            color: var(--gray-light);
+            color: var(--gray-500);
             margin-top: 4px;
         }
         @media (max-width: 768px) {
@@ -172,7 +172,7 @@
         <div class="container">
             <div class="header-content">
                 <a href="index.html" class="logo">
-                    <span class="logo-icon">⚡</span>
+                    <span class="logo-icon">GS</span>
                     <span class="logo-text">GAGE SAMPSON</span>
                 </a>
                 
@@ -202,7 +202,7 @@
         <div class="container">
             <a href="index.html" class="media-back">&larr; Back to Home</a>
             <h1>Gage Sampson — Media &amp; Photos</h1>
-            <p>Official photos and media of Gage Sampson. For press inquiries, please <a href="mailto:gage@thetiktoktitans.com">contact Gage directly</a>.</p>
+            <p>Official photos and media of Gage Sampson. For press inquiries, please <a href="mailto:gage@titansagency.co">contact Gage directly</a>.</p>
         </div>
     </section>
 
@@ -252,7 +252,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="logo">
-                        <span class="logo-icon">⚡</span>
+                        <span class="logo-icon">GS</span>
                         <span class="logo-text">GAGE SAMPSON</span>
                     </div>
                     <p>Building the future of creator economy and TikTok Shop marketing.</p>
@@ -278,7 +278,7 @@
                     
                     <div class="footer-column">
                         <h4>Resources</h4>
-                        <a href="https://trytitans.co" target="_blank">TikTok Titans</a>
+                        <a href="https://titansagency.co" target="_blank">TikTok Titans</a>
                         <a href="https://calendly.com/gagesampson" target="_blank">Book a Call</a>
                         <a href="media.html">Media</a>
                         <a href="index.html#contact">Contact</a>
