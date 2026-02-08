@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://gagesampson.com/</loc>
-        <lastmod>2025-10-10</lastmod>
+        <lastmod>2026-02-08</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+        <image:image>
+            <image:loc>https://gagesampson.com/hero-image.png</image:loc>
+            <image:caption>Gage Sampson — entrepreneur, TikTok Titans co-founder</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://gagesampson.com/image1.png</image:loc>
+            <image:caption>Gage Sampson presenting at a TikTok Titans event</image:caption>
+        </image:image>
     </url>
     <url>
-        <loc>https://gagesampson.com/#about</loc>
-        <lastmod>2025-10-10</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://gagesampson.com/#services</loc>
-        <lastmod>2025-10-10</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://gagesampson.com/#results</loc>
-        <lastmod>2025-10-10</lastmod>
+        <loc>https://gagesampson.com/media.html</loc>
+        <lastmod>2026-02-08</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://gagesampson.com/#contact</loc>
-        <lastmod>2025-10-10</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <image:image>
+            <image:loc>https://gagesampson.com/hero-image.png</image:loc>
+            <image:caption>Gage Sampson — official headshot</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://gagesampson.com/image1.png</image:loc>
+            <image:caption>Gage Sampson presenting at a TikTok Titans event</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://gagesampson.com/barber-graduation.png</image:loc>
+            <image:caption>Gage Sampson graduating from barber school in Ohio</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>https://gagesampson.com/screenshot.png</image:loc>
+            <image:caption>Gage Sampson working as a barber in Ohio</image:caption>
+        </image:image>
     </url>
 </urlset>
-
