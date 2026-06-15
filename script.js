@@ -1,83 +1,60 @@
-// Gage Sampson — Minimal JS
+// Gage Sampson — site interactions
 document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('nav');
 
-  // Mobile nav toggle
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('.site-nav');
+  // Mobile nav
+  const closeNav = () => {
+    if (!nav) return;
+    toggle.classList.remove('active');
+    nav.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
   if (toggle && nav) {
     toggle.addEventListener('click', () => {
-      toggle.classList.toggle('active');
-      nav.classList.toggle('active');
-      document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+      const open = nav.classList.toggle('active');
+      toggle.classList.toggle('active', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
     });
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      toggle.classList.remove('active');
-      nav.classList.remove('active');
-      document.body.style.overflow = '';
-    }));
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
     document.addEventListener('click', e => {
-      if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-        toggle.classList.remove('active');
-        nav.classList.remove('active');
-        document.body.style.overflow = '';
-      }
+      if (nav.classList.contains('active') && !nav.contains(e.target) && !toggle.contains(e.target)) closeNav();
     });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
   }
 
-  // Smooth scroll for anchor links
+  // Smooth scroll with sticky-header offset
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const href = a.getAttribute('href');
-      if (href === '#' || !href) return;
+      if (!href || href === '#') return;
       const el = document.querySelector(href);
-      if (el) {
-        e.preventDefault();
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // offset for sticky header
-        setTimeout(() => window.scrollBy(0, -64), 300);
-      }
+      if (!el) return;
+      e.preventDefault();
+      const y = el.getBoundingClientRect().top + window.scrollY - 78;
+      window.scrollTo({ top: y, behavior: 'smooth' });
     });
   });
 
   // Header shadow on scroll
   const header = document.querySelector('.site-header');
   if (header) {
-    window.addEventListener('scroll', () => {
-      header.style.boxShadow = window.scrollY > 20 ? '0 1px 4px rgba(0,0,0,.06)' : 'none';
-    }, { passive: true });
+    const onScroll = () => { header.style.boxShadow = window.scrollY > 16 ? '0 6px 24px -12px rgba(22,20,14,.25)' : 'none'; };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
-  // Story card click → open matching detail
-  document.querySelectorAll('.story-card[data-detail]').forEach(card => {
-    card.addEventListener('click', () => {
-      const id = card.getAttribute('data-detail');
-      const detail = document.getElementById(id);
-      if (detail) {
-        detail.open = true;
-        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    });
-  });
-
-  // Keyboard: ESC closes mobile nav
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && nav && nav.classList.contains('active')) {
-      toggle.classList.remove('active');
-      nav.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-
-  // Simple form validation
-  const form = document.querySelector('.contact-form');
-  if (form) {
-    form.addEventListener('submit', e => {
-      let valid = true;
-      form.querySelectorAll('[required]').forEach(input => {
-        if (!input.value.trim()) { input.style.borderColor = '#c00'; valid = false; }
-        else { input.style.borderColor = ''; }
-      });
-      if (!valid) { e.preventDefault(); }
-    });
+  // Scroll-reveal (JS adds the hidden state so no-JS users still see everything)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    const targets = document.querySelectorAll(
+      '.section .section-label, .section h2, .section > .wrap-wide > p, .svc, .t-item, .testimonial, .feature, .stats, .facts-list, .about-img'
+    );
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    targets.forEach((t, i) => { t.classList.add('io'); t.style.transitionDelay = (Math.min(i % 4, 3) * 60) + 'ms'; io.observe(t); });
   }
 });
