@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>https://gagesampson.com/</loc>
-        <lastmod>2026-02-08</lastmod>
+        <lastmod>2026-06-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
@@ -17,7 +17,7 @@
     </url>
     <url>
         <loc>https://gagesampson.com/media.html</loc>
-        <lastmod>2026-02-08</lastmod>
+        <lastmod>2026-06-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
         <image:image>
