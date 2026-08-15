@@ -190,6 +190,22 @@ h2{font-family:var(--font-d);font-weight:800;letter-spacing:-.022em;line-height:
 .v-overlay.hide ~ .v-meta{opacity:0;}
 .v-meta .dur{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:4px 10px;backdrop-filter:blur(6px);}
 
+.speed-bar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:-6px 0 8px;}
+.speed-bar .lbl{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);}
+.speed-seg{display:inline-flex;padding:3px;border-radius:999px;background:rgba(255,255,255,.03);
+  border:1px solid var(--border-strong);gap:2px;}
+.speed-seg button{appearance:none;border:0;background:transparent;color:var(--muted);
+  font-family:var(--font-b);font-size:13.5px;font-weight:720;letter-spacing:.01em;
+  padding:8px 14px;border-radius:999px;line-height:1;transition:background .25s var(--ease),color .25s var(--ease);}
+.speed-seg button:hover{color:var(--text);}
+.speed-seg button[aria-pressed="true"]{color:#190a03;background:linear-gradient(120deg,var(--amber),var(--orange) 50%,var(--orange-deep));
+  box-shadow:0 8px 18px -10px rgba(255,90,31,.75);}
+@media(max-width:680px){
+  .speed-bar{justify-content:stretch;}
+  .speed-seg{flex:1;}
+  .speed-seg button{flex:1;}
+}
+
 .note{display:flex;gap:13px;align-items:flex-start;margin-top:18px;padding:16px 18px;
   border:1px solid var(--border);border-radius:var(--r-md);background:rgba(255,255,255,.02);
   font-size:14.5px;color:var(--muted);line-height:1.55;}
@@ -365,6 +381,15 @@ h2{font-family:var(--font-d);font-weight:800;letter-spacing:-.022em;line-height:
         <div class="v-meta"><span>▶ Titans Onboarding</span><span class="dur">~5 min</span></div>
       </div>
 
+      <div class="speed-bar rv" style="animation-delay:.3s">
+        <span class="lbl">Speed</span>
+        <div class="speed-seg" role="group" aria-label="Playback speed">
+          <button type="button" data-rate="1">Normal</button>
+          <button type="button" data-rate="1.2" aria-pressed="true">1.2x</button>
+          <button type="button" data-rate="2">2x</button>
+        </div>
+      </div>
+
       <div class="actions rv" style="animation-delay:.32s">
         <a class="btn btn-primary" href="https://whop.com/joined/tiktoktitan/join-discord-IO7Nn4xZjBg3ZN/app/" target="_top" rel="noopener">Join the Discord
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -504,16 +529,39 @@ h2{font-family:var(--font-d);font-weight:800;letter-spacing:-.022em;line-height:
   // custom video player
   var vid = document.getElementById('vid');
   var ov = document.getElementById('vOverlay');
+  var DEFAULT_RATE = 1.2;
+  var rate = DEFAULT_RATE;
+  var speedBtns = Array.prototype.slice.call(document.querySelectorAll('.speed-seg [data-rate]'));
+
+  function applyRate(next){
+    rate = next;
+    if(vid) vid.playbackRate = next;
+    speedBtns.forEach(function(b){
+      b.setAttribute('aria-pressed', (parseFloat(b.getAttribute('data-rate')) === next) ? 'true' : 'false');
+    });
+  }
+
   if(vid && ov){
+    applyRate(rate);
+    vid.addEventListener('loadedmetadata', function(){ vid.playbackRate = rate; });
+    vid.addEventListener('play', function(){
+      ov.classList.add('hide');
+      vid.playbackRate = rate;
+    });
     ov.addEventListener('click', function(){
       ov.classList.add('hide');
+      vid.playbackRate = rate;
       var p = vid.play();
       if(p && p.catch){ p.catch(function(){}); }
     });
-    vid.addEventListener('play', function(){ ov.classList.add('hide'); });
-    vid.addEventListener('pause', function(){ if(vid.currentTime>0 && !vid.ended){ /* keep hidden while paused mid-play */ } });
     vid.addEventListener('ended', function(){ ov.classList.remove('hide'); });
   }
+
+  speedBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      applyRate(parseFloat(b.getAttribute('data-rate')));
+    });
+  });
 
   // init progress
   stepper.style.setProperty('--progress','0');
