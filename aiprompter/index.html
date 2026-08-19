@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Titans Higgsfield Helper for TikTok Shop creators using Higgsfield and Seedance 2.5 Edit reference workflows." />
+  <title>Titans Higgsfield Helper</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --ink: #101010;
+      --muted: #5f625e;
+      --faint: #e4e4df;
+      --line: #c9cbc4;
+      --orange: #f36b21;
+      --red: #c93a2e;
+      --green: #168455;
+      --blue: #376ad8;
+      --yellow: #f3b71b;
+      --black: #111111;
+      --max: 1220px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(16, 16, 16, 0.035) 1px, transparent 1px) 0 0 / 44px 44px,
+        linear-gradient(180deg, #fbfbf8 0%, var(--bg) 42%, #efefeb 100%);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 244, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      min-height: 70px;
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      letter-spacing: 0;
+    }
+
+    .links {
+      display: flex;
+      gap: 18px;
+      color: #343631;
+      font-size: 13px;
+    }
+
+    .links a {
+      border-bottom: 1px solid transparent;
+      padding-bottom: 4px;
+    }
+
+    .links a:hover {
+      border-color: currentColor;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .btn.orange {
+      border-color: var(--orange);
+      background: var(--orange);
+      color: #111;
+    }
+
+    .shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 26px 74px;
+    }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.78fr);
+      gap: 34px;
+      align-items: center;
+      padding: 42px 0 36px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.64);
+      color: #3d403b;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 4px rgba(243, 107, 33, 0.12);
+    }
+
+    h1 {
+      margin: 20px 0 18px;
+      max-width: 770px;
+      font-size: clamp(48px, 7.2vw, 94px);
+      line-height: 0.9;
+      letter-spacing: -0.075em;
+    }
+
+    .hero-copy {
+      max-width: 690px;
+      color: #444842;
+      font-size: 18px;
+      line-height: 1.58;
+    }
+
+    .hero-copy strong {
+      color: var(--ink);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .reference-board {
+      position: relative;
+      display: grid;
+      gap: 14px;
+    }
+
+    .board-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 24px 55px rgba(16, 16, 16, 0.09);
+    }
+
+    .board-card.video {
+      min-height: 390px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+      background: #141414;
+      color: #fff;
+    }
+
+    .board-card.identity {
+      position: absolute;
+      right: 18px;
+      bottom: 52px;
+      width: 168px;
+      min-height: 212px;
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.24);
+    }
+
+    .board-card.prompt {
+      background: #fff;
+      margin-left: 30px;
+      margin-right: 68px;
+    }
+
+    .mini-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 900;
+      color: var(--muted);
+    }
+
+    .video .mini-label {
+      color: #bdbdb8;
+    }
+
+    .phone-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 52% 20%, rgba(255, 255, 255, 0.13), transparent 20%),
+        linear-gradient(145deg, #282828, #0f0f0f);
+    }
+
+    .person-shape {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 43%;
+      height: 72%;
+      transform: translateX(-50%);
+    }
+
+    .person-shape::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 66px;
+      height: 66px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #c5a284, #7b5a43);
+      box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.04);
+    }
+
+    .person-shape::after {
+      content: "";
+      position: absolute;
+      top: 78px;
+      left: 50%;
+      width: 146px;
+      height: 220px;
+      transform: translateX(-50%);
+      border-radius: 54px 54px 8px 8px;
+      background: linear-gradient(160deg, var(--orange), #732414);
+    }
+
+    .motion-lines {
+      position: absolute;
+      inset: auto 18px 24px 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .motion-lines span {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .motion-lines span:nth-child(2) {
+      width: 72%;
+    }
+
+    .motion-lines span:nth-child(3) {
+      width: 48%;
+    }
+
+    .identity-preview {
+      height: 132px;
+      margin-top: 12px;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 35%, #a77958 0 29px, transparent 30px),
+        linear-gradient(160deg, #263f70 0 50%, #101010 50% 100%);
+    }
+
+    .prompt-lines {
+      display: grid;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .prompt-lines span {
+      height: 8px;
+      border-radius: 999px;
+      background: #1f1f1f;
+    }
+
+    .prompt-lines span:nth-child(2) {
+      width: 78%;
+      background: var(--orange);
+    }
+
+    .prompt-lines span:nth-child(3) {
+      width: 64%;
+      background: #a2a59e;
+    }
+
+    .section {
+      padding: 62px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 34px;
+      margin-bottom: 30px;
+    }
+
+    .index {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(32px, 4.1vw, 54px);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .section-title p {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: #555954;
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .rule-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rule-cell {
+      min-height: 178px;
+      padding: 20px 18px 20px 0;
+      margin-right: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .rule-cell:last-child {
+      border-right: 0;
+      margin-right: 0;
+    }
+
+    .rule-num {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 34px;
+    }
+
+    .rule-cell h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .rule-cell p {
+      margin: 0;
+      color: #565a55;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .compare-column {
+      display: grid;
+      gap: 12px;
+    }
+
+    .column-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--ink);
+      padding-top: 14px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .column-head.good {
+      color: var(--green);
+    }
+
+    .column-head.bad {
+      color: var(--red);
+    }
+
+    .example-card {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      min-height: 170px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .mock-image {
+      position: relative;
+      min-height: 170px;
+      background: #181818;
+      overflow: hidden;
+    }
+
+    .mock-image::before,
+    .mock-image::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+    }
+
+    .mock-image.good-angle::before {
+      left: 54px;
+      top: 31px;
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(145deg, #bb8f6b, #6c4c39);
+    }
+
+    .mock-image.good-angle::after {
+      left: 35px;
+      top: 92px;
+      width: 94px;
+      height: 122px;
+      border-radius: 38px 38px 0 0;
+      background: linear-gradient(160deg, #d9502f, #2e2f34);
+    }
+
+    .mock-image.good-light {
+      background: linear-gradient(135deg, #202327, #4f625d);
+    }
+
+    .mock-image.good-light::before {
+      left: 62px;
+      top: 34px;
+      width: 50px;
+      height: 50px;
+      background: #b78363;
+    }
+
+    .mock-image.good-light::after {
+      left: 48px;
+      top: 88px;
+      width: 84px;
+      height: 104px;
+      border-radius: 34px 34px 0 0;
+      background: #f0f0eb;
+    }
+
+    .mock-image.bad-ai {
+      background:
+        radial-gradient(circle at 50% 32%, #f0cfb9 0 34px, transparent 35px),
+        linear-gradient(145deg, #f2d1ef, #b3d9ff);
+    }
+
+    .mock-image.bad-ai::after {
+      left: 22px;
+      top: 120px;
+      width: 126px;
+      height: 9px;
+      background: rgba(201, 58, 46, 0.8);
+      transform: rotate(-8deg);
+    }
+
+    .mock-image.bad-crop {
+      background:
+        radial-gradient(circle at 94% 28%, #a97955 0 48px, transparent 49px),
+        linear-gradient(135deg, #242424, #70736b);
+    }
+
+    .mock-image.bad-crop::after {
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      background: linear-gradient(90deg, transparent 0 56%, rgba(201, 58, 46, 0.32) 56% 100%);
+    }
+
+    .example-copy {
+      padding: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .tag.good {
+      color: var(--green);
+    }
+
+    .tag.bad {
+      color: var(--red);
+    }
+
+    .example-copy h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.025em;
+    }
+
+    .example-copy p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.48;
+    }
+
+    .motion-grid {
+      display: grid;
+      grid-template-columns: 0.84fr 1.16fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .motion-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .motion-visual {
+      min-height: 390px;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55)),
+        linear-gradient(135deg, #171717, #303235);
+    }
+
+    .motion-visual.bad {
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.58)),
+        linear-gradient(135deg, #3b1b19, #6a6f72);
+    }
+
+    .frame-bars {
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+    }
+
+    .motion-figure {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      width: 112px;
+      height: 260px;
+      transform: translateX(-50%);
+    }
+
+    .motion-figure::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 58px;
+      height: 58px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #b98967;
+    }
+
+    .motion-figure::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 74px;
+      width: 102px;
+      height: 180px;
+      transform: translateX(-50%);
+      border-radius: 38px 38px 10px 10px;
+      background: linear-gradient(160deg, var(--orange), #212121);
+    }
+
+    .motion-path {
+      position: absolute;
+      left: 30px;
+      right: 30px;
+      bottom: 34px;
+      height: 66px;
+      border-bottom: 2px dashed rgba(255, 255, 255, 0.42);
+      border-radius: 0 0 50% 50%;
+    }
+
+    .bad .motion-figure {
+      left: 68%;
+      transform: translateX(-50%) rotate(6deg);
+      filter: blur(1px);
+      opacity: 0.82;
+    }
+
+    .bad .motion-path {
+      border-bottom-color: rgba(201, 58, 46, 0.86);
+      transform: rotate(-7deg);
+    }
+
+    .motion-copy {
+      padding: 20px;
+    }
+
+    .motion-copy h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      letter-spacing: -0.035em;
+    }
+
+    .motion-copy p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .check-item {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .check-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .check-item p {
+      margin: 0;
+      color: #565a55;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .builder {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .builder-panel,
+    .output-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .builder-panel {
+      padding: 20px;
+      position: sticky;
+      top: 92px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      color: #2d302d;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fbfbf8;
+      color: var(--ink);
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    select:focus,
+    textarea:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(243, 107, 33, 0.12);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    .builder-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .output-toolbar {
+      min-height: 62px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .output-toolbar span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .prompt-output {
+      min-height: 440px;
+      margin: 0;
+      padding: 24px;
+      white-space: pre-wrap;
+      color: #222520;
+      font-size: 14px;
+      line-height: 1.72;
+      overflow: auto;
+    }
+
+    .note-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 18px;
+      border-top: 1px solid var(--line);
+      background: #f9f9f6;
+    }
+
+    .mini-note {
+      border-left: 3px solid var(--orange);
+      padding-left: 10px;
+      color: #555954;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .mini-note strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .workflow-card {
+      min-height: 230px;
+      padding: 20px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: var(--radius);
+    }
+
+    .workflow-card:nth-child(2) {
+      background: #263f70;
+    }
+
+    .workflow-card:nth-child(3) {
+      background: #2e5b40;
+    }
+
+    .workflow-card .step {
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 62px;
+    }
+
+    .workflow-card h3 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: -0.045em;
+    }
+
+    .workflow-card p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .publish-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      border-top: 1px solid var(--ink);
+      padding-top: 22px;
+    }
+
+    .final-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .final-card h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .final-card p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .status-good,
+    .status-bad {
+      display: inline-flex;
+      margin-bottom: 16px;
+      border-radius: 999px;
+      padding: 6px 9px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .status-good {
+      background: var(--green);
+    }
+
+    .status-bad {
+      background: var(--red);
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px 26px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 980px) {
+      .links {
+        display: none;
+      }
+
+      .hero,
+      .motion-grid,
+      .builder,
+      .publish-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .reference-board {
+        max-width: 620px;
+      }
+
+      .builder-panel {
+        position: static;
+      }
+
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .rule-strip,
+      .workflow,
+      .note-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .shell,
+      .nav,
+      footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .nav-actions .secondary {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      .board-card.identity {
+        position: static;
+        width: auto;
+      }
+
+      .board-card.prompt {
+        margin: 0;
+      }
+
+      .rule-strip,
+      .compare-grid,
+      .checklist,
+      .workflow,
+      .note-row {
+        grid-template-columns: 1fr;
+      }
+
+      .rule-cell {
+        min-height: auto;
+        margin-right: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .example-card {
+        grid-template-columns: 1fr;
+      }
+
+      .mock-image {
+        min-height: 230px;
+      }
+
+      .output-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top">
+        <span class="brand-mark">TT</span>
+        <span>TITANS</span>
+      </a>
+      <div class="links">
+        <a href="#references">Reference Rules</a>
+        <a href="#images">Image Examples</a>
+        <a href="#videos">Video Examples</a>
+        <a href="#prompt">Prompt Builder</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn secondary" type="button" data-jump="#workflow">Workflow</button>
+        <button class="btn orange" type="button" data-jump="#prompt">Build Prompt</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="shell" id="top">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Higgsfield + Seedance 2.5 Edit</div>
+        <h1>Titans Higgsfield Helper</h1>
+        <p class="hero-copy">
+          A simple reference workflow for TikTok Shop creators. Pick a clean
+          motion video, pick a believable identity image, then use a strict
+          prompt that tells the model what to preserve and what to replace.
+          <strong>The reference video is the movement. The image reference is
+          the identity.</strong>
+        </p>
+        <div class="hero-actions">
+          <button class="btn orange" type="button" data-jump="#prompt">Generate the prompt</button>
+          <button class="btn secondary" type="button" data-jump="#images">Check your references</button>
+        </div>
+      </div>
+
+      <div class="reference-board" aria-label="Reference hierarchy visual">
+        <div class="board-card video">
+          <div class="mini-label">
+            <span>@[Reference Video](video_1)</span>
+            <span>Motion lock</span>
+          </div>
+          <div class="phone-frame">
+            <div class="frame-bars"></div>
+            <div class="person-shape"></div>
+            <div class="motion-lines"><span></span><span></span><span></span></div>
+          </div>
+          <div class="mini-label">
+            <span>Body, camera, timing, framing</span>
+            <span>Preserve 1:1</span>
+          </div>
+        </div>
+
+        <div class="board-card identity">
+          <div class="mini-label">
+            <span>@[Image 1](image_1)</span>
+          </div>
+          <div class="identity-preview"></div>
+          <div class="prompt-lines"><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="board-card prompt">
+          <div class="mini-label">
+            <span>Prompt hierarchy</span>
+            <span>Strict text</span>
+          </div>
+          <div class="prompt-lines"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="references">
+      <div class="section-head">
+        <div class="index">01 / Reference rules</div>
+        <div class="section-title">
+          <h2>The prompt should not describe the whole video anymore.</h2>
+          <p>
+            Old text-to-video prompts tried to recreate every visual detail.
+            Reference editing works differently. The uploaded references already
+            carry most of the information. Your prompt should enforce the
+            hierarchy and stop the model from changing the wrong things.
+          </p>
+        </div>
+      </div>
+
+      <div class="rule-strip">
+        <div class="rule-cell">
+          <div class="rule-num">Video controls</div>
+          <h3>Motion</h3>
+          <p>Body movement, gestures, posture, head turns, facial timing, lip movement, pacing, and scene behavior.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Video controls</div>
+          <h3>Camera</h3>
+          <p>Camera angle, framing, movement, perspective, subject scale, composition, background, and timing.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Image controls</div>
+          <h3>Identity</h3>
+          <p>Face, hair, body proportions, skin tone, clothing, colors, and overall person appearance.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Prompt controls</div>
+          <h3>Boundaries</h3>
+          <p>Only replace the person. Do not restage, redesign, improve, reinterpret, or change the scene.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="images">
+      <div class="section-head">
+        <div class="index">02 / Image references</div>
+        <div class="section-title">
+          <h2>Good image references are realistic, readable, and angle-matched.</h2>
+          <p>
+            A full-body image is not automatically better. The best image is
+            the one that gives the edit model clear identity information from a
+            similar viewpoint to the source video.
+          </p>
+        </div>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-column">
+          <div class="column-head good"><span>Good references</span><span>What worked</span></div>
+          <article class="example-card">
+            <div class="mock-image good-angle" aria-hidden="true"></div>
+            <div class="example-copy">
+              <span class="tag good">Good</span>
+              <h3>Angle matches the source person</h3>
+              <p>Use a character image shot from a similar height and direction. Chest-up can work well when the video is chest-up.</p>
+            </div>
+          </article>
+          <article class="example-card">
+            <div class="mock-image good-light" aria-hidden="true"></div>
+            <div class="example-copy">
+              <span class="tag good">Good</span>
+              <h3>Looks like a real camera photo</h3>
+              <p>Natural skin, imperfect lighting, real hair texture, and normal clothing usually transfer more consistently.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="compare-column">
+          <div class="column-head bad"><span>Bad references</span><span>What broke</span></div>
+          <article class="example-card">
+            <div class="mock-image bad-ai" aria-hidden="true"></div>
+            <div class="example-copy">
+              <span class="tag bad">Bad</span>
+              <h3>Looks too synthetic</h3>
+              <p>Over-smoothed skin, plastic hair, fantasy lighting, and overly perfect features can cause identity drift and face warping.</p>
+            </div>
+          </article>
+          <article class="example-card">
+            <div class="mock-image bad-crop" aria-hidden="true"></div>
+            <div class="example-copy">
+              <span class="tag bad">Bad</span>
+              <h3>Face or body is cropped wrong</h3>
+              <p>If the face is cut off, blurred, hidden, or from a very different angle, the model has to guess too much.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="videos">
+      <div class="section-head">
+        <div class="index">03 / Video references</div>
+        <div class="section-title">
+          <h2>Good motion videos are clean enough to become the blueprint.</h2>
+          <p>
+            The model is not just copying a vibe. It is inheriting the motion,
+            camera behavior, timing, and scene. Choose a video that already
+            does what you want the final clip to do.
+          </p>
+        </div>
+      </div>
+
+      <div class="motion-grid">
+        <article class="motion-card">
+          <div class="motion-visual">
+            <div class="frame-bars"></div>
+            <div class="motion-path"></div>
+            <div class="motion-figure"></div>
+          </div>
+          <div class="motion-copy">
+            <span class="tag good">Good video</span>
+            <h3>Stable shot, readable person</h3>
+            <p>One main person, clear body movement, visible face, consistent lighting, and no fast cuts. This gives the edit model a strong motion map.</p>
+          </div>
+        </article>
+
+        <article class="motion-card">
+          <div class="motion-visual bad">
+            <div class="frame-bars"></div>
+            <div class="motion-path"></div>
+            <div class="motion-figure"></div>
+          </div>
+          <div class="motion-copy">
+            <span class="tag bad">Bad video</span>
+            <h3>Messy motion, weak subject lock</h3>
+            <p>Fast camera swings, blocked faces, heavy blur, multiple people crossing, or constant cuts can break face consistency and body shape.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="checklist" style="margin-top: 18px;">
+        <div class="check-item"><strong>Use clear framing.</strong><p>The person should stay readable for most of the clip.</p></div>
+        <div class="check-item"><strong>Avoid heavy occlusion.</strong><p>Hands over face, props blocking the body, or people crossing the subject can create unstable edits.</p></div>
+        <div class="check-item"><strong>Prefer one person.</strong><p>One subject makes the replacement target obvious.</p></div>
+        <div class="check-item"><strong>Keep the camera usable.</strong><p>Movement is fine. Chaotic motion is what causes problems.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="prompt">
+      <div class="section-head">
+        <div class="index">04 / Prompt builder</div>
+        <div class="section-title">
+          <h2>Generate a strict person-replacement prompt.</h2>
+          <p>
+            The output intentionally uses the real Higgsfield attachment syntax.
+            The generated text should contain the actual references, not vague
+            wording like "uploaded video" or "uploaded image."
+          </p>
+        </div>
+      </div>
+
+      <div class="builder">
+        <form class="builder-panel" id="promptForm">
+          <div class="field">
+            <label for="mode">Prompt mode</label>
+            <select id="mode">
+              <option value="person">Replace person with Image 1</option>
+              <option value="clothing">Replace clothing only</option>
+              <option value="product">Replace product or object only</option>
+              <option value="background">Replace background only</option>
+              <option value="characterMotion">Keep Image 1 identity, use video motion</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="videoRef">Reference video token</label>
+            <select id="videoRef">
+              <option value="@[Reference Video](video_1)">@[Reference Video](video_1)</option>
+              <option value="@[Reference Video 2](video_2)">@[Reference Video 2](video_2)</option>
+              <option value="@[Reference Video 3](video_3)">@[Reference Video 3](video_3)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="imageRef">Image reference token</label>
+            <select id="imageRef">
+              <option value="@[Image 1](image_1)">@[Image 1](image_1)</option>
+              <option value="@[Image 2](image_2)">@[Image 2](image_2)</option>
+              <option value="@[Image 3](image_3)">@[Image 3](image_3)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="strictness">Strictness</label>
+            <select id="strictness">
+              <option value="strict">Strict 1:1 preservation</option>
+              <option value="natural">Natural fit, tiny corrections allowed</option>
+              <option value="adaptive">Adaptive fit for harder swaps</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="extra">Optional extra instruction</label>
+            <textarea id="extra" placeholder="Example: Keep the exact blue hoodie from Image 1. Do not change the kitchen background."></textarea>
+          </div>
+
+          <div class="builder-actions">
+            <button class="btn orange" type="submit">Update prompt</button>
+            <button class="btn secondary" type="button" id="resetBtn">Reset</button>
+          </div>
+        </form>
+
+        <section class="output-panel" aria-label="Generated prompt">
+          <div class="output-toolbar">
+            <span>Generated Higgsfield prompt</span>
+            <button class="btn secondary" type="button" id="copyBtn">Copy prompt</button>
+          </div>
+          <pre class="prompt-output" id="promptOutput"></pre>
+          <div class="note-row">
+            <div class="mini-note"><strong>Attach first.</strong>Select the reference video and image inside Higgsfield before pasting.</div>
+            <div class="mini-note"><strong>Use @ tokens.</strong>Pick the actual files from the @ menu so the syntax resolves.</div>
+            <div class="mini-note"><strong>Keep it strict.</strong>Do not add style labels unless they describe a concrete change.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="workflow">
+      <div class="section-head">
+        <div class="index">05 / Creator workflow</div>
+        <div class="section-title">
+          <h2>A beginner-safe order of operations.</h2>
+          <p>
+            Teach creators the sequence. The tool works best when the source
+            video and character image are chosen before the prompt is written.
+          </p>
+        </div>
+      </div>
+
+      <div class="workflow">
+        <article class="workflow-card">
+          <div class="step">Step 01</div>
+          <h3>Pick the motion video</h3>
+          <p>Choose the clip that already has the body movement, camera, timing, framing, and scene you want.</p>
+        </article>
+        <article class="workflow-card">
+          <div class="step">Step 02</div>
+          <h3>Pick Image 1</h3>
+          <p>Use a realistic identity image with a similar angle and clear face, hair, body proportions, and clothing.</p>
+        </article>
+        <article class="workflow-card">
+          <div class="step">Step 03</div>
+          <h3>Paste the strict prompt</h3>
+          <p>Tell Higgsfield to preserve the video 1:1 and replace only the selected person or object.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="publish">
+      <div class="section-head">
+        <div class="index">06 / Final check</div>
+        <div class="section-title">
+          <h2>Before posting to TikTok Shop, check the failure points.</h2>
+          <p>
+            The final export should look like the same reference clip with a
+            clean replacement. If identity, hands, face, clothing, or background
+            drift frame-to-frame, adjust the references before over-prompting.
+          </p>
+        </div>
+      </div>
+
+      <div class="publish-card">
+        <article class="final-card">
+          <span class="status-bad">Reject</span>
+          <h3>Run again when the output changes the scene.</h3>
+          <p>Background shifts, camera angle changes, clothing morphs, face flickers, hands melt, or timing no longer matches the original video.</p>
+        </article>
+        <article class="final-card">
+          <span class="status-good">Approve</span>
+          <h3>Use it when the reference hierarchy holds.</h3>
+          <p>The motion, camera, timing, framing, and scene match the reference video while the replacement identity stays stable from Image 1.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Titans Higgsfield Helper</span>
+    <span>Reference video = motion. Image reference = identity. Prompt = rules.</span>
+  </footer>
+
+  <script>
+    const modeCopy = {
+      person: {
+        open: (video, image) => `Use ${video} as the exact 1:1 motion and scene reference. Replace the person in the reference video with ${image}.`,
+        preserve: "Preserve the reference video's exact body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior as closely as possible.",
+        replace: (image) => `The person must maintain the face, hairstyle, body proportions, clothing, colors, and overall identity from ${image} consistently throughout the entire video.`,
+        only: "Only replace the original person's appearance. Do not reinterpret, restage, improve, or change the original motion, camera, composition, scene, background, lighting behavior, or timing."
+      },
+      clothing: {
+        open: (video, image) => `Use ${video} as the exact person, motion, camera, timing, and scene reference. Replace only the clothing with the outfit from ${image}.`,
+        preserve: "Preserve the reference video's face, hair, body proportions, skin, gestures, posture, head movement, facial expressions, timing, pacing, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
+        replace: (image) => `The new clothing must maintain the garment type, fit, fabric texture, colors, logos, and styling from ${image} consistently throughout the entire video.`,
+        only: "Only replace the clothing. Do not change the person's identity, face, hair, body, motion, camera, composition, scene, background, or timing."
+      },
+      product: {
+        open: (video, image) => `Use ${video} as the exact motion, hand interaction, camera, timing, and scene reference. Replace only the product or object in the reference video with ${image}.`,
+        preserve: "Preserve the reference video's hand movement, grip, object position, occlusion, shadows, reflections, timing, pacing, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
+        replace: (image) => `The replacement product must maintain the shape, proportions, material, label design, colors, logo placement, and overall appearance from ${image} consistently throughout the entire video.`,
+        only: "Only replace the product or object. Do not change the person, hands, motion, scene, camera, background, lighting behavior, or timing."
+      },
+      background: {
+        open: (video, image) => `Use ${video} as the exact subject, motion, camera, timing, and foreground reference. Replace only the background or environment with ${image}.`,
+        preserve: "Preserve the reference video's foreground subject identity, body movement, gestures, posture, facial expressions, mouth and lip movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, and subject scale.",
+        replace: (image) => `The background must maintain the environment, layout, depth, colors, lighting direction, and overall appearance from ${image} consistently throughout the entire video.`,
+        only: "Only replace the background. Do not change the foreground subject, motion, camera, timing, framing, or performance."
+      },
+      characterMotion: {
+        open: (video, image) => `Use ${image} as the character identity reference and ${video} as the exact 1:1 motion, camera, timing, and scene reference.`,
+        preserve: "Preserve the reference video's body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
+        replace: (image) => `The character must maintain the face, hairstyle, body proportions, clothing, colors, and overall identity from ${image} consistently throughout the entire video.`,
+        only: "Transfer the character identity onto the reference motion. Do not change the motion, camera, scene, composition, background, lighting behavior, timing, or pacing."
+      }
+    };
+
+    const strictnessCopy = {
+      strict: "Preserve the reference video as closely as possible 1:1. The reference video is law. Do not reinterpret, restage, improve, stylize, or creatively alter the original motion, camera, composition, scene, timing, or pacing.",
+      natural: "Preserve the reference video's timing, camera, framing, scene behavior, and primary motion. Allow only tiny physical corrections needed to make the replacement reference fit naturally.",
+      adaptive: "Preserve the main motion, camera, pacing, and composition from the reference video while allowing natural fit adaptation when the replacement reference requires it."
+    };
+
+    const promptOutput = document.getElementById("promptOutput");
+    const promptForm = document.getElementById("promptForm");
+    const copyBtn = document.getElementById("copyBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function buildPrompt() {
+      const mode = document.getElementById("mode").value;
+      const video = document.getElementById("videoRef").value;
+      const image = document.getElementById("imageRef").value;
+      const strictness = document.getElementById("strictness").value;
+      const extra = document.getElementById("extra").value.trim();
+      const copy = modeCopy[mode] || modeCopy.person;
+
+      const sections = [
+        copy.open(video, image),
+        copy.preserve,
+        copy.replace(image),
+        copy.only,
+        strictnessCopy[strictness] || strictnessCopy.strict,
+        "Prioritize photorealism, natural integration, and temporal consistency. Prevent identity drift, face warping, body morphing, clothing changes, flickering, inconsistent hair, changing proportions, object warping, unstable edges, or frame-to-frame appearance changes."
+      ];
+
+      if (extra) {
+        sections.splice(1, 0, `Additional instruction: ${extra}. This is subordinate to the reference hierarchy above.`);
+      }
+
+      promptOutput.textContent = sections.join("\n\n");
+    }
+
+    promptForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      buildPrompt();
+    });
+
+    ["mode", "videoRef", "imageRef", "strictness", "extra"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", buildPrompt);
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const text = promptOutput.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = "Copied";
+        setTimeout(() => {
+          copyBtn.textContent = "Copy prompt";
+        }, 1400);
+      } catch (error) {
+        window.alert("Copy failed. Select the prompt text and copy it manually.");
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      promptForm.reset();
+      buildPrompt();
+    });
+
+    document.querySelectorAll("[data-jump]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelector(button.dataset.jump).scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    buildPrompt();
+  </script>
+</body>
+</html>
