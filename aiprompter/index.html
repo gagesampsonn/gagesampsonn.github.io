@@ -950,17 +950,6 @@
       color: var(--ink);
     }
 
-    .preset-meta-card {
-      margin-top: 18px;
-    }
-
-    .meta-output {
-      min-height: 330px;
-      background: #151716;
-      color: #f2f2ed;
-      border-top: 1px solid #2e312e;
-    }
-
     .preset-chips {
       display: flex;
       flex-wrap: wrap;
@@ -1444,56 +1433,6 @@
         </section>
       </div>
 
-      <section class="output-panel preset-meta-card" aria-label="Preset generation prompt">
-        <div class="output-toolbar">
-          <span>Prompt to generate more profession buckets</span>
-          <button class="btn secondary" type="button" id="copyPresetRequestBtn">Copy bucket request</button>
-        </div>
-        <pre class="prompt-output meta-output" id="presetRequestOutput">Create 25 profession or major-identifier buckets for an offline JavaScript image-prompt generator.
-
-Important: do not create 25 finished prompts. Create structured buckets that JavaScript can mix.
-
-The user controls:
-- Age
-- Gender
-- Profession or major identifier
-
-JavaScript randomly rolls:
-- body
-- face
-- hair
-- eyes
-- skin
-- outfit
-- realism detail
-
-Rules:
-- Each bucket needs a label and prompt noun, like "construction worker".
-- Each bucket must include weighted arrays for body, face, hair, eyes, skin, outfit, and realism.
-- If a profession needs gender-specific compatibility, include optional maleHair, femaleHair, maleOutfit, and femaleOutfit arrays.
-- Body weights should be realistic for the identifier. Do not make every profession muscular.
-- Female options should not randomly use shaved head, buzzcut, or masculine-only outfit details unless that bucket intentionally asks for them.
-- Male options should not randomly use feminine-coded outfit details unless that bucket intentionally asks for them.
-- Include natural variation: average, lean, stocky, heavyset, slightly overweight, broad, athletic, tall, petite, mature, soft build.
-- Outfit options must fit the profession or identifier.
-- Avoid public figures, copyrighted characters, minors, fantasy identities, sexualized descriptions, and stereotypes.
-- Keep the text image-generator friendly and photorealistic.
-- Output valid JavaScript object entries only.
-
-Use this exact shape:
-construction: {
-  label: "Construction Worker",
-  noun: "construction worker",
-  body: [{ text: "heavyset stocky build", weight: 20 }],
-  face: [{ text: "broad rounded face with a softer jaw", weight: 18 }],
-  maleHair: [{ text: "short dark buzzcut", weight: 16 }],
-  femaleHair: [{ text: "long brown hair tied back in a practical ponytail", weight: 16 }],
-  eyes: [{ text: "brown eyes", weight: 22 }],
-  skin: [{ text: "sun-weathered realistic skin texture", weight: 20 }],
-  outfit: [{ text: "orange high-visibility vest over worn construction workwear", weight: 22 }],
-  realism: [{ text: "authentic workwear fabric texture and natural shadows", weight: 10 }]
-}</pre>
-      </section>
     </section>
 
     <section class="section" id="images">
@@ -2483,8 +2422,6 @@ construction: {
     const imagePromptOutput = document.getElementById("imagePromptOutput");
     const copyImagePromptBtn = document.getElementById("copyImagePromptBtn");
     const rerollBtn = document.getElementById("rerollBtn");
-    const presetRequestOutput = document.getElementById("presetRequestOutput");
-    const copyPresetRequestBtn = document.getElementById("copyPresetRequestBtn");
     const slotElements = {
       body: document.getElementById("slotBody"),
       face: document.getElementById("slotFace"),
@@ -2716,9 +2653,6 @@ construction: {
     productInstruction.addEventListener("input", () => buildImagePrompt(false));
     copyImagePromptBtn.addEventListener("click", () => {
       copyText(imagePromptOutput.textContent, copyImagePromptBtn, "Copy image prompt");
-    });
-    copyPresetRequestBtn.addEventListener("click", () => {
-      copyText(presetRequestOutput.textContent, copyPresetRequestBtn, "Copy bucket request");
     });
 
     function buildPrompt() {
