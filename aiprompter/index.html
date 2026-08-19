@@ -809,7 +809,7 @@
     }
 
     .prompt-output {
-      min-height: 440px;
+      min-height: 360px;
       margin: 0;
       padding: 24px;
       white-space: pre-wrap;
@@ -817,6 +817,54 @@
       font-size: 14px;
       line-height: 1.72;
       overflow: auto;
+    }
+
+    .seedance-example {
+      margin: 0 18px 18px;
+      border: 1px solid #2b2d30;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #17191b;
+      color: #f4f4f4;
+    }
+
+    .seedance-example-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #202225;
+      border-bottom: 1px solid #303236;
+      color: #b9bbbe;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .seedance-prompt {
+      padding: 16px 14px 18px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .seedance-prompt p {
+      margin: 0 0 14px;
+    }
+
+    .seedance-prompt p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ref-chip {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 0 4px;
+      background: #b9fb12;
+      color: #172000;
+      font-weight: 900;
+      white-space: nowrap;
     }
 
     .note-row {
@@ -1085,7 +1133,7 @@
       <div class="reference-board" aria-label="Reference hierarchy visual">
         <div class="board-card video">
           <div class="mini-label">
-            <span>@[Reference Video](video_1)</span>
+            <span>@Video1</span>
             <span>Motion lock</span>
           </div>
           <div class="phone-frame">
@@ -1101,7 +1149,7 @@
 
         <div class="board-card identity">
           <div class="mini-label">
-            <span>@[Image 1](image_1)</span>
+            <span>@Image1</span>
           </div>
           <div class="identity-preview"></div>
           <div class="prompt-lines"><span></span><span></span><span></span></div>
@@ -1266,9 +1314,9 @@
         <div class="section-title">
           <h2>Generate a strict person-replacement prompt.</h2>
           <p>
-            The output intentionally uses the real Higgsfield attachment syntax.
-            The generated text should contain the actual references, not vague
-            wording like "uploaded video" or "uploaded image."
+            The output is built for the normal Seedance 2.5 Edit setup:
+            <strong>@Video1</strong> is the base motion video, and
+            <strong>@Image1</strong> is the replacement identity image.
           </p>
         </div>
       </div>
@@ -1283,24 +1331,6 @@
               <option value="product">Replace product or object only</option>
               <option value="background">Replace background only</option>
               <option value="characterMotion">Keep Image 1 identity, use video motion</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="videoRef">Reference video token</label>
-            <select id="videoRef">
-              <option value="@[Reference Video](video_1)">@[Reference Video](video_1)</option>
-              <option value="@[Reference Video 2](video_2)">@[Reference Video 2](video_2)</option>
-              <option value="@[Reference Video 3](video_3)">@[Reference Video 3](video_3)</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="imageRef">Image reference token</label>
-            <select id="imageRef">
-              <option value="@[Image 1](image_1)">@[Image 1](image_1)</option>
-              <option value="@[Image 2](image_2)">@[Image 2](image_2)</option>
-              <option value="@[Image 3](image_3)">@[Image 3](image_3)</option>
             </select>
           </div>
 
@@ -1326,13 +1356,25 @@
 
         <section class="output-panel" aria-label="Generated prompt">
           <div class="output-toolbar">
-            <span>Generated Higgsfield prompt</span>
+            <span>Generated replacement prompt</span>
             <button class="btn secondary" type="button" id="copyBtn">Copy prompt</button>
           </div>
           <pre class="prompt-output" id="promptOutput"></pre>
+          <div class="seedance-example" aria-label="Seedance prompt example">
+            <div class="seedance-example-head">
+              <span>What it should look like</span>
+              <span>Seedance 2.5 Edit</span>
+            </div>
+            <div class="seedance-prompt">
+              <p>Use <span class="ref-chip">@Video1</span> as the base video and motion reference. Replace only the person in <span class="ref-chip">@Video1</span> with the person from <span class="ref-chip">@Image1</span>.</p>
+              <p>Preserve the original video's body movement, hand gestures, head movement, facial performance, lip movement, timing, pacing, camera angle, framing, lighting, background, and scene as closely as possible.</p>
+              <p>Only change the person's appearance. Keep the motion, camera, timing, background, and composition unchanged.</p>
+              <p>Make the result photorealistic, natural, and temporally consistent. Avoid face warping, flickering, identity drift, changing clothing, body morphing, or frame-to-frame appearance changes.</p>
+            </div>
+          </div>
           <div class="note-row">
-            <div class="mini-note"><strong>Attach first.</strong>Select the reference video and image inside Higgsfield before pasting.</div>
-            <div class="mini-note"><strong>Use @ tokens.</strong>Pick the actual files from the @ menu so the syntax resolves.</div>
+            <div class="mini-note"><strong>Attach first.</strong>Select the reference video and image inside Seedance before pasting.</div>
+            <div class="mini-note"><strong>Use @ references.</strong>Choose Video1 and Image1 from the @ menu so the green chips appear.</div>
             <div class="mini-note"><strong>Keep it strict.</strong>Do not add style labels unless they describe a concrete change.</div>
           </div>
         </section>
@@ -1406,10 +1448,10 @@
   <script>
     const modeCopy = {
       person: {
-        open: (video, image) => `Use ${video} as the exact 1:1 motion and scene reference. Replace the person in the reference video with ${image}.`,
-        preserve: "Preserve the reference video's exact body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior as closely as possible.",
+        open: (video, image) => `Use ${video} as the base video and exact motion reference. Replace only the person in ${video} with the person from ${image}.`,
+        preserve: "Preserve the original video's exact body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior as closely as possible.",
         replace: (image) => `The person must maintain the face, hairstyle, body proportions, clothing, colors, and overall identity from ${image} consistently throughout the entire video.`,
-        only: "Only replace the original person's appearance. Do not reinterpret, restage, improve, or change the original motion, camera, composition, scene, background, lighting behavior, or timing."
+        only: "Only change the person's appearance. Do not reinterpret, restage, improve, or change the original motion, camera, composition, scene, background, lighting behavior, or timing."
       },
       clothing: {
         open: (video, image) => `Use ${video} as the exact person, motion, camera, timing, and scene reference. Replace only the clothing with the outfit from ${image}.`,
@@ -1450,8 +1492,8 @@
 
     function buildPrompt() {
       const mode = document.getElementById("mode").value;
-      const video = document.getElementById("videoRef").value;
-      const image = document.getElementById("imageRef").value;
+      const video = "@Video1";
+      const image = "@Image1";
       const strictness = document.getElementById("strictness").value;
       const extra = document.getElementById("extra").value.trim();
       const copy = modeCopy[mode] || modeCopy.person;
@@ -1477,7 +1519,7 @@
       buildPrompt();
     });
 
-    ["mode", "videoRef", "imageRef", "strictness", "extra"].forEach((id) => {
+    ["mode", "strictness", "extra"].forEach((id) => {
       document.getElementById(id).addEventListener("input", buildPrompt);
     });
 
