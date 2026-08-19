@@ -1325,12 +1325,13 @@
       <div class="section-head">
         <div class="index">02 / Image character generator</div>
         <div class="section-title">
-          <h2>Pick age and profession. Let the details roll.</h2>
+          <h2>Pick age, gender, and profession. Let the details roll.</h2>
           <p>
             This is mainly for image generation. Use it in ChatGPT, Gemini, or
             another image model to create the clean Image1 reference. The user
-            controls the age and profession or major identifier. The site rolls
-            compatible body, face, hair, eyes, skin, outfit, and realism details.
+            controls the age, gender, and profession or major identifier. The
+            site rolls compatible body, face, hair, eyes, skin, outfit, and
+            realism details.
           </p>
         </div>
       </div>
@@ -1350,6 +1351,15 @@
             <label for="characterAge">Age</label>
             <input id="characterAge" type="number" min="19" max="85" value="24" inputmode="numeric" />
             <p class="form-hint">Use adults only. The prompt will always say adult.</p>
+          </div>
+
+          <div class="field">
+            <label for="characterGender">Gender</label>
+            <select id="characterGender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <p class="form-hint">This controls compatible hair, presentation, and outfit wording.</p>
           </div>
 
           <div class="field">
@@ -1418,10 +1428,11 @@
           <div class="note-row">
             <div class="mini-note"><strong>Use the start frame.</strong>This gives the image model the exact original pose and angle.</div>
             <div class="mini-note"><strong>Image first.</strong>This prompt creates Image1. The Seedance prompt below handles the video replacement.</div>
-            <div class="mini-note"><strong>Reroll details.</strong>Same age and profession can produce different bodies, faces, hair, eyes, and outfits.</div>
+            <div class="mini-note"><strong>Reroll details.</strong>Same age, gender, and profession can produce different bodies, faces, hair, eyes, and outfits.</div>
           </div>
           <div class="preset-chips" aria-label="Preset detail examples">
             <span>age</span>
+            <span>gender</span>
             <span>profession</span>
             <span>weighted body</span>
             <span>compatible face</span>
@@ -1444,6 +1455,7 @@ Important: do not create 25 finished prompts. Create structured buckets that Jav
 
 The user controls:
 - Age
+- Gender
 - Profession or major identifier
 
 JavaScript randomly rolls:
@@ -1458,7 +1470,10 @@ JavaScript randomly rolls:
 Rules:
 - Each bucket needs a label and prompt noun, like "construction worker".
 - Each bucket must include weighted arrays for body, face, hair, eyes, skin, outfit, and realism.
+- If a profession needs gender-specific compatibility, include optional maleHair, femaleHair, maleOutfit, and femaleOutfit arrays.
 - Body weights should be realistic for the identifier. Do not make every profession muscular.
+- Female options should not randomly use shaved head, buzzcut, or masculine-only outfit details unless that bucket intentionally asks for them.
+- Male options should not randomly use feminine-coded outfit details unless that bucket intentionally asks for them.
 - Include natural variation: average, lean, stocky, heavyset, slightly overweight, broad, athletic, tall, petite, mature, soft build.
 - Outfit options must fit the profession or identifier.
 - Avoid public figures, copyrighted characters, minors, fantasy identities, sexualized descriptions, and stereotypes.
@@ -1471,7 +1486,8 @@ construction: {
   noun: "construction worker",
   body: [{ text: "heavyset stocky build", weight: 20 }],
   face: [{ text: "broad rounded face with a softer jaw", weight: 18 }],
-  hair: [{ text: "short dark buzzcut", weight: 16 }],
+  maleHair: [{ text: "short dark buzzcut", weight: 16 }],
+  femaleHair: [{ text: "long brown hair tied back in a practical ponytail", weight: 16 }],
   eyes: [{ text: "brown eyes", weight: 22 }],
   skin: [{ text: "sun-weathered realistic skin texture", weight: 20 }],
   outfit: [{ text: "orange high-visibility vest over worn construction workwear", weight: 22 }],
@@ -1781,6 +1797,50 @@ construction: {
         { text: "visible pores, natural skin variation, and believable fabric texture", weight: 25 },
         { text: "individual hair strands and clean studio lighting response", weight: 25 }
       ]
+    };
+
+    const genderPools = {
+      male: {
+        label: "male",
+        hair: [
+          { text: "short brown hair", weight: 22 },
+          { text: "short black hair", weight: 18 },
+          { text: "short dark buzzcut", weight: 16 },
+          { text: "shaved head", weight: 12 },
+          { text: "messy short hair", weight: 12 },
+          { text: "medium-length brown hair", weight: 10 },
+          { text: "salt-and-pepper short hair", weight: 10 }
+        ],
+        outfit: [
+          { text: "clean casual menswear with realistic fabric folds", weight: 22 },
+          { text: "simple fitted tee with practical pants", weight: 20 },
+          { text: "button-up shirt with casual pants", weight: 18 },
+          { text: "hoodie and jeans with natural fabric texture", weight: 18 },
+          { text: "plain studio-friendly outfit with masculine styling", weight: 12 },
+          { text: "relaxed workwear-inspired outfit", weight: 10 }
+        ]
+      },
+      female: {
+        label: "female",
+        hair: [
+          { text: "long brown hair with realistic strands", weight: 18 },
+          { text: "long blonde hair with natural texture", weight: 16 },
+          { text: "shoulder-length brown hair", weight: 16 },
+          { text: "black hair pulled into a neat ponytail", weight: 14 },
+          { text: "medium-length dark hair with soft volume", weight: 12 },
+          { text: "curly shoulder-length hair with natural volume", weight: 10 },
+          { text: "long black hair with realistic shine", weight: 8 },
+          { text: "auburn hair tied back loosely", weight: 6 }
+        ],
+        outfit: [
+          { text: "clean casual womenswear with realistic fabric folds", weight: 22 },
+          { text: "modest fitted top with casual pants", weight: 18 },
+          { text: "soft sweater and jeans with natural wrinkles", weight: 18 },
+          { text: "simple blouse with everyday pants", weight: 16 },
+          { text: "comfortable layered outfit with feminine styling", weight: 14 },
+          { text: "plain studio-friendly outfit with believable fabric texture", weight: 12 }
+        ]
+      }
     };
 
     const professionBuckets = {
@@ -2321,7 +2381,17 @@ construction: {
           { text: "soft square face", weight: 12 },
           { text: "fresh approachable face", weight: 12 }
         ],
-        hair: genericBucket.hair,
+        maleHair: genderPools.male.hair,
+        femaleHair: [
+          { text: "long realistic blonde hair", weight: 18 },
+          { text: "long brown hair with natural texture", weight: 18 },
+          { text: "shoulder-length brunette hair", weight: 16 },
+          { text: "black hair in a neat ponytail", weight: 14 },
+          { text: "soft wavy medium-length hair", weight: 12 },
+          { text: "long black hair with realistic strands", weight: 10 },
+          { text: "curly shoulder-length hair with natural volume", weight: 8 },
+          { text: "auburn hair worn loose with believable texture", weight: 4 }
+        ],
         eyes: genericBucket.eyes,
         skin: [
           { text: "believable young adult skin texture", weight: 26 },
@@ -2330,12 +2400,19 @@ construction: {
           { text: "healthy realistic skin texture", weight: 18 },
           { text: "lightly textured human skin", weight: 14 }
         ],
-        outfit: [
-          { text: "casual college outfit with realistic cotton texture", weight: 24 },
-          { text: "hoodie and jeans with natural fabric folds", weight: 20 },
-          { text: "campus-style tee with clean casual pants", weight: 18 },
-          { text: "cute but modest college outfit with realistic seams", weight: 16 },
-          { text: "simple layered student outfit with believable wrinkles", weight: 22 }
+        maleOutfit: [
+          { text: "campus-style tee with clean casual pants", weight: 24 },
+          { text: "hoodie and jeans with natural fabric folds", weight: 22 },
+          { text: "casual college outfit with realistic cotton texture", weight: 20 },
+          { text: "simple layered student outfit with believable wrinkles", weight: 18 },
+          { text: "athletic college sweatshirt with relaxed pants", weight: 16 }
+        ],
+        femaleOutfit: [
+          { text: "cute but modest college outfit with realistic seams", weight: 24 },
+          { text: "campus-style fitted top with clean casual pants", weight: 20 },
+          { text: "soft college sweatshirt with jeans and natural folds", weight: 20 },
+          { text: "simple feminine student outfit with believable fabric texture", weight: 18 },
+          { text: "casual college outfit with realistic cotton texture", weight: 18 }
         ],
         realism: genericBucket.realism
       },
@@ -2399,6 +2476,7 @@ construction: {
     const characterForm = document.getElementById("characterForm");
     const sourceSubject = document.getElementById("sourceSubject");
     const characterAge = document.getElementById("characterAge");
+    const characterGender = document.getElementById("characterGender");
     const professionSelect = document.getElementById("professionSelect");
     const customProfession = document.getElementById("customProfession");
     const productInstruction = document.getElementById("productInstruction");
@@ -2447,6 +2525,10 @@ construction: {
       return Math.max(19, Math.min(85, parsed));
     }
 
+    function getGender() {
+      return characterGender.value === "female" ? "female" : "male";
+    }
+
     function getBucket() {
       const selected = professionSelect.value;
       if (selected === "custom") {
@@ -2454,25 +2536,46 @@ construction: {
         return {
           ...genericBucket,
           label: noun,
-          noun
+          noun,
+          custom: true
         };
       }
 
       return professionBuckets[selected] || professionBuckets.construction;
     }
 
+    function getAttributeItems(bucket, key, gender) {
+      const genderKey = `${gender}${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+      if (bucket[genderKey]) {
+        return bucket[genderKey];
+      }
+
+      if (key === "hair" && gender === "female") {
+        return genderPools.female.hair;
+      }
+
+      if (key === "outfit" && bucket.custom && genderPools[gender]?.outfit) {
+        return genderPools[gender].outfit;
+      }
+
+      return bucket[key] || genderPools[gender]?.[key] || genericBucket[key];
+    }
+
     function rollCharacter() {
       const bucket = getBucket();
+      const gender = getGender();
       return {
         age: getAge(),
+        gender,
+        genderLabel: genderPools[gender].label,
         noun: bucket.noun,
-        body: weightedPick(bucket.body),
-        face: weightedPick(bucket.face),
-        hair: weightedPick(bucket.hair),
-        eyes: weightedPick(bucket.eyes),
-        skin: weightedPick(bucket.skin),
-        outfit: weightedPick(bucket.outfit),
-        realism: weightedPick(bucket.realism)
+        body: weightedPick(getAttributeItems(bucket, "body", gender)),
+        face: weightedPick(getAttributeItems(bucket, "face", gender)),
+        hair: weightedPick(getAttributeItems(bucket, "hair", gender)),
+        eyes: weightedPick(getAttributeItems(bucket, "eyes", gender)),
+        skin: weightedPick(getAttributeItems(bucket, "skin", gender)),
+        outfit: weightedPick(getAttributeItems(bucket, "outfit", gender)),
+        realism: weightedPick(getAttributeItems(bucket, "realism", gender))
       };
     }
 
@@ -2508,7 +2611,7 @@ construction: {
       const roll = lastCharacterRoll;
       const source = sourceSubject.value || "man";
       const product = productInstruction.value.trim();
-      const target = `${roll.age}-year-old adult ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
+      const target = `${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
       const productLine = product
         ? `Specific product/outfit requirement: ${product}. Keep this product or outfit detail clear, accurate, visible, and consistent with the character.`
         : "If a specific product, wearable item, or outfit is being sold, add it before generating so the image model does not invent the wrong hat, shirt, jacket, glasses, jewelry, bag, or uniform.";
@@ -2519,7 +2622,7 @@ construction: {
         `Transform the ${source} into a ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless pure white studio background.`,
         productLine,
         `Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, ${roll.realism}.`,
-        `The final result should look like a genuine high-resolution photograph of a ${roll.age}-year-old adult ${roll.noun}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
+        `The final result should look like a genuine high-resolution photograph of a ${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
       ];
 
       imagePromptOutput.textContent = sections.join("\n\n");
@@ -2596,6 +2699,10 @@ construction: {
       buildImagePrompt(true);
     });
     characterAge.addEventListener("input", () => {
+      lastCharacterRoll = null;
+      buildImagePrompt(true);
+    });
+    characterGender.addEventListener("change", () => {
       lastCharacterRoll = null;
       buildImagePrompt(true);
     });
