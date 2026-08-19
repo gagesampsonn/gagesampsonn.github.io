@@ -760,6 +760,7 @@
       text-transform: uppercase;
     }
 
+    input,
     select,
     textarea {
       width: 100%;
@@ -771,6 +772,7 @@
       outline: none;
     }
 
+    input:focus,
     select:focus,
     textarea:focus {
       border-color: var(--orange);
@@ -876,6 +878,76 @@
 
     .image-generator-output {
       min-height: 420px;
+    }
+
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: #f9f9f6;
+    }
+
+    .slot-card {
+      min-height: 88px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .slot-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .slot-value {
+      display: block;
+      color: #171917;
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 800;
+    }
+
+    .slot-card.is-spinning .slot-value {
+      animation: slotPulse 0.42s ease-in-out;
+    }
+
+    @keyframes slotPulse {
+      0% { transform: translateY(0); opacity: 1; }
+      45% { transform: translateY(10px); opacity: 0.18; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slot-card.is-spinning .slot-value {
+        animation: none;
+      }
+    }
+
+    .prompt-warning {
+      margin: 0 18px 18px;
+      border: 1px solid rgba(243, 107, 33, 0.36);
+      border-left: 4px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff6ef;
+      color: #3e3028;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .prompt-warning strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
     }
 
     .preset-meta-card {
@@ -1101,6 +1173,7 @@
       .compare-grid,
       .checklist,
       .workflow,
+      .slot-grid,
       .note-row {
         grid-template-columns: 1fr;
       }
@@ -1124,6 +1197,10 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 16px;
+      }
+
+      .slot-grid {
+        padding: 14px;
       }
 
       footer {
@@ -1246,20 +1323,20 @@
 
     <section class="section" id="image-presets">
       <div class="section-head">
-        <div class="index">02 / Image generator presets</div>
+        <div class="index">02 / Image character generator</div>
         <div class="section-title">
-          <h2>Create the Image1 reference before the Seedance edit.</h2>
+          <h2>Pick age and profession. Let the details roll.</h2>
           <p>
-            This prompt is for ChatGPT, Gemini, or another image generator.
-            Use the start frame or reference photo as the source image, then
-            transform the original person while keeping the pose, camera,
-            framing, perspective, and lighting locked.
+            This is mainly for image generation. Use it in ChatGPT, Gemini, or
+            another image model to create the clean Image1 reference. The user
+            controls the age and profession or major identifier. The site rolls
+            compatible body, face, hair, eyes, skin, outfit, and realism details.
           </p>
         </div>
       </div>
 
       <div class="builder image-preset-builder">
-        <form class="builder-panel" id="imagePresetForm">
+        <form class="builder-panel" id="characterForm">
           <div class="field">
             <label for="sourceSubject">Source subject</label>
             <select id="sourceSubject">
@@ -1270,29 +1347,53 @@
           </div>
 
           <div class="field">
-            <label for="imagePreset">Preset</label>
-            <select id="imagePreset">
-              <option value="construction">42-year-old construction worker</option>
-              <option value="collegeWoman">19-year-old college woman</option>
-              <option value="chef">45-year-old chef</option>
-              <option value="nurse">34-year-old ER nurse</option>
-              <option value="warehouse">31-year-old warehouse worker</option>
-              <option value="fitnessCoach">29-year-old fitness coach</option>
-              <option value="suburbanMom">38-year-old suburban mom</option>
-              <option value="realEstate">52-year-old real estate agent</option>
+            <label for="characterAge">Age</label>
+            <input id="characterAge" type="number" min="19" max="85" value="24" inputmode="numeric" />
+            <p class="form-hint">Use adults only. The prompt will always say adult.</p>
+          </div>
+
+          <div class="field">
+            <label for="professionSelect">Profession or major identifier</label>
+            <select id="professionSelect">
+              <option value="construction">Construction Worker</option>
+              <option value="nurse">Nurse</option>
+              <option value="chef">Chef</option>
+              <option value="warehouse">Warehouse Worker</option>
+              <option value="mechanic">Mechanic</option>
+              <option value="teacher">Teacher</option>
+              <option value="fitnessCoach">Fitness Coach</option>
+              <option value="realEstate">Real Estate Agent</option>
+              <option value="retail">Retail Worker</option>
+              <option value="delivery">Delivery Driver</option>
+              <option value="officeManager">Office Manager</option>
+              <option value="salonStylist">Salon Stylist</option>
+              <option value="bartender">Bartender</option>
+              <option value="security">Security Guard</option>
+              <option value="farmer">Farm Worker</option>
+              <option value="electrician">Electrician</option>
+              <option value="plumber">Plumber</option>
+              <option value="collegeStudent">College Student</option>
+              <option value="suburbanParent">Suburban Parent</option>
+              <option value="creator">TikTok Shop Creator</option>
+              <option value="custom">Custom identifier</option>
             </select>
           </div>
 
           <div class="field">
-            <label for="presetDetails">Preset details</label>
-            <textarea id="presetDetails"></textarea>
-            <p class="form-hint">Edit this text or paste a new preset, then use Add preset to save it in this browser.</p>
+            <label for="customProfession">Custom identifier</label>
+            <input id="customProfession" type="text" placeholder="Example: golf dad, skincare founder, boutique owner" />
+            <p class="form-hint">Only used when Custom identifier is selected.</p>
+          </div>
+
+          <div class="field">
+            <label for="productInstruction">Product or outfit detail</label>
+            <textarea id="productInstruction" placeholder="Example: Include the exact red branded baseball cap. Keep it clean, centered, and easy to see."></textarea>
+            <p class="form-hint">If the product is a hat, shirt, jacket, glasses, jewelry, bag, or anything worn/held, describe it here. Otherwise the random outfit may not match what you need to sell.</p>
           </div>
 
           <div class="builder-actions">
-            <button class="btn orange" type="submit">Update image prompt</button>
-            <button class="btn secondary" type="button" id="savePresetBtn">Add preset</button>
-            <button class="btn secondary" type="button" id="resetPresetBtn">Reset presets</button>
+            <button class="btn orange" type="submit">Generate character</button>
+            <button class="btn secondary" type="button" id="rerollBtn">Reroll details</button>
           </div>
         </form>
 
@@ -1301,48 +1402,81 @@
             <span>Generated image prompt</span>
             <button class="btn secondary" type="button" id="copyImagePromptBtn">Copy image prompt</button>
           </div>
+          <div class="slot-grid" aria-label="Randomized character attributes">
+            <div class="slot-card"><span class="slot-label">Body</span><span class="slot-value" id="slotBody">-</span></div>
+            <div class="slot-card"><span class="slot-label">Face</span><span class="slot-value" id="slotFace">-</span></div>
+            <div class="slot-card"><span class="slot-label">Hair</span><span class="slot-value" id="slotHair">-</span></div>
+            <div class="slot-card"><span class="slot-label">Eyes</span><span class="slot-value" id="slotEyes">-</span></div>
+            <div class="slot-card"><span class="slot-label">Skin</span><span class="slot-value" id="slotSkin">-</span></div>
+            <div class="slot-card"><span class="slot-label">Outfit</span><span class="slot-value" id="slotOutfit">-</span></div>
+          </div>
           <pre class="prompt-output image-generator-output" id="imagePromptOutput"></pre>
+          <div class="prompt-warning">
+            <strong>Product sellers: be specific before you copy.</strong>
+            If the image is meant to sell or show a product, put the exact product/outfit requirement in the field on the left. For hats, shirts, jackets, glasses, jewelry, bags, or uniforms, the product needs to be named directly or the image model may invent the wrong item.
+          </div>
           <div class="note-row">
             <div class="mini-note"><strong>Use the start frame.</strong>This gives the image model the exact original pose and angle.</div>
-            <div class="mini-note"><strong>White background.</strong>Clean studio backgrounds usually make better Image1 identity references.</div>
-            <div class="mini-note"><strong>Stay adult.</strong>Use clearly adult targets and avoid public figures or copyrighted characters.</div>
+            <div class="mini-note"><strong>Image first.</strong>This prompt creates Image1. The Seedance prompt below handles the video replacement.</div>
+            <div class="mini-note"><strong>Reroll details.</strong>Same age and profession can produce different bodies, faces, hair, eyes, and outfits.</div>
           </div>
           <div class="preset-chips" aria-label="Preset detail examples">
-            <span>profession</span>
             <span>age</span>
-            <span>hair</span>
-            <span>eyes</span>
-            <span>body type</span>
+            <span>profession</span>
+            <span>weighted body</span>
+            <span>compatible face</span>
+            <span>random hair</span>
+            <span>random eyes</span>
             <span>outfit</span>
-            <span>skin texture</span>
-            <span>photorealism</span>
+            <span>product detail</span>
           </div>
         </section>
       </div>
 
       <section class="output-panel preset-meta-card" aria-label="Preset generation prompt">
         <div class="output-toolbar">
-          <span>Prompt to generate 25 more presets</span>
-          <button class="btn secondary" type="button" id="copyPresetRequestBtn">Copy 25-preset request</button>
+          <span>Prompt to generate more profession buckets</span>
+          <button class="btn secondary" type="button" id="copyPresetRequestBtn">Copy bucket request</button>
         </div>
-        <pre class="prompt-output meta-output" id="presetRequestOutput">Create 25 unique adult image-generator presets for a TikTok Shop AI video workflow.
+        <pre class="prompt-output meta-output" id="presetRequestOutput">Create 25 profession or major-identifier buckets for an offline JavaScript image-prompt generator.
 
-Each preset will be inserted into this template:
-"Transform the man into a [PRESET DETAILS]. Keep the exact same pose, camera angle, framing, perspective, and lighting direction as the reference image, but replace the background with a seamless pure white studio background. Prioritize extreme photorealism..."
+Important: do not create 25 finished prompts. Create structured buckets that JavaScript can mix.
+
+The user controls:
+- Age
+- Profession or major identifier
+
+JavaScript randomly rolls:
+- body
+- face
+- hair
+- eyes
+- skin
+- outfit
+- realism detail
 
 Rules:
-- Every preset must describe a clearly adult person age 19 or older.
-- Shuffle the details so every preset feels different.
-- Include age, profession or lifestyle archetype, facial features, hair, eye color, skin texture, body type, outfit, and one realism detail.
-- Mix body types naturally: average, athletic, broad-shouldered, slim, slightly overweight, stocky, curvy, tall, petite, mature, etc.
-- Mix professions and creator-friendly identities: construction worker, nurse, chef, office worker, teacher, warehouse worker, fitness coach, college student, suburban parent, delivery driver, small business owner, retail worker, mechanic, realtor, bartender, salon stylist, and similar.
-- Keep the language realistic and useful for image generators. Do not write jokes, fantasy characters, public figures, copyrighted characters, children, or sexualized descriptions.
-- Avoid stereotypes and avoid making protected traits the punchline or main point.
-- Each preset should be one sentence, 35 to 60 words.
-- Output exactly 25 numbered presets and nothing else.
+- Each bucket needs a label and prompt noun, like "construction worker".
+- Each bucket must include weighted arrays for body, face, hair, eyes, skin, outfit, and realism.
+- Body weights should be realistic for the identifier. Do not make every profession muscular.
+- Include natural variation: average, lean, stocky, heavyset, slightly overweight, broad, athletic, tall, petite, mature, soft build.
+- Outfit options must fit the profession or identifier.
+- Avoid public figures, copyrighted characters, minors, fantasy identities, sexualized descriptions, and stereotypes.
+- Keep the text image-generator friendly and photorealistic.
+- Output valid JavaScript object entries only.
 
-Style example:
-42-year-old adult construction worker with naturally rugged features, bald head, blue eyes, believable human skin texture, slightly stocky build, weathered hands, and a bright yellow construction outfit with realistic fabric folds and safety details</pre>
+Use this exact shape:
+construction: {
+  label: "Construction Worker",
+  noun: "construction worker",
+  body: [{ text: "heavyset stocky build", weight: 20 }],
+  face: [{ text: "broad rounded face with a softer jaw", weight: 18 }],
+  hair: [{ text: "short dark buzzcut", weight: 16 }],
+  eyes: [{ text: "brown eyes", weight: 22 }],
+  skin: [{ text: "sun-weathered realistic skin texture", weight: 20 }],
+  outfit: [{ text: "orange high-visibility vest over worn construction workwear", weight: 22 }],
+  realism: [{ text: "authentic workwear fabric texture and natural shadows", weight: 10 }]
+}</pre>
       </section>
     </section>
 
@@ -1589,129 +1723,806 @@ Style example:
   </footer>
 
   <script>
-    const baseImagePresets = {
-      construction: "42-year-old adult construction worker with naturally rugged features, bald head, blue eyes, subtle natural grooming, believable human skin texture, slightly stocky build, weathered hands, and a bright yellow construction outfit with realistic fabric folds and safety details",
-      collegeWoman: "19-year-old adult Southern California college woman with naturally attractive features, long realistic blonde hair, blue eyes, subtle makeup, believable human skin texture, average build, and a cute but modest college outfit with realistic fabric texture",
-      chef: "45-year-old adult restaurant chef with friendly expressive features, salt-and-pepper hair, brown eyes, visible natural skin texture, slightly overweight build, practical hands, and a crisp white chef coat with realistic seams and kitchen-ready details",
-      nurse: "34-year-old adult ER nurse with tired but warm features, dark brown hair pulled back, hazel eyes, believable skin texture, average build, and clean navy medical scrubs with a practical badge clip and natural fabric folds",
-      warehouse: "31-year-old adult warehouse worker with practical rugged features, shaved head, brown eyes, realistic skin texture, broad shoulders, and an orange safety vest over work clothes with believable reflective strips and fabric wear",
-      fitnessCoach: "29-year-old adult fitness coach with athletic proportions, short black hair, green eyes, healthy natural skin texture, defined but realistic arms, and fitted activewear with believable stretch fabric and studio-ready styling",
-      suburbanMom: "38-year-old adult suburban mom with soft natural features, shoulder-length brown hair, hazel eyes, believable skin texture, slightly curvy build, and a clean casual daytime outfit with realistic cotton texture and relaxed fit",
-      realEstate: "52-year-old adult real estate agent with polished mature features, silver hair, blue-gray eyes, natural skin texture, average build, and a tailored business outfit with realistic jacket structure and professional styling"
+    const genericBucket = {
+      label: "Custom Identifier",
+      noun: "person",
+      body: [
+        { text: "average realistic build", weight: 28 },
+        { text: "slim natural build", weight: 16 },
+        { text: "slightly overweight soft build", weight: 16 },
+        { text: "stocky build", weight: 15 },
+        { text: "tall lean build", weight: 12 },
+        { text: "athletic but realistic build", weight: 13 }
+      ],
+      face: [
+        { text: "balanced natural facial features", weight: 24 },
+        { text: "softer rounded face", weight: 18 },
+        { text: "soft square face", weight: 18 },
+        { text: "angular but realistic face", weight: 16 },
+        { text: "mature expressive face", weight: 12 },
+        { text: "friendly approachable face", weight: 12 }
+      ],
+      hair: [
+        { text: "short brown hair", weight: 18 },
+        { text: "short black hair", weight: 16 },
+        { text: "medium-length brown hair", weight: 14 },
+        { text: "shaved head", weight: 10 },
+        { text: "short buzzcut", weight: 12 },
+        { text: "shoulder-length hair", weight: 12 },
+        { text: "tied-back hair", weight: 10 },
+        { text: "salt-and-pepper hair", weight: 8 }
+      ],
+      eyes: [
+        { text: "brown eyes", weight: 32 },
+        { text: "blue eyes", weight: 20 },
+        { text: "hazel eyes", weight: 20 },
+        { text: "green eyes", weight: 12 },
+        { text: "blue-gray eyes", weight: 8 },
+        { text: "dark brown eyes", weight: 8 }
+      ],
+      skin: [
+        { text: "believable human skin texture", weight: 30 },
+        { text: "natural skin texture with visible pores", weight: 24 },
+        { text: "lightly textured realistic skin", weight: 18 },
+        { text: "subtle skin variation and natural undertones", weight: 16 },
+        { text: "mature realistic skin texture", weight: 12 }
+      ],
+      outfit: [
+        { text: "clean casual outfit with realistic fabric folds", weight: 20 },
+        { text: "simple fitted workwear with natural fabric texture", weight: 18 },
+        { text: "neat everyday outfit with believable seams", weight: 18 },
+        { text: "professional casual outfit with realistic material detail", weight: 16 },
+        { text: "plain studio-friendly outfit", weight: 14 },
+        { text: "comfortable layered outfit with natural wrinkles", weight: 14 }
+      ],
+      realism: [
+        { text: "authentic shadows and natural facial asymmetry", weight: 25 },
+        { text: "realistic eyes, teeth, hands, and clothing folds", weight: 25 },
+        { text: "visible pores, natural skin variation, and believable fabric texture", weight: 25 },
+        { text: "individual hair strands and clean studio lighting response", weight: 25 }
+      ]
     };
 
-    const customPresetStorageKey = "titansImagePromptPresets";
-    let customImagePresets = loadCustomImagePresets();
+    const professionBuckets = {
+      construction: {
+        label: "Construction Worker",
+        noun: "construction worker",
+        body: [
+          { text: "average practical build", weight: 25 },
+          { text: "stocky build", weight: 25 },
+          { text: "heavyset stocky build", weight: 20 },
+          { text: "muscular but realistic build", weight: 15 },
+          { text: "tall lean build", weight: 10 },
+          { text: "very broad build", weight: 5 }
+        ],
+        face: [
+          { text: "rugged facial features", weight: 24 },
+          { text: "broad rounded face with a softer jaw", weight: 20 },
+          { text: "soft square face", weight: 18 },
+          { text: "weathered practical face", weight: 16 },
+          { text: "angular face with a natural jawline", weight: 12 },
+          { text: "friendly working-class face", weight: 10 }
+        ],
+        hair: [
+          { text: "short dark buzzcut", weight: 20 },
+          { text: "shaved head", weight: 16 },
+          { text: "short brown hair", weight: 20 },
+          { text: "short black hair", weight: 16 },
+          { text: "messy short work hair", weight: 14 },
+          { text: "bald head", weight: 14 }
+        ],
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "sun-weathered realistic skin texture", weight: 28 },
+          { text: "textured skin with visible pores", weight: 22 },
+          { text: "lightly weathered natural skin", weight: 20 },
+          { text: "believable human skin texture", weight: 18 },
+          { text: "subtle workday skin variation", weight: 12 }
+        ],
+        outfit: [
+          { text: "orange high-visibility vest over worn construction workwear", weight: 25 },
+          { text: "yellow high-visibility vest over a durable work shirt", weight: 22 },
+          { text: "construction jacket with realistic reflective safety strips", weight: 18 },
+          { text: "work tee with a tool belt and rugged pants", weight: 18 },
+          { text: "bright yellow construction outfit with believable fabric folds", weight: 17 }
+        ],
+        realism: genericBucket.realism
+      },
+      nurse: {
+        label: "Nurse",
+        noun: "nurse",
+        body: [
+          { text: "average realistic build", weight: 30 },
+          { text: "slim natural build", weight: 18 },
+          { text: "slightly overweight soft build", weight: 16 },
+          { text: "athletic but realistic build", weight: 16 },
+          { text: "petite build", weight: 10 },
+          { text: "tall practical build", weight: 10 }
+        ],
+        face: [
+          { text: "calm focused facial features", weight: 24 },
+          { text: "warm expressive face", weight: 22 },
+          { text: "soft rounded face", weight: 18 },
+          { text: "tired but kind face", weight: 18 },
+          { text: "mature professional face", weight: 18 }
+        ],
+        hair: [
+          { text: "dark brown hair pulled back", weight: 22 },
+          { text: "short brown hair", weight: 14 },
+          { text: "black hair tied back neatly", weight: 18 },
+          { text: "blonde hair in a practical bun", weight: 14 },
+          { text: "shoulder-length brown hair", weight: 12 },
+          { text: "salt-and-pepper hair pulled back", weight: 10 },
+          { text: "short curly hair", weight: 10 }
+        ],
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "navy medical scrubs with realistic fabric folds", weight: 28 },
+          { text: "clean blue scrubs with a practical badge clip", weight: 24 },
+          { text: "gray medical scrubs with natural wrinkles", weight: 18 },
+          { text: "teal scrubs with subtle pocket details", weight: 18 },
+          { text: "white medical jacket over scrubs", weight: 12 }
+        ],
+        realism: genericBucket.realism
+      },
+      chef: {
+        label: "Chef",
+        noun: "restaurant chef",
+        body: [
+          { text: "average sturdy build", weight: 26 },
+          { text: "slightly overweight build", weight: 24 },
+          { text: "stocky build", weight: 20 },
+          { text: "tall broad build", weight: 12 },
+          { text: "lean practical build", weight: 10 },
+          { text: "soft mature build", weight: 8 }
+        ],
+        face: [
+          { text: "friendly expressive features", weight: 24 },
+          { text: "rounder face with a relaxed jaw", weight: 20 },
+          { text: "focused professional face", weight: 18 },
+          { text: "mature kitchen-worn face", weight: 16 },
+          { text: "soft square face", weight: 12 },
+          { text: "warm approachable face", weight: 10 }
+        ],
+        hair: [
+          { text: "short salt-and-pepper hair", weight: 20 },
+          { text: "short brown hair", weight: 18 },
+          { text: "black hair tucked under a chef cap", weight: 16 },
+          { text: "shaved head", weight: 12 },
+          { text: "messy short hair", weight: 12 },
+          { text: "gray hair under a chef hat", weight: 12 },
+          { text: "dark hair pulled back", weight: 10 }
+        ],
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "crisp white chef coat with realistic seams", weight: 30 },
+          { text: "black chef jacket with subtle fabric texture", weight: 20 },
+          { text: "white chef coat and apron with natural folds", weight: 20 },
+          { text: "short-sleeve kitchen uniform with practical details", weight: 16 },
+          { text: "chef coat with clean buttons and sleeve creases", weight: 14 }
+        ],
+        realism: genericBucket.realism
+      },
+      warehouse: {
+        label: "Warehouse Worker",
+        noun: "warehouse worker",
+        body: [
+          { text: "average practical build", weight: 25 },
+          { text: "stocky build", weight: 24 },
+          { text: "heavyset build", weight: 18 },
+          { text: "broad-shouldered build", weight: 16 },
+          { text: "lean active build", weight: 12 },
+          { text: "muscular but realistic build", weight: 5 }
+        ],
+        face: [
+          { text: "practical rugged facial features", weight: 22 },
+          { text: "rounded face with natural softness", weight: 20 },
+          { text: "square face with a relaxed jaw", weight: 18 },
+          { text: "focused workday face", weight: 16 },
+          { text: "friendly tired face", weight: 14 },
+          { text: "angular realistic face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "realistic skin texture with light workday shine", weight: 25 },
+          { text: "believable human skin texture", weight: 24 },
+          { text: "slightly textured skin with visible pores", weight: 20 },
+          { text: "natural skin variation and soft shadows", weight: 18 },
+          { text: "subtle tired skin texture", weight: 13 }
+        ],
+        outfit: [
+          { text: "orange safety vest over a work shirt", weight: 26 },
+          { text: "yellow safety vest with warehouse workwear", weight: 22 },
+          { text: "plain work tee with utility pants", weight: 18 },
+          { text: "hoodie under a high-visibility vest", weight: 18 },
+          { text: "warehouse polo with durable work pants", weight: 16 }
+        ],
+        realism: genericBucket.realism
+      },
+      mechanic: {
+        label: "Mechanic",
+        noun: "auto mechanic",
+        body: [
+          { text: "stocky build", weight: 25 },
+          { text: "average sturdy build", weight: 23 },
+          { text: "slightly overweight build", weight: 18 },
+          { text: "broad-shouldered build", weight: 16 },
+          { text: "lean practical build", weight: 12 },
+          { text: "muscular but realistic build", weight: 6 }
+        ],
+        face: [
+          { text: "rugged focused facial features", weight: 24 },
+          { text: "soft square face with a practical expression", weight: 20 },
+          { text: "rounded face with a relaxed jaw", weight: 16 },
+          { text: "weathered workday face", weight: 16 },
+          { text: "angular realistic face", weight: 12 },
+          { text: "friendly serious face", weight: 12 }
+        ],
+        hair: [
+          { text: "short brown hair", weight: 22 },
+          { text: "short black hair", weight: 18 },
+          { text: "shaved head", weight: 14 },
+          { text: "messy short dark hair", weight: 18 },
+          { text: "short buzzcut", weight: 14 },
+          { text: "salt-and-pepper short hair", weight: 14 }
+        ],
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "textured realistic skin with subtle grease smudges", weight: 22 },
+          { text: "believable human skin texture", weight: 22 },
+          { text: "slightly weathered skin with visible pores", weight: 20 },
+          { text: "natural skin variation and workday shadows", weight: 18 },
+          { text: "rugged realistic skin texture", weight: 18 }
+        ],
+        outfit: [
+          { text: "navy mechanic coveralls with realistic fabric wear", weight: 28 },
+          { text: "gray work shirt with utility pants", weight: 22 },
+          { text: "dark garage workwear with subtle oil stains", weight: 18 },
+          { text: "mechanic jacket over a plain tee", weight: 18 },
+          { text: "work shirt with name patch and durable pants", weight: 14 }
+        ],
+        realism: genericBucket.realism
+      },
+      teacher: {
+        label: "Teacher",
+        noun: "teacher",
+        body: genericBucket.body,
+        face: [
+          { text: "friendly approachable face", weight: 25 },
+          { text: "soft rounded face", weight: 20 },
+          { text: "calm expressive facial features", weight: 18 },
+          { text: "mature thoughtful face", weight: 16 },
+          { text: "balanced natural facial features", weight: 13 },
+          { text: "soft square face", weight: 8 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "smart casual classroom outfit with realistic fabric folds", weight: 24 },
+          { text: "cardigan over a simple shirt", weight: 18 },
+          { text: "button-up shirt with neat casual styling", weight: 18 },
+          { text: "professional blouse or shirt with natural wrinkles", weight: 16 },
+          { text: "teacher-friendly outfit with comfortable layers", weight: 14 },
+          { text: "simple sweater with clean studio-ready texture", weight: 10 }
+        ],
+        realism: genericBucket.realism
+      },
+      fitnessCoach: {
+        label: "Fitness Coach",
+        noun: "fitness coach",
+        body: [
+          { text: "athletic but realistic build", weight: 35 },
+          { text: "lean active build", weight: 22 },
+          { text: "average fit build", weight: 18 },
+          { text: "broad muscular build", weight: 12 },
+          { text: "slim toned build", weight: 10 },
+          { text: "stocky athletic build", weight: 3 }
+        ],
+        face: [
+          { text: "confident energetic facial features", weight: 22 },
+          { text: "friendly focused face", weight: 20 },
+          { text: "angular but natural face", weight: 18 },
+          { text: "soft square face", weight: 16 },
+          { text: "balanced healthy-looking face", weight: 14 },
+          { text: "rounded approachable face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "healthy natural skin texture", weight: 28 },
+          { text: "realistic skin texture with light studio shine", weight: 22 },
+          { text: "visible pores and natural skin variation", weight: 20 },
+          { text: "believable human skin texture", weight: 18 },
+          { text: "fresh realistic skin texture", weight: 12 }
+        ],
+        outfit: [
+          { text: "fitted activewear with believable stretch fabric", weight: 26 },
+          { text: "athletic tee with training shorts", weight: 20 },
+          { text: "zip athletic jacket over workout clothes", weight: 18 },
+          { text: "clean gym outfit with realistic seams", weight: 18 },
+          { text: "performance top with natural fabric tension", weight: 18 }
+        ],
+        realism: genericBucket.realism
+      },
+      realEstate: {
+        label: "Real Estate Agent",
+        noun: "real estate agent",
+        body: genericBucket.body,
+        face: [
+          { text: "polished professional facial features", weight: 24 },
+          { text: "confident approachable face", weight: 20 },
+          { text: "mature expressive face", weight: 18 },
+          { text: "soft square face", weight: 14 },
+          { text: "balanced natural facial features", weight: 14 },
+          { text: "warm friendly face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "tailored business outfit with realistic jacket structure", weight: 28 },
+          { text: "professional blazer over a clean shirt", weight: 22 },
+          { text: "smart business-casual outfit with crisp seams", weight: 18 },
+          { text: "polished office outfit with subtle fabric texture", weight: 18 },
+          { text: "neat realtor-style outfit with professional styling", weight: 14 }
+        ],
+        realism: genericBucket.realism
+      },
+      retail: {
+        label: "Retail Worker",
+        noun: "retail worker",
+        body: genericBucket.body,
+        face: genericBucket.face,
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "clean retail polo with realistic fabric folds", weight: 24 },
+          { text: "store apron over a plain shirt", weight: 20 },
+          { text: "casual work shirt with a simple name tag", weight: 18 },
+          { text: "black retail uniform with practical details", weight: 18 },
+          { text: "neat customer-facing outfit with subtle seams", weight: 20 }
+        ],
+        realism: genericBucket.realism
+      },
+      delivery: {
+        label: "Delivery Driver",
+        noun: "delivery driver",
+        body: [
+          { text: "average active build", weight: 26 },
+          { text: "stocky practical build", weight: 20 },
+          { text: "lean active build", weight: 18 },
+          { text: "slightly overweight build", weight: 16 },
+          { text: "tall lean build", weight: 12 },
+          { text: "broad build", weight: 8 }
+        ],
+        face: genericBucket.face,
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "delivery polo with durable pants", weight: 24 },
+          { text: "branded-style delivery jacket with realistic fabric", weight: 20 },
+          { text: "plain work tee with delivery vest", weight: 18 },
+          { text: "casual courier outfit with practical layers", weight: 18 },
+          { text: "weather-ready delivery jacket and work pants", weight: 20 }
+        ],
+        realism: genericBucket.realism
+      },
+      officeManager: {
+        label: "Office Manager",
+        noun: "office manager",
+        body: genericBucket.body,
+        face: genericBucket.face,
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "business-casual office outfit with realistic fabric folds", weight: 26 },
+          { text: "button-up shirt with tailored office pants", weight: 20 },
+          { text: "neat blouse or shirt with professional styling", weight: 18 },
+          { text: "cardigan over a clean office shirt", weight: 16 },
+          { text: "simple blazer with believable seams", weight: 20 }
+        ],
+        realism: genericBucket.realism
+      },
+      salonStylist: {
+        label: "Salon Stylist",
+        noun: "salon stylist",
+        body: genericBucket.body,
+        face: [
+          { text: "stylish expressive facial features", weight: 24 },
+          { text: "friendly polished face", weight: 20 },
+          { text: "soft rounded face", weight: 16 },
+          { text: "angular fashionable face", weight: 14 },
+          { text: "warm approachable face", weight: 14 },
+          { text: "balanced natural facial features", weight: 12 }
+        ],
+        hair: [
+          { text: "styled shoulder-length hair", weight: 20 },
+          { text: "short black styled hair", weight: 14 },
+          { text: "long brown hair with natural texture", weight: 16 },
+          { text: "blonde hair with realistic strands", weight: 14 },
+          { text: "dark hair pulled back neatly", weight: 12 },
+          { text: "short fashionable haircut", weight: 12 },
+          { text: "curly hair with natural volume", weight: 12 }
+        ],
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "black salon outfit with realistic fabric texture", weight: 28 },
+          { text: "stylist apron over a clean shirt", weight: 22 },
+          { text: "fashionable all-black outfit with natural folds", weight: 20 },
+          { text: "casual salon workwear with polished styling", weight: 16 },
+          { text: "neat creative outfit with subtle accessories", weight: 14 }
+        ],
+        realism: genericBucket.realism
+      },
+      bartender: {
+        label: "Bartender",
+        noun: "bartender",
+        body: genericBucket.body,
+        face: [
+          { text: "confident social facial features", weight: 24 },
+          { text: "friendly expressive face", weight: 22 },
+          { text: "soft square face", weight: 16 },
+          { text: "rounded approachable face", weight: 16 },
+          { text: "mature charismatic face", weight: 12 },
+          { text: "angular realistic face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "black button-up bartender shirt with realistic seams", weight: 26 },
+          { text: "apron over a clean dark shirt", weight: 22 },
+          { text: "casual bar uniform with practical fabric folds", weight: 20 },
+          { text: "white shirt with black vest and natural wrinkles", weight: 16 },
+          { text: "simple dark service outfit with believable texture", weight: 16 }
+        ],
+        realism: genericBucket.realism
+      },
+      security: {
+        label: "Security Guard",
+        noun: "security guard",
+        body: [
+          { text: "broad sturdy build", weight: 24 },
+          { text: "stocky build", weight: 22 },
+          { text: "average practical build", weight: 20 },
+          { text: "heavyset build", weight: 16 },
+          { text: "tall lean build", weight: 10 },
+          { text: "muscular but realistic build", weight: 8 }
+        ],
+        face: [
+          { text: "serious professional facial features", weight: 25 },
+          { text: "soft square face", weight: 18 },
+          { text: "rounded watchful face", weight: 16 },
+          { text: "calm focused face", weight: 16 },
+          { text: "rugged face with a natural jawline", weight: 14 },
+          { text: "mature steady face", weight: 11 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "dark security uniform with realistic badge detail", weight: 28 },
+          { text: "black polo with security-style work pants", weight: 22 },
+          { text: "professional security jacket with structured fabric", weight: 18 },
+          { text: "navy uniform shirt with practical seams", weight: 18 },
+          { text: "simple guard uniform with believable material texture", weight: 14 }
+        ],
+        realism: genericBucket.realism
+      },
+      farmer: {
+        label: "Farm Worker",
+        noun: "farm worker",
+        body: [
+          { text: "average sturdy build", weight: 24 },
+          { text: "stocky practical build", weight: 22 },
+          { text: "lean work-hardened build", weight: 18 },
+          { text: "heavyset build", weight: 14 },
+          { text: "broad-shouldered build", weight: 12 },
+          { text: "tall rugged build", weight: 10 }
+        ],
+        face: [
+          { text: "sun-weathered rugged face", weight: 26 },
+          { text: "rounded practical face", weight: 18 },
+          { text: "soft square face", weight: 18 },
+          { text: "mature outdoor face", weight: 16 },
+          { text: "friendly tired face", weight: 12 },
+          { text: "angular realistic face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "sun-weathered realistic skin texture", weight: 30 },
+          { text: "outdoor skin texture with visible pores", weight: 24 },
+          { text: "natural skin variation and authentic shadows", weight: 18 },
+          { text: "lightly weathered human skin texture", weight: 16 },
+          { text: "rugged realistic skin texture", weight: 12 }
+        ],
+        outfit: [
+          { text: "plaid work shirt with durable outdoor pants", weight: 24 },
+          { text: "denim workwear with realistic fabric wear", weight: 22 },
+          { text: "canvas jacket over a practical work shirt", weight: 18 },
+          { text: "farm work tee with rugged pants", weight: 18 },
+          { text: "outdoor workwear with natural dirt-free texture", weight: 18 }
+        ],
+        realism: genericBucket.realism
+      },
+      electrician: {
+        label: "Electrician",
+        noun: "electrician",
+        body: [
+          { text: "average practical build", weight: 28 },
+          { text: "stocky build", weight: 20 },
+          { text: "lean active build", weight: 18 },
+          { text: "slightly overweight build", weight: 14 },
+          { text: "broad sturdy build", weight: 12 },
+          { text: "tall lean build", weight: 8 }
+        ],
+        face: genericBucket.face,
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "electrician work shirt with utility belt", weight: 26 },
+          { text: "gray workwear with practical tool pockets", weight: 22 },
+          { text: "high-visibility work shirt with durable pants", weight: 18 },
+          { text: "canvas work jacket with believable seams", weight: 18 },
+          { text: "plain work tee with electrician utility details", weight: 16 }
+        ],
+        realism: genericBucket.realism
+      },
+      plumber: {
+        label: "Plumber",
+        noun: "plumber",
+        body: [
+          { text: "stocky practical build", weight: 24 },
+          { text: "average sturdy build", weight: 24 },
+          { text: "slightly overweight build", weight: 20 },
+          { text: "heavyset build", weight: 14 },
+          { text: "lean work build", weight: 10 },
+          { text: "broad build", weight: 8 }
+        ],
+        face: genericBucket.face,
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "durable plumber work shirt with utility pants", weight: 26 },
+          { text: "navy workwear with realistic fabric wear", weight: 22 },
+          { text: "plain tee under a rugged work jacket", weight: 18 },
+          { text: "utility vest over practical work clothes", weight: 18 },
+          { text: "work polo with durable pants and natural folds", weight: 16 }
+        ],
+        realism: genericBucket.realism
+      },
+      collegeStudent: {
+        label: "College Student",
+        noun: "college student",
+        body: [
+          { text: "average youthful adult build", weight: 26 },
+          { text: "slim natural build", weight: 20 },
+          { text: "athletic but realistic build", weight: 18 },
+          { text: "slightly overweight soft build", weight: 14 },
+          { text: "petite build", weight: 12 },
+          { text: "tall lean build", weight: 10 }
+        ],
+        face: [
+          { text: "young adult natural facial features", weight: 24 },
+          { text: "soft rounded face", weight: 18 },
+          { text: "friendly expressive face", weight: 18 },
+          { text: "balanced attractive features", weight: 16 },
+          { text: "soft square face", weight: 12 },
+          { text: "fresh approachable face", weight: 12 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: [
+          { text: "believable young adult skin texture", weight: 26 },
+          { text: "natural skin texture with visible pores", weight: 22 },
+          { text: "subtle skin variation and realistic undertones", weight: 20 },
+          { text: "healthy realistic skin texture", weight: 18 },
+          { text: "lightly textured human skin", weight: 14 }
+        ],
+        outfit: [
+          { text: "casual college outfit with realistic cotton texture", weight: 24 },
+          { text: "hoodie and jeans with natural fabric folds", weight: 20 },
+          { text: "campus-style tee with clean casual pants", weight: 18 },
+          { text: "cute but modest college outfit with realistic seams", weight: 16 },
+          { text: "simple layered student outfit with believable wrinkles", weight: 22 }
+        ],
+        realism: genericBucket.realism
+      },
+      suburbanParent: {
+        label: "Suburban Parent",
+        noun: "suburban parent",
+        body: [
+          { text: "average adult build", weight: 26 },
+          { text: "slightly overweight soft build", weight: 22 },
+          { text: "curvy natural build", weight: 14 },
+          { text: "stocky build", weight: 14 },
+          { text: "tall relaxed build", weight: 12 },
+          { text: "slim natural build", weight: 12 }
+        ],
+        face: [
+          { text: "warm everyday facial features", weight: 24 },
+          { text: "soft rounded face", weight: 20 },
+          { text: "friendly mature face", weight: 18 },
+          { text: "soft square face", weight: 16 },
+          { text: "balanced natural face", weight: 12 },
+          { text: "tired but pleasant face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "clean casual daytime outfit with realistic cotton texture", weight: 26 },
+          { text: "comfortable sweater and jeans with natural folds", weight: 20 },
+          { text: "suburban casual outfit with relaxed fit", weight: 18 },
+          { text: "simple family-day outfit with believable fabric", weight: 18 },
+          { text: "neat everyday outfit with subtle texture", weight: 18 }
+        ],
+        realism: genericBucket.realism
+      },
+      creator: {
+        label: "TikTok Shop Creator",
+        noun: "TikTok Shop creator",
+        body: genericBucket.body,
+        face: [
+          { text: "camera-friendly expressive face", weight: 24 },
+          { text: "friendly natural facial features", weight: 20 },
+          { text: "soft rounded face", weight: 16 },
+          { text: "balanced attractive features", weight: 16 },
+          { text: "soft square face", weight: 14 },
+          { text: "confident approachable face", weight: 10 }
+        ],
+        hair: genericBucket.hair,
+        eyes: genericBucket.eyes,
+        skin: genericBucket.skin,
+        outfit: [
+          { text: "creator-style casual outfit with clean fabric texture", weight: 24 },
+          { text: "plain fitted tee with studio-friendly styling", weight: 20 },
+          { text: "oversized hoodie with realistic fabric folds", weight: 18 },
+          { text: "simple product-demo outfit with neutral colors", weight: 18 },
+          { text: "casual camera-ready outfit with believable seams", weight: 20 }
+        ],
+        realism: genericBucket.realism
+      }
+    };
 
-    const imagePresetForm = document.getElementById("imagePresetForm");
-    const imagePresetSelect = document.getElementById("imagePreset");
-    const presetDetails = document.getElementById("presetDetails");
+    const characterForm = document.getElementById("characterForm");
     const sourceSubject = document.getElementById("sourceSubject");
+    const characterAge = document.getElementById("characterAge");
+    const professionSelect = document.getElementById("professionSelect");
+    const customProfession = document.getElementById("customProfession");
+    const productInstruction = document.getElementById("productInstruction");
     const imagePromptOutput = document.getElementById("imagePromptOutput");
     const copyImagePromptBtn = document.getElementById("copyImagePromptBtn");
-    const savePresetBtn = document.getElementById("savePresetBtn");
-    const resetPresetBtn = document.getElementById("resetPresetBtn");
+    const rerollBtn = document.getElementById("rerollBtn");
     const presetRequestOutput = document.getElementById("presetRequestOutput");
     const copyPresetRequestBtn = document.getElementById("copyPresetRequestBtn");
+    const slotElements = {
+      body: document.getElementById("slotBody"),
+      face: document.getElementById("slotFace"),
+      hair: document.getElementById("slotHair"),
+      eyes: document.getElementById("slotEyes"),
+      skin: document.getElementById("slotSkin"),
+      outfit: document.getElementById("slotOutfit")
+    };
 
-    function loadCustomImagePresets() {
-      try {
-        const stored = JSON.parse(localStorage.getItem(customPresetStorageKey) || "[]");
-        if (!Array.isArray(stored)) {
-          return [];
+    let lastCharacterRoll = null;
+
+    function randomUnit() {
+      const values = new Uint32Array(1);
+      crypto.getRandomValues(values);
+      return values[0] / 4294967296;
+    }
+
+    function weightedPick(items) {
+      const total = items.reduce((sum, item) => sum + (item.weight || 1), 0);
+      let cursor = randomUnit() * total;
+
+      for (const item of items) {
+        cursor -= item.weight || 1;
+        if (cursor <= 0) {
+          return item.text;
         }
-
-        return stored.filter((preset) => preset && typeof preset.id === "string" && typeof preset.text === "string");
-      } catch (error) {
-        return [];
       }
+
+      return items[items.length - 1].text;
     }
 
-    function saveCustomImagePresets() {
-      try {
-        localStorage.setItem(customPresetStorageKey, JSON.stringify(customImagePresets));
-      } catch (error) {
-        return;
+    function getAge() {
+      const parsed = Number.parseInt(characterAge.value, 10);
+      if (Number.isNaN(parsed)) {
+        return 24;
       }
+
+      return Math.max(19, Math.min(85, parsed));
     }
 
-    function getPresetLabel(text) {
-      return text
-        .replace(/\s+/g, " ")
-        .replace(/^(a|an)\s+/i, "")
-        .slice(0, 46);
+    function getBucket() {
+      const selected = professionSelect.value;
+      if (selected === "custom") {
+        const noun = customProfession.value.trim() || "person";
+        return {
+          ...genericBucket,
+          label: noun,
+          noun
+        };
+      }
+
+      return professionBuckets[selected] || professionBuckets.construction;
     }
 
-    function renderCustomPresetOptions() {
-      document.querySelectorAll("#imagePreset option[data-custom='true']").forEach((option) => option.remove());
+    function rollCharacter() {
+      const bucket = getBucket();
+      return {
+        age: getAge(),
+        noun: bucket.noun,
+        body: weightedPick(bucket.body),
+        face: weightedPick(bucket.face),
+        hair: weightedPick(bucket.hair),
+        eyes: weightedPick(bucket.eyes),
+        skin: weightedPick(bucket.skin),
+        outfit: weightedPick(bucket.outfit),
+        realism: weightedPick(bucket.realism)
+      };
+    }
 
-      customImagePresets.forEach((preset) => {
-        const option = document.createElement("option");
-        option.value = preset.id;
-        option.textContent = getPresetLabel(preset.text);
-        option.dataset.custom = "true";
-        imagePresetSelect.appendChild(option);
+    function showSlotSpin() {
+      Object.values(slotElements).forEach((element) => {
+        element.closest(".slot-card").classList.remove("is-spinning");
+        void element.offsetWidth;
+        element.closest(".slot-card").classList.add("is-spinning");
       });
+
+      setTimeout(() => {
+        Object.values(slotElements).forEach((element) => {
+          element.closest(".slot-card").classList.remove("is-spinning");
+        });
+      }, 460);
     }
 
-    function getSelectedImagePreset() {
-      const selected = imagePresetSelect.value;
-      const customPreset = customImagePresets.find((preset) => preset.id === selected);
-      return customPreset ? customPreset.text : baseImagePresets[selected] || baseImagePresets.construction;
+    function updateSlotDisplay(roll) {
+      slotElements.body.textContent = roll.body;
+      slotElements.face.textContent = roll.face;
+      slotElements.hair.textContent = roll.hair;
+      slotElements.eyes.textContent = roll.eyes;
+      slotElements.skin.textContent = roll.skin;
+      slotElements.outfit.textContent = roll.outfit;
     }
 
-    function setPresetDetailsFromSelection() {
-      presetDetails.value = getSelectedImagePreset();
-      buildImagePrompt();
-    }
+    function buildImagePrompt(shouldReroll = false) {
+      if (shouldReroll || !lastCharacterRoll) {
+        lastCharacterRoll = rollCharacter();
+        showSlotSpin();
+      }
 
-    function formatPresetTarget(details) {
-      const cleaned = details.trim().replace(/\.$/, "");
-      return /^(a|an)\s+/i.test(cleaned) ? cleaned : `a ${cleaned}`;
-    }
-
-    function buildImagePrompt() {
+      const roll = lastCharacterRoll;
       const source = sourceSubject.value || "man";
-      const target = formatPresetTarget(presetDetails.value || baseImagePresets.construction);
+      const product = productInstruction.value.trim();
+      const target = `${roll.age}-year-old adult ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
+      const productLine = product
+        ? `Specific product/outfit requirement: ${product}. Keep this product or outfit detail clear, accurate, visible, and consistent with the character.`
+        : "If a specific product, wearable item, or outfit is being sold, add it before generating so the image model does not invent the wrong hat, shirt, jacket, glasses, jewelry, bag, or uniform.";
+
+      updateSlotDisplay(roll);
 
       const sections = [
-        `Transform the ${source} into ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless pure white studio background.`,
-        "Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, believable clothing folds, and authentic shadows.",
-        `The final result should look like a genuine high-resolution photograph of ${target}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
+        `Transform the ${source} into a ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless pure white studio background.`,
+        productLine,
+        `Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, ${roll.realism}.`,
+        `The final result should look like a genuine high-resolution photograph of a ${roll.age}-year-old adult ${roll.noun}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
       ];
 
       imagePromptOutput.textContent = sections.join("\n\n");
-    }
-
-    function addCustomPreset() {
-      const text = presetDetails.value.trim();
-      if (!text) {
-        window.alert("Add preset details first.");
-        return;
-      }
-
-      const preset = {
-        id: `custom-${Date.now()}`,
-        text
-      };
-
-      customImagePresets.push(preset);
-      saveCustomImagePresets();
-      renderCustomPresetOptions();
-      imagePresetSelect.value = preset.id;
-      buildImagePrompt();
-      savePresetBtn.textContent = "Preset saved";
-      setTimeout(() => {
-        savePresetBtn.textContent = "Add preset";
-      }, 1400);
-    }
-
-    function resetCustomPresets() {
-      customImagePresets = [];
-      saveCustomImagePresets();
-      renderCustomPresetOptions();
-      imagePresetSelect.value = "construction";
-      setPresetDetailsFromSelection();
     }
 
     async function copyText(text, button, restoredLabel) {
@@ -1770,24 +2581,37 @@ Style example:
     const copyBtn = document.getElementById("copyBtn");
     const resetBtn = document.getElementById("resetBtn");
 
-    renderCustomPresetOptions();
-    setPresetDetailsFromSelection();
+    buildImagePrompt(true);
 
-    imagePresetForm.addEventListener("submit", (event) => {
+    characterForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      buildImagePrompt();
+      buildImagePrompt(true);
     });
 
-    imagePresetSelect.addEventListener("change", setPresetDetailsFromSelection);
-    sourceSubject.addEventListener("input", buildImagePrompt);
-    presetDetails.addEventListener("input", buildImagePrompt);
-    savePresetBtn.addEventListener("click", addCustomPreset);
-    resetPresetBtn.addEventListener("click", resetCustomPresets);
+    rerollBtn.addEventListener("click", () => {
+      buildImagePrompt(true);
+    });
+    professionSelect.addEventListener("change", () => {
+      lastCharacterRoll = null;
+      buildImagePrompt(true);
+    });
+    characterAge.addEventListener("input", () => {
+      lastCharacterRoll = null;
+      buildImagePrompt(true);
+    });
+    customProfession.addEventListener("input", () => {
+      if (professionSelect.value === "custom") {
+        lastCharacterRoll = null;
+        buildImagePrompt(true);
+      }
+    });
+    sourceSubject.addEventListener("input", () => buildImagePrompt(false));
+    productInstruction.addEventListener("input", () => buildImagePrompt(false));
     copyImagePromptBtn.addEventListener("click", () => {
       copyText(imagePromptOutput.textContent, copyImagePromptBtn, "Copy image prompt");
     });
     copyPresetRequestBtn.addEventListener("click", () => {
-      copyText(presetRequestOutput.textContent, copyPresetRequestBtn, "Copy 25-preset request");
+      copyText(presetRequestOutput.textContent, copyPresetRequestBtn, "Copy bucket request");
     });
 
     function buildPrompt() {
