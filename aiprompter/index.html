@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Titans Higgsfield Helper for TikTok Shop creators using Higgsfield and Seedance 2.5 Edit reference workflows." />
+  <meta name="description" content="Titans Higgsfield Helper for TikTok Shop creators using image generators, Higgsfield, and Seedance 2.5 Edit reference workflows." />
   <title>Titans Higgsfield Helper</title>
   <style>
     :root {
@@ -783,6 +783,13 @@
       line-height: 1.45;
     }
 
+    .form-hint {
+      margin: -2px 0 0;
+      color: #666a64;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
     .builder-actions {
       display: flex;
       gap: 10px;
@@ -865,6 +872,39 @@
       color: #172000;
       font-weight: 900;
       white-space: nowrap;
+    }
+
+    .image-generator-output {
+      min-height: 420px;
+    }
+
+    .preset-meta-card {
+      margin-top: 18px;
+    }
+
+    .meta-output {
+      min-height: 330px;
+      background: #151716;
+      color: #f2f2ed;
+      border-top: 1px solid #2e312e;
+    }
+
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 18px 18px;
+      background: #f9f9f6;
+    }
+
+    .preset-chips span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 9px;
+      background: #fff;
+      color: #454944;
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .note-row {
@@ -1101,6 +1141,7 @@
       </a>
       <div class="links">
         <a href="#references">Reference Rules</a>
+        <a href="#image-presets">Image Presets</a>
         <a href="#images">Image Examples</a>
         <a href="#videos">Video Examples</a>
         <a href="#prompt">Prompt Builder</a>
@@ -1119,8 +1160,8 @@
         <h1>Titans Higgsfield Helper</h1>
         <p class="hero-copy">
           A simple reference workflow for TikTok Shop creators. Pick a clean
-          motion video, pick a believable identity image, then use a strict
-          prompt that tells the model what to preserve and what to replace.
+          motion video, create a believable identity image, then use a strict
+          Seedance prompt that tells the model what to preserve and what to replace.
           <strong>The reference video is the movement. The image reference is
           the identity.</strong>
         </p>
@@ -1203,9 +1244,111 @@
       </div>
     </section>
 
+    <section class="section" id="image-presets">
+      <div class="section-head">
+        <div class="index">02 / Image generator presets</div>
+        <div class="section-title">
+          <h2>Create the Image1 reference before the Seedance edit.</h2>
+          <p>
+            This prompt is for ChatGPT, Gemini, or another image generator.
+            Use the start frame or reference photo as the source image, then
+            transform the original person while keeping the pose, camera,
+            framing, perspective, and lighting locked.
+          </p>
+        </div>
+      </div>
+
+      <div class="builder image-preset-builder">
+        <form class="builder-panel" id="imagePresetForm">
+          <div class="field">
+            <label for="sourceSubject">Source subject</label>
+            <select id="sourceSubject">
+              <option value="man">man</option>
+              <option value="person in the reference image">person in the reference image</option>
+              <option value="woman">woman</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="imagePreset">Preset</label>
+            <select id="imagePreset">
+              <option value="construction">42-year-old construction worker</option>
+              <option value="collegeWoman">19-year-old college woman</option>
+              <option value="chef">45-year-old chef</option>
+              <option value="nurse">34-year-old ER nurse</option>
+              <option value="warehouse">31-year-old warehouse worker</option>
+              <option value="fitnessCoach">29-year-old fitness coach</option>
+              <option value="suburbanMom">38-year-old suburban mom</option>
+              <option value="realEstate">52-year-old real estate agent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="presetDetails">Preset details</label>
+            <textarea id="presetDetails"></textarea>
+            <p class="form-hint">Edit this text or paste a new preset, then use Add preset to save it in this browser.</p>
+          </div>
+
+          <div class="builder-actions">
+            <button class="btn orange" type="submit">Update image prompt</button>
+            <button class="btn secondary" type="button" id="savePresetBtn">Add preset</button>
+            <button class="btn secondary" type="button" id="resetPresetBtn">Reset presets</button>
+          </div>
+        </form>
+
+        <section class="output-panel" aria-label="Generated image prompt">
+          <div class="output-toolbar">
+            <span>Generated image prompt</span>
+            <button class="btn secondary" type="button" id="copyImagePromptBtn">Copy image prompt</button>
+          </div>
+          <pre class="prompt-output image-generator-output" id="imagePromptOutput"></pre>
+          <div class="note-row">
+            <div class="mini-note"><strong>Use the start frame.</strong>This gives the image model the exact original pose and angle.</div>
+            <div class="mini-note"><strong>White background.</strong>Clean studio backgrounds usually make better Image1 identity references.</div>
+            <div class="mini-note"><strong>Stay adult.</strong>Use clearly adult targets and avoid public figures or copyrighted characters.</div>
+          </div>
+          <div class="preset-chips" aria-label="Preset detail examples">
+            <span>profession</span>
+            <span>age</span>
+            <span>hair</span>
+            <span>eyes</span>
+            <span>body type</span>
+            <span>outfit</span>
+            <span>skin texture</span>
+            <span>photorealism</span>
+          </div>
+        </section>
+      </div>
+
+      <section class="output-panel preset-meta-card" aria-label="Preset generation prompt">
+        <div class="output-toolbar">
+          <span>Prompt to generate 25 more presets</span>
+          <button class="btn secondary" type="button" id="copyPresetRequestBtn">Copy 25-preset request</button>
+        </div>
+        <pre class="prompt-output meta-output" id="presetRequestOutput">Create 25 unique adult image-generator presets for a TikTok Shop AI video workflow.
+
+Each preset will be inserted into this template:
+"Transform the man into a [PRESET DETAILS]. Keep the exact same pose, camera angle, framing, perspective, and lighting direction as the reference image, but replace the background with a seamless pure white studio background. Prioritize extreme photorealism..."
+
+Rules:
+- Every preset must describe a clearly adult person age 19 or older.
+- Shuffle the details so every preset feels different.
+- Include age, profession or lifestyle archetype, facial features, hair, eye color, skin texture, body type, outfit, and one realism detail.
+- Mix body types naturally: average, athletic, broad-shouldered, slim, slightly overweight, stocky, curvy, tall, petite, mature, etc.
+- Mix professions and creator-friendly identities: construction worker, nurse, chef, office worker, teacher, warehouse worker, fitness coach, college student, suburban parent, delivery driver, small business owner, retail worker, mechanic, realtor, bartender, salon stylist, and similar.
+- Keep the language realistic and useful for image generators. Do not write jokes, fantasy characters, public figures, copyrighted characters, children, or sexualized descriptions.
+- Avoid stereotypes and avoid making protected traits the punchline or main point.
+- Each preset should be one sentence, 35 to 60 words.
+- Output exactly 25 numbered presets and nothing else.
+
+Style example:
+42-year-old adult construction worker with naturally rugged features, bald head, blue eyes, believable human skin texture, slightly stocky build, weathered hands, and a bright yellow construction outfit with realistic fabric folds and safety details</pre>
+      </section>
+    </section>
+
     <section class="section" id="images">
       <div class="section-head">
-        <div class="index">02 / Image references</div>
+        <div class="index">03 / Image references</div>
         <div class="section-title">
           <h2>Good image references are realistic, readable, and angle-matched.</h2>
           <p>
@@ -1261,7 +1404,7 @@
 
     <section class="section" id="videos">
       <div class="section-head">
-        <div class="index">03 / Video references</div>
+        <div class="index">04 / Video references</div>
         <div class="section-title">
           <h2>Good motion videos are clean enough to become the blueprint.</h2>
           <p>
@@ -1310,7 +1453,7 @@
 
     <section class="section" id="prompt">
       <div class="section-head">
-        <div class="index">04 / Prompt builder</div>
+        <div class="index">05 / Prompt builder</div>
         <div class="section-title">
           <h2>Generate a strict person-replacement prompt.</h2>
           <p>
@@ -1383,7 +1526,7 @@
 
     <section class="section" id="workflow">
       <div class="section-head">
-        <div class="index">05 / Creator workflow</div>
+        <div class="index">06 / Creator workflow</div>
         <div class="section-title">
           <h2>A beginner-safe order of operations.</h2>
           <p>
@@ -1401,8 +1544,8 @@
         </article>
         <article class="workflow-card">
           <div class="step">Step 02</div>
-          <h3>Pick Image 1</h3>
-          <p>Use a realistic identity image with a similar angle and clear face, hair, body proportions, and clothing.</p>
+          <h3>Create Image1</h3>
+          <p>Use the image preset prompt to transform the start frame into a clean identity reference with the same pose, angle, framing, and lighting.</p>
         </article>
         <article class="workflow-card">
           <div class="step">Step 03</div>
@@ -1414,7 +1557,7 @@
 
     <section class="section" id="publish">
       <div class="section-head">
-        <div class="index">06 / Final check</div>
+        <div class="index">07 / Final check</div>
         <div class="section-title">
           <h2>Before posting to TikTok Shop, check the failure points.</h2>
           <p>
@@ -1446,6 +1589,143 @@
   </footer>
 
   <script>
+    const baseImagePresets = {
+      construction: "42-year-old adult construction worker with naturally rugged features, bald head, blue eyes, subtle natural grooming, believable human skin texture, slightly stocky build, weathered hands, and a bright yellow construction outfit with realistic fabric folds and safety details",
+      collegeWoman: "19-year-old adult Southern California college woman with naturally attractive features, long realistic blonde hair, blue eyes, subtle makeup, believable human skin texture, average build, and a cute but modest college outfit with realistic fabric texture",
+      chef: "45-year-old adult restaurant chef with friendly expressive features, salt-and-pepper hair, brown eyes, visible natural skin texture, slightly overweight build, practical hands, and a crisp white chef coat with realistic seams and kitchen-ready details",
+      nurse: "34-year-old adult ER nurse with tired but warm features, dark brown hair pulled back, hazel eyes, believable skin texture, average build, and clean navy medical scrubs with a practical badge clip and natural fabric folds",
+      warehouse: "31-year-old adult warehouse worker with practical rugged features, shaved head, brown eyes, realistic skin texture, broad shoulders, and an orange safety vest over work clothes with believable reflective strips and fabric wear",
+      fitnessCoach: "29-year-old adult fitness coach with athletic proportions, short black hair, green eyes, healthy natural skin texture, defined but realistic arms, and fitted activewear with believable stretch fabric and studio-ready styling",
+      suburbanMom: "38-year-old adult suburban mom with soft natural features, shoulder-length brown hair, hazel eyes, believable skin texture, slightly curvy build, and a clean casual daytime outfit with realistic cotton texture and relaxed fit",
+      realEstate: "52-year-old adult real estate agent with polished mature features, silver hair, blue-gray eyes, natural skin texture, average build, and a tailored business outfit with realistic jacket structure and professional styling"
+    };
+
+    const customPresetStorageKey = "titansImagePromptPresets";
+    let customImagePresets = loadCustomImagePresets();
+
+    const imagePresetForm = document.getElementById("imagePresetForm");
+    const imagePresetSelect = document.getElementById("imagePreset");
+    const presetDetails = document.getElementById("presetDetails");
+    const sourceSubject = document.getElementById("sourceSubject");
+    const imagePromptOutput = document.getElementById("imagePromptOutput");
+    const copyImagePromptBtn = document.getElementById("copyImagePromptBtn");
+    const savePresetBtn = document.getElementById("savePresetBtn");
+    const resetPresetBtn = document.getElementById("resetPresetBtn");
+    const presetRequestOutput = document.getElementById("presetRequestOutput");
+    const copyPresetRequestBtn = document.getElementById("copyPresetRequestBtn");
+
+    function loadCustomImagePresets() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(customPresetStorageKey) || "[]");
+        if (!Array.isArray(stored)) {
+          return [];
+        }
+
+        return stored.filter((preset) => preset && typeof preset.id === "string" && typeof preset.text === "string");
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveCustomImagePresets() {
+      try {
+        localStorage.setItem(customPresetStorageKey, JSON.stringify(customImagePresets));
+      } catch (error) {
+        return;
+      }
+    }
+
+    function getPresetLabel(text) {
+      return text
+        .replace(/\s+/g, " ")
+        .replace(/^(a|an)\s+/i, "")
+        .slice(0, 46);
+    }
+
+    function renderCustomPresetOptions() {
+      document.querySelectorAll("#imagePreset option[data-custom='true']").forEach((option) => option.remove());
+
+      customImagePresets.forEach((preset) => {
+        const option = document.createElement("option");
+        option.value = preset.id;
+        option.textContent = getPresetLabel(preset.text);
+        option.dataset.custom = "true";
+        imagePresetSelect.appendChild(option);
+      });
+    }
+
+    function getSelectedImagePreset() {
+      const selected = imagePresetSelect.value;
+      const customPreset = customImagePresets.find((preset) => preset.id === selected);
+      return customPreset ? customPreset.text : baseImagePresets[selected] || baseImagePresets.construction;
+    }
+
+    function setPresetDetailsFromSelection() {
+      presetDetails.value = getSelectedImagePreset();
+      buildImagePrompt();
+    }
+
+    function formatPresetTarget(details) {
+      const cleaned = details.trim().replace(/\.$/, "");
+      return /^(a|an)\s+/i.test(cleaned) ? cleaned : `a ${cleaned}`;
+    }
+
+    function buildImagePrompt() {
+      const source = sourceSubject.value || "man";
+      const target = formatPresetTarget(presetDetails.value || baseImagePresets.construction);
+
+      const sections = [
+        `Transform the ${source} into ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless pure white studio background.`,
+        "Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, believable clothing folds, and authentic shadows.",
+        `The final result should look like a genuine high-resolution photograph of ${target}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
+      ];
+
+      imagePromptOutput.textContent = sections.join("\n\n");
+    }
+
+    function addCustomPreset() {
+      const text = presetDetails.value.trim();
+      if (!text) {
+        window.alert("Add preset details first.");
+        return;
+      }
+
+      const preset = {
+        id: `custom-${Date.now()}`,
+        text
+      };
+
+      customImagePresets.push(preset);
+      saveCustomImagePresets();
+      renderCustomPresetOptions();
+      imagePresetSelect.value = preset.id;
+      buildImagePrompt();
+      savePresetBtn.textContent = "Preset saved";
+      setTimeout(() => {
+        savePresetBtn.textContent = "Add preset";
+      }, 1400);
+    }
+
+    function resetCustomPresets() {
+      customImagePresets = [];
+      saveCustomImagePresets();
+      renderCustomPresetOptions();
+      imagePresetSelect.value = "construction";
+      setPresetDetailsFromSelection();
+    }
+
+    async function copyText(text, button, restoredLabel) {
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = "Copied";
+        setTimeout(() => {
+          button.textContent = restoredLabel;
+        }, 1400);
+      } catch (error) {
+        window.alert("Copy failed. Select the prompt text and copy it manually.");
+      }
+    }
+
     const modeCopy = {
       person: {
         open: (video, image) => `Use ${video} as the base video and exact motion reference. Replace only the person in ${video} with the person from ${image}.`,
@@ -1490,6 +1770,26 @@
     const copyBtn = document.getElementById("copyBtn");
     const resetBtn = document.getElementById("resetBtn");
 
+    renderCustomPresetOptions();
+    setPresetDetailsFromSelection();
+
+    imagePresetForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      buildImagePrompt();
+    });
+
+    imagePresetSelect.addEventListener("change", setPresetDetailsFromSelection);
+    sourceSubject.addEventListener("input", buildImagePrompt);
+    presetDetails.addEventListener("input", buildImagePrompt);
+    savePresetBtn.addEventListener("click", addCustomPreset);
+    resetPresetBtn.addEventListener("click", resetCustomPresets);
+    copyImagePromptBtn.addEventListener("click", () => {
+      copyText(imagePromptOutput.textContent, copyImagePromptBtn, "Copy image prompt");
+    });
+    copyPresetRequestBtn.addEventListener("click", () => {
+      copyText(presetRequestOutput.textContent, copyPresetRequestBtn, "Copy 25-preset request");
+    });
+
     function buildPrompt() {
       const mode = document.getElementById("mode").value;
       const video = "@Video1";
@@ -1524,16 +1824,7 @@
     });
 
     copyBtn.addEventListener("click", async () => {
-      const text = promptOutput.textContent;
-      try {
-        await navigator.clipboard.writeText(text);
-        copyBtn.textContent = "Copied";
-        setTimeout(() => {
-          copyBtn.textContent = "Copy prompt";
-        }, 1400);
-      } catch (error) {
-        window.alert("Copy failed. Select the prompt text and copy it manually.");
-      }
+      copyText(promptOutput.textContent, copyBtn, "Copy prompt");
     });
 
     resetBtn.addEventListener("click", () => {
