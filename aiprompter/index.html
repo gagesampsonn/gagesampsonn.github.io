@@ -974,6 +974,34 @@
       gap: 18px;
     }
 
+    .character-gallery + .gallery-note {
+      margin-top: 24px;
+    }
+
+    .gallery-note {
+      border-top: 1px solid var(--ink);
+      padding-top: 18px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .gallery-note h3 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .gallery-note p {
+      max-width: 620px;
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .character-example-card {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -1005,6 +1033,18 @@
 
     .character-image-wrap.college img {
       object-position: 50% 30%;
+    }
+
+    .character-image-wrap.bad-boho img {
+      object-position: 50% 36%;
+    }
+
+    .character-image-wrap.bad-tactical img {
+      object-position: 50% 23%;
+    }
+
+    .character-image-wrap.bad-layered img {
+      object-position: 50% 28%;
     }
 
     .character-example-copy {
@@ -1187,6 +1227,11 @@
       .workflow,
       .note-row {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-note {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
@@ -1539,6 +1584,51 @@
             <span class="tag good">Good character</span>
             <h3>Blonde college woman</h3>
             <p>Distinct hair, outfit, face, and styling details give the image model enough information to keep the character consistent.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="gallery-note">
+        <h3>Bad character examples</h3>
+        <p>
+          These can look impressive as still images, but they are harder for
+          video models to keep stable because they contain too many tiny
+          details, complex hands, layered clothing, and elements that can
+          flicker or change frame-to-frame.
+        </p>
+      </div>
+
+      <div class="character-gallery">
+        <article class="character-example-card">
+          <div class="character-image-wrap bad-boho">
+            <img src="assets/character-examples/bad-overdetail-boho-woman.png" alt="Over-detailed adult woman character example with complex jewelry and layered styling" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag bad">Bad character</span>
+            <h3>Too many tiny details</h3>
+            <p>Complex jewelry, lace, straps, rings, nails, and hand placement give the video model too many small elements to preserve consistently.</p>
+          </div>
+        </article>
+
+        <article class="character-example-card">
+          <div class="character-image-wrap bad-tactical">
+            <img src="assets/character-examples/bad-tactical-worker.png" alt="Over-detailed adult male character example with heavy dirt, straps, pockets, zippers, and difficult hands" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag bad">Bad character</span>
+            <h3>Texture overload</h3>
+            <p>Too many pockets, straps, zippers, dirt marks, and complicated hand shapes can flicker, smear, or drift during the video edit.</p>
+          </div>
+        </article>
+
+        <article class="character-example-card">
+          <div class="character-image-wrap bad-layered">
+            <img src="assets/character-examples/bad-layered-college-woman.png" alt="Over-detailed adult blonde woman character example with layered clothing, jewelry, hair details, and difficult hands" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag bad">Bad character</span>
+            <h3>Hard to keep consistent</h3>
+            <p>Layered clothing, jewelry, messy hair detail, and visible fingers create many moving edges that can change from frame to frame.</p>
           </div>
         </article>
       </div>
