@@ -700,6 +700,100 @@
       line-height: 1.55;
     }
 
+    .video-showcase-copy {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      margin-bottom: 20px;
+      align-items: stretch;
+    }
+
+    .video-proof-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: var(--panel);
+    }
+
+    .video-proof-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .video-proof-card p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .video-collage {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .video-result-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(20, 20, 18, 0.12);
+      border-radius: var(--radius);
+      background: #121312;
+      box-shadow: 0 18px 44px rgba(22, 24, 20, 0.12);
+    }
+
+    .video-result-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 24%, transparent 68%, rgba(0, 0, 0, 0.55));
+    }
+
+    .result-video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #101110;
+    }
+
+    .video-result-meta {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 10px;
+      color: #fff;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+    }
+
+    .video-result-meta span {
+      display: inline-flex;
+      width: fit-content;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(8px);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .video-result-meta strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
     .checklist {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1205,6 +1299,7 @@
       .hero,
       .motion-grid,
       .character-gallery,
+      .video-showcase-copy,
       .builder,
       .publish-card {
         grid-template-columns: 1fr;
@@ -1231,6 +1326,10 @@
       .workflow,
       .note-row {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .video-collage {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .gallery-note {
@@ -1269,9 +1368,30 @@
       .character-gallery,
       .checklist,
       .workflow,
+      .video-showcase-copy,
       .slot-grid,
       .note-row {
         grid-template-columns: 1fr;
+      }
+
+      .video-collage {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .video-result-meta {
+        left: 9px;
+        right: 9px;
+        bottom: 9px;
+      }
+
+      .video-result-meta span {
+        padding: 4px 6px;
+        font-size: 9px;
+      }
+
+      .video-result-meta strong {
+        font-size: 11px;
       }
 
       .rule-cell {
@@ -1678,50 +1798,101 @@
 
     <section class="section" id="videos">
       <div class="section-head">
-        <div class="index">04 / Video references</div>
+        <div class="index">04 / Video results</div>
         <div class="section-title">
-          <h2>Good motion videos are clean enough to become the blueprint.</h2>
+          <h2>Output examples made with the prompt builder.</h2>
           <p>
-            The model is not just copying a vibe. It is inheriting the motion,
-            camera behavior, timing, and scene. Choose a video that already
-            does what you want the final clip to do.
+            These are real example clips from the workflow: reference video for
+            motion, Image1 for identity, and a strict prompt that keeps the
+            camera, timing, framing, and scene locked.
           </p>
         </div>
       </div>
 
-      <div class="motion-grid">
-        <article class="motion-card">
-          <div class="motion-visual">
-            <div class="frame-bars"></div>
-            <div class="motion-path"></div>
-            <div class="motion-figure"></div>
-          </div>
-          <div class="motion-copy">
-            <span class="tag good">Good video</span>
-            <h3>Stable shot, readable person</h3>
-            <p>One main person, clear body movement, visible face, consistent lighting, and no fast cuts. This gives the edit model a strong motion map.</p>
-          </div>
-        </article>
-
-        <article class="motion-card">
-          <div class="motion-visual bad">
-            <div class="frame-bars"></div>
-            <div class="motion-path"></div>
-            <div class="motion-figure"></div>
-          </div>
-          <div class="motion-copy">
-            <span class="tag bad">Bad video</span>
-            <h3>Messy motion, weak subject lock</h3>
-            <p>Fast camera swings, blocked faces, heavy blur, multiple people crossing, or constant cuts can break face consistency and body shape.</p>
-          </div>
-        </article>
+      <div class="video-showcase-copy">
+        <div class="video-proof-card">
+          <strong>Built to show quality quickly.</strong>
+          <p>The collage uses short, vertical clips so creators can immediately see how the helper turns reference-driven prompts into usable AI video results.</p>
+        </div>
+        <div class="video-proof-card">
+          <strong>Same simple workflow.</strong>
+          <p>Each result comes from the same core idea: preserve the motion video, replace only the chosen subject or object, and keep the final clip realistic and stable.</p>
+        </div>
       </div>
 
-      <div class="checklist" style="margin-top: 18px;">
-        <div class="check-item"><strong>Use clear framing.</strong><p>The person should stay readable for most of the clip.</p></div>
-        <div class="check-item"><strong>Avoid heavy occlusion.</strong><p>Hands over face, props blocking the body, or people crossing the subject can create unstable edits.</p></div>
-        <div class="check-item"><strong>Prefer one person.</strong><p>One subject makes the replacement target obvious.</p></div>
-        <div class="check-item"><strong>Keep the camera usable.</strong><p>Movement is fine. Chaotic motion is what causes problems.</p></div>
+      <div class="video-collage" aria-label="AI video examples made with the Titans prompt builder">
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-01.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 1">
+            <source src="assets/video-examples/prompt-result-01.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>01</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-02.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 2">
+            <source src="assets/video-examples/prompt-result-02.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>02</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-03.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 3">
+            <source src="assets/video-examples/prompt-result-03.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>03</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-04.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 4">
+            <source src="assets/video-examples/prompt-result-04.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>04</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-05.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 5">
+            <source src="assets/video-examples/prompt-result-05.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>05</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-06.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 6">
+            <source src="assets/video-examples/prompt-result-06.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>06</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-07.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 7">
+            <source src="assets/video-examples/prompt-result-07.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>07</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-08.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 8">
+            <source src="assets/video-examples/prompt-result-08.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>08</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-09.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 9">
+            <source src="assets/video-examples/prompt-result-09.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>09</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-10.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 10">
+            <source src="assets/video-examples/prompt-result-10.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>10</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-11.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 11">
+            <source src="assets/video-examples/prompt-result-11.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>11</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-12.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 12">
+            <source src="assets/video-examples/prompt-result-12.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Prompt result</strong><span>12</span></div>
+        </article>
       </div>
     </section>
 
@@ -2974,6 +3145,21 @@
         document.querySelector(button.dataset.jump).scrollIntoView({ behavior: "smooth" });
       });
     });
+
+    const resultVideos = document.querySelectorAll(".result-video");
+    if ("IntersectionObserver" in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.play().catch(() => {});
+          } else {
+            entry.target.pause();
+          }
+        });
+      }, { threshold: 0.42 });
+
+      resultVideos.forEach((video) => videoObserver.observe(video));
+    }
 
     buildPrompt();
   </script>
