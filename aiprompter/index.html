@@ -1556,18 +1556,18 @@
       <div class="character-gallery">
         <article class="character-example-card">
           <div class="character-image-wrap mechanic">
-            <img src="assets/character-examples/mechanic-worker.png" alt="Adult male mechanic-style worker character example on a white studio background" loading="lazy" />
+            <img src="assets/character-examples/mechanic-worker.png" alt="Adult male mechanic-style worker character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
             <span class="tag good">Good character</span>
             <h3>Mechanic-style worker</h3>
-            <p>Clear adult identity, believable workwear texture, visible hands, and a clean white background that makes the character easy to reuse.</p>
+            <p>Clear adult identity, believable workwear texture, visible hands, and a clean studio background that makes the character easy to reuse.</p>
           </div>
         </article>
 
         <article class="character-example-card">
           <div class="character-image-wrap light-blue">
-            <img src="assets/character-examples/light-blue-outfit.png" alt="Adult woman in a light-blue outfit character example on a white studio background" loading="lazy" />
+            <img src="assets/character-examples/light-blue-outfit.png" alt="Adult woman in a light-blue outfit character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
             <span class="tag good">Good character</span>
@@ -1578,7 +1578,7 @@
 
         <article class="character-example-card">
           <div class="character-image-wrap college">
-            <img src="assets/character-examples/blonde-college-woman.png" alt="Adult blonde college woman character example on a white studio background" loading="lazy" />
+            <img src="assets/character-examples/blonde-college-woman.png" alt="Adult blonde college woman character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
             <span class="tag good">Good character</span>
@@ -2738,6 +2738,18 @@
       slotElements.outfit.textContent = roll.outfit;
     }
 
+    function getSourcePronoun(source) {
+      if (source === "man") {
+        return "him";
+      }
+
+      if (source === "woman") {
+        return "her";
+      }
+
+      return "them";
+    }
+
     function buildImagePrompt(shouldReroll = false) {
       if (shouldReroll || !lastCharacterRoll) {
         lastCharacterRoll = rollCharacter();
@@ -2746,6 +2758,7 @@
 
       const roll = lastCharacterRoll;
       const source = sourceSubject.value || "man";
+      const sourcePronoun = getSourcePronoun(source);
       const product = productInstruction.value.trim();
       const target = `${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
       const productLine = product
@@ -2755,7 +2768,7 @@
       updateSlotDisplay(roll);
 
       const sections = [
-        `Transform the ${source} into a ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless pure white studio background.`,
+        `Remove the ${source} and replace ${sourcePronoun} with a ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless soft light-gray studio background with subtle tonal falloff.`,
         productLine,
         `Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, ${roll.realism}.`,
         `The final result should look like a genuine high-resolution photograph of a ${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
