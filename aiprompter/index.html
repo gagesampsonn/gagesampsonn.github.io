@@ -968,6 +968,62 @@
       font-weight: 800;
     }
 
+    .character-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .character-example-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .character-image-wrap {
+      aspect-ratio: 4 / 5;
+      background: #fff;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .character-image-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .character-image-wrap.mechanic img {
+      object-position: 50% 30%;
+    }
+
+    .character-image-wrap.light-blue img {
+      object-position: 50% 18%;
+    }
+
+    .character-image-wrap.college img {
+      object-position: 50% 30%;
+    }
+
+    .character-example-copy {
+      padding: 18px;
+    }
+
+    .character-example-copy h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: -0.03em;
+    }
+
+    .character-example-copy p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .note-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1104,6 +1160,7 @@
 
       .hero,
       .motion-grid,
+      .character-gallery,
       .builder,
       .publish-card {
         grid-template-columns: 1fr;
@@ -1160,6 +1217,7 @@
 
       .rule-strip,
       .compare-grid,
+      .character-gallery,
       .checklist,
       .workflow,
       .slot-grid,
@@ -1208,6 +1266,7 @@
       <div class="links">
         <a href="#references">Reference Rules</a>
         <a href="#image-presets">Image Presets</a>
+        <a href="#character-examples">Characters</a>
         <a href="#images">Image Examples</a>
         <a href="#videos">Video Examples</a>
         <a href="#prompt">Prompt Builder</a>
@@ -1435,9 +1494,59 @@
 
     </section>
 
+    <section class="section" id="character-examples">
+      <div class="section-head">
+        <div class="index">03 / Example characters</div>
+        <div class="section-title">
+          <h2>Strong character images look clean, realistic, and ready to use.</h2>
+          <p>
+            These are examples of the kind of Image1 references creators should
+            aim for: clear person, clean background, believable styling, and
+            enough visible body and clothing information for the video edit to
+            stay stable.
+          </p>
+        </div>
+      </div>
+
+      <div class="character-gallery">
+        <article class="character-example-card">
+          <div class="character-image-wrap mechanic">
+            <img src="assets/character-examples/mechanic-worker.png" alt="Adult male mechanic-style worker character example on a white studio background" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag good">Good character</span>
+            <h3>Mechanic-style worker</h3>
+            <p>Clear adult identity, believable workwear texture, visible hands, and a clean white background that makes the character easy to reuse.</p>
+          </div>
+        </article>
+
+        <article class="character-example-card">
+          <div class="character-image-wrap light-blue">
+            <img src="assets/character-examples/light-blue-outfit.png" alt="Adult woman in a light-blue outfit character example on a white studio background" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag good">Good character</span>
+            <h3>Light-blue outfit</h3>
+            <p>Simple front-facing pose, readable clothing color, natural skin texture, and consistent studio lighting for a strong identity reference.</p>
+          </div>
+        </article>
+
+        <article class="character-example-card">
+          <div class="character-image-wrap college">
+            <img src="assets/character-examples/blonde-college-woman.png" alt="Adult blonde college woman character example on a white studio background" loading="lazy" />
+          </div>
+          <div class="character-example-copy">
+            <span class="tag good">Good character</span>
+            <h3>Blonde college woman</h3>
+            <p>Distinct hair, outfit, face, and styling details give the image model enough information to keep the character consistent.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section class="section" id="images">
       <div class="section-head">
-        <div class="index">03 / Image references</div>
+        <div class="index">04 / Image references</div>
         <div class="section-title">
           <h2>Good image references are realistic, readable, and angle-matched.</h2>
           <p>
@@ -1493,7 +1602,7 @@
 
     <section class="section" id="videos">
       <div class="section-head">
-        <div class="index">04 / Video references</div>
+        <div class="index">05 / Video references</div>
         <div class="section-title">
           <h2>Good motion videos are clean enough to become the blueprint.</h2>
           <p>
@@ -1542,7 +1651,7 @@
 
     <section class="section" id="prompt">
       <div class="section-head">
-        <div class="index">05 / Prompt builder</div>
+        <div class="index">06 / Prompt builder</div>
         <div class="section-title">
           <h2>Generate a strict person-replacement prompt.</h2>
           <p>
@@ -1615,7 +1724,7 @@
 
     <section class="section" id="workflow">
       <div class="section-head">
-        <div class="index">06 / Creator workflow</div>
+        <div class="index">07 / Creator workflow</div>
         <div class="section-title">
           <h2>A beginner-safe order of operations.</h2>
           <p>
@@ -1646,7 +1755,7 @@
 
     <section class="section" id="publish">
       <div class="section-head">
-        <div class="index">07 / Final check</div>
+        <div class="index">08 / Final check</div>
         <div class="section-title">
           <h2>Before posting to TikTok Shop, check the failure points.</h2>
           <p>
