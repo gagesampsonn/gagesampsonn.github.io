@@ -792,6 +792,10 @@
       line-height: 1.45;
     }
 
+    .is-hidden {
+      display: none !important;
+    }
+
     .builder-actions {
       display: flex;
       gap: 10px;
@@ -1432,6 +1436,16 @@
       <div class="builder image-preset-builder">
         <form class="builder-panel" id="characterForm">
           <div class="field">
+            <label for="imagePromptMode">Image prompt type</label>
+            <select id="imagePromptMode">
+              <option value="character">Create new character</option>
+              <option value="avatar">Match existing avatar</option>
+            </select>
+            <p class="form-hint">Use avatar mode when you already have a character image and want to match another reference image's lighting, scale, and phone angle.</p>
+          </div>
+
+          <div id="characterFields">
+          <div class="field">
             <label for="sourceSubject">Source subject</label>
             <select id="sourceSubject">
               <option value="man">man</option>
@@ -1493,9 +1507,38 @@
             <textarea id="productInstruction" placeholder="Example: Include the exact red branded baseball cap. Keep it clean, centered, and easy to see."></textarea>
             <p class="form-hint">If the product is a hat, shirt, jacket, glasses, jewelry, bag, or anything worn/held, describe it here. Otherwise the random outfit may not match what you need to sell.</p>
           </div>
+          </div>
+
+          <div id="avatarFields" class="is-hidden">
+            <div class="field">
+              <label for="avatarPronoun">Avatar pronoun</label>
+              <select id="avatarPronoun">
+                <option value="her">Her</option>
+                <option value="him">Him</option>
+                <option value="them">Them</option>
+              </select>
+              <p class="form-hint">Controls the Make her / him / them wording.</p>
+            </div>
+
+            <div class="field">
+              <label for="avatarReferenceName">Lighting / scale reference</label>
+              <input id="avatarReferenceName" type="text" value="[reference image]" />
+            </div>
+
+            <div class="field">
+              <label for="avatarImageName">Avatar image</label>
+              <input id="avatarImageName" type="text" value="[image of your avatar]" />
+            </div>
+
+            <div class="field">
+              <label for="avatarChanges">Changes to make</label>
+              <textarea id="avatarChanges" placeholder="Example: prettier, more blonde, college girl vibe, blue eyes. With the same lighting on her face and same scale as the blue jacket image."></textarea>
+              <p class="form-hint">Example: prettier, more blonde, college girl vibe, blue eyes. Keep the same face lighting and scale as the reference.</p>
+            </div>
+          </div>
 
           <div class="builder-actions">
-            <button class="btn orange" type="submit">Generate character</button>
+            <button class="btn orange" type="submit" id="generateImagePromptBtn">Generate character</button>
             <button class="btn secondary" type="button" id="rerollBtn">Reroll details</button>
           </div>
         </form>
@@ -1505,7 +1548,7 @@
             <span>Generated image prompt</span>
             <button class="btn secondary" type="button" id="copyImagePromptBtn">Copy image prompt</button>
           </div>
-          <div class="slot-grid" aria-label="Randomized character attributes">
+          <div class="slot-grid" id="slotGrid" aria-label="Randomized character attributes">
             <div class="slot-card"><span class="slot-label">Body</span><span class="slot-value" id="slotBody">-</span></div>
             <div class="slot-card"><span class="slot-label">Face</span><span class="slot-value" id="slotFace">-</span></div>
             <div class="slot-card"><span class="slot-label">Hair</span><span class="slot-value" id="slotHair">-</span></div>
@@ -1514,7 +1557,7 @@
             <div class="slot-card"><span class="slot-label">Outfit</span><span class="slot-value" id="slotOutfit">-</span></div>
           </div>
           <pre class="prompt-output image-generator-output" id="imagePromptOutput"></pre>
-          <div class="prompt-warning">
+          <div class="prompt-warning" id="productPromptWarning">
             <strong>Product sellers: be specific before you copy.</strong>
             If the image is meant to sell or show a product, put the exact product/outfit requirement in the field on the left. For hats, shirts, jackets, glasses, jewelry, bags, or uniforms, the product needs to be named directly or the image model may invent the wrong item.
           </div>
@@ -2612,15 +2655,25 @@
     };
 
     const characterForm = document.getElementById("characterForm");
+    const imagePromptMode = document.getElementById("imagePromptMode");
+    const characterFields = document.getElementById("characterFields");
+    const avatarFields = document.getElementById("avatarFields");
     const sourceSubject = document.getElementById("sourceSubject");
     const characterAge = document.getElementById("characterAge");
     const characterGender = document.getElementById("characterGender");
     const professionSelect = document.getElementById("professionSelect");
     const customProfession = document.getElementById("customProfession");
     const productInstruction = document.getElementById("productInstruction");
+    const avatarPronoun = document.getElementById("avatarPronoun");
+    const avatarReferenceName = document.getElementById("avatarReferenceName");
+    const avatarImageName = document.getElementById("avatarImageName");
+    const avatarChanges = document.getElementById("avatarChanges");
     const imagePromptOutput = document.getElementById("imagePromptOutput");
     const copyImagePromptBtn = document.getElementById("copyImagePromptBtn");
     const rerollBtn = document.getElementById("rerollBtn");
+    const generateImagePromptBtn = document.getElementById("generateImagePromptBtn");
+    const slotGrid = document.getElementById("slotGrid");
+    const productPromptWarning = document.getElementById("productPromptWarning");
     const slotElements = {
       body: document.getElementById("slotBody"),
       face: document.getElementById("slotFace"),
@@ -2750,7 +2803,33 @@
       return "them";
     }
 
-    function buildImagePrompt(shouldReroll = false) {
+    function getAvatarPronouns() {
+      const selected = avatarPronoun.value;
+      if (selected === "him") {
+        return {
+          object: "him",
+          possessive: "his"
+        };
+      }
+
+      if (selected === "them") {
+        return {
+          object: "them",
+          possessive: "their"
+        };
+      }
+
+      return {
+        object: "her",
+        possessive: "her"
+      };
+    }
+
+    function getFieldText(element, fallback) {
+      return element.value.trim() || fallback;
+    }
+
+    function buildCharacterPrompt(shouldReroll = false) {
       if (shouldReroll || !lastCharacterRoll) {
         lastCharacterRoll = rollCharacter();
         showSlotSpin();
@@ -2763,18 +2842,51 @@
       const target = `${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
       const productLine = product
         ? `Specific product/outfit requirement: ${product}. Keep this product or outfit detail clear, accurate, visible, and consistent with the character.`
-        : "If a specific product, wearable item, or outfit is being sold, add it before generating so the image model does not invent the wrong hat, shirt, jacket, glasses, jewelry, bag, or uniform.";
+        : "";
 
       updateSlotDisplay(roll);
 
       const sections = [
         `Remove the ${source} and replace ${sourcePronoun} with a ${target}. Keep the exact same pose, camera angle, framing, perspective, facial direction, body position, hand placement, and lighting direction as the reference image, but replace the background with a seamless soft light-gray studio background with subtle tonal falloff.`,
         productLine,
-        `Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, ${roll.realism}.`,
-        `The final result should look like a genuine high-resolution photograph of a ${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun}, with no plastic skin, uncanny facial features, excessive smoothing, distorted hands, warped clothing, or obvious AI-generated appearance.`
+        `Prioritize extreme photorealism: visible pores, natural skin variation, individual hair strands, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, natural hands, ${roll.realism}.`
+      ].filter(Boolean);
+
+      imagePromptOutput.textContent = sections.join("\n\n");
+    }
+
+    function buildAvatarPrompt() {
+      const pronouns = getAvatarPronouns();
+      const referenceName = getFieldText(avatarReferenceName, "[reference image]");
+      const avatarName = getFieldText(avatarImageName, "[image of your avatar]");
+      const changes = getFieldText(
+        avatarChanges,
+        "[describe the exact changes, for example: prettier, more blonde, college girl vibe, blue eyes]"
+      );
+      const sections = [
+        `Match the lighting, scale, and phone angle of ${referenceName}. The final result should make ${avatarName} a front-facing shot on a soft light gray-white studio background with subtle tonal falloff.`,
+        `Make ${pronouns.object}: ${changes}.`,
+        `Keep the same lighting on ${pronouns.possessive} face and the same scale as ${referenceName}. Keep realistic, natural, and photorealistic with believable skin texture, realistic eyes and teeth, subtle facial asymmetry, accurate anatomy, and authentic shadows.`
       ];
 
       imagePromptOutput.textContent = sections.join("\n\n");
+    }
+
+    function buildImagePrompt(shouldReroll = false) {
+      const isAvatarMode = imagePromptMode.value === "avatar";
+      characterFields.classList.toggle("is-hidden", isAvatarMode);
+      avatarFields.classList.toggle("is-hidden", !isAvatarMode);
+      slotGrid.classList.toggle("is-hidden", isAvatarMode);
+      productPromptWarning.classList.toggle("is-hidden", isAvatarMode);
+      rerollBtn.classList.toggle("is-hidden", isAvatarMode);
+      generateImagePromptBtn.textContent = isAvatarMode ? "Generate avatar prompt" : "Generate character";
+
+      if (isAvatarMode) {
+        buildAvatarPrompt();
+        return;
+      }
+
+      buildCharacterPrompt(shouldReroll);
     }
 
     async function copyText(text, button, restoredLabel) {
@@ -2840,6 +2952,7 @@
       buildImagePrompt(true);
     });
 
+    imagePromptMode.addEventListener("change", () => buildImagePrompt(false));
     rerollBtn.addEventListener("click", () => {
       buildImagePrompt(true);
     });
@@ -2863,6 +2976,10 @@
     });
     sourceSubject.addEventListener("input", () => buildImagePrompt(false));
     productInstruction.addEventListener("input", () => buildImagePrompt(false));
+    avatarPronoun.addEventListener("change", () => buildImagePrompt(false));
+    avatarReferenceName.addEventListener("input", () => buildImagePrompt(false));
+    avatarImageName.addEventListener("input", () => buildImagePrompt(false));
+    avatarChanges.addEventListener("input", () => buildImagePrompt(false));
     copyImagePromptBtn.addEventListener("click", () => {
       copyText(imagePromptOutput.textContent, copyImagePromptBtn, "Copy image prompt");
     });
