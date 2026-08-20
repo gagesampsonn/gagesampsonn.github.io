@@ -728,6 +728,90 @@
       line-height: 1.55;
     }
 
+    .reference-video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .reference-video-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .reference-video-media {
+      position: relative;
+      background: #101110;
+    }
+
+    .reference-video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #101110;
+    }
+
+    .reference-badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 1;
+      border-radius: 999px;
+      padding: 6px 9px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .reference-badge.good {
+      background: var(--green);
+    }
+
+    .reference-badge.bad {
+      background: var(--red);
+    }
+
+    .reference-video-copy {
+      padding: 18px;
+    }
+
+    .reference-video-copy h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      letter-spacing: -0.035em;
+    }
+
+    .reference-video-copy p {
+      margin: 0 0 16px;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .quick-bullets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .quick-bullets span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: #fff;
+      color: #2c302b;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
     .video-collage {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1185,39 +1269,91 @@
       color: var(--ink);
     }
 
-    .workflow {
+    .workflow-track {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: 1.25fr 1.25fr 1.6fr 1.25fr 1.05fr;
+      gap: 14px;
+      align-items: stretch;
     }
 
     .workflow-card {
-      min-height: 230px;
-      padding: 20px;
+      position: relative;
+      min-height: 420px;
+      padding: 18px;
       background: var(--ink);
       color: #fff;
       border-radius: var(--radius);
+      overflow: visible;
     }
 
-    .workflow-card:nth-child(2) {
+    .workflow-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.2;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 18px 18px;
+      border-radius: var(--radius);
+      pointer-events: none;
+    }
+
+    .workflow-card::after {
+      content: ">";
+      position: absolute;
+      right: -12px;
+      top: 46%;
+      z-index: 2;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .workflow-card:last-child::after {
+      display: none;
+    }
+
+    .workflow-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .workflow-card.video-step {
       background: #263f70;
     }
 
-    .workflow-card:nth-child(3) {
+    .workflow-card.prompt-step {
+      background: #141716;
+      border: 1px solid rgba(243, 107, 33, 0.42);
+    }
+
+    .workflow-card.finish-step {
       background: #2e5b40;
     }
 
     .workflow-card .step {
-      color: rgba(255, 255, 255, 0.72);
+      display: inline-flex;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 999px;
+      padding: 6px 8px;
+      color: rgba(255, 255, 255, 0.82);
       font-size: 10px;
       font-weight: 900;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      margin-bottom: 62px;
     }
 
     .workflow-card h3 {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
       font-size: 24px;
       line-height: 1;
       letter-spacing: -0.045em;
@@ -1227,7 +1363,129 @@
       margin: 0;
       color: rgba(255, 255, 255, 0.78);
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.48;
+    }
+
+    .workflow-options {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .workflow-option {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .workflow-option span,
+    .setup-route span,
+    .setting-pill,
+    .finish-pill {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 7px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .workflow-option strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+    }
+
+    .workflow-tip {
+      border-left: 3px solid var(--orange);
+      padding-left: 10px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .setup-route {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 16px 0 12px;
+      align-items: center;
+    }
+
+    .setup-route span {
+      margin: 0;
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .setup-route i {
+      color: rgba(255, 255, 255, 0.7);
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .setup-visual {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 12px;
+      margin: 12px 0;
+      align-items: start;
+    }
+
+    .setup-screenshot {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: #101113;
+    }
+
+    .setup-screenshot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .settings-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .setting-pill,
+    .finish-pill {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 7px 9px;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .workflow-cta {
+      display: inline-flex;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 14px;
+      background: var(--orange);
+      color: #fff;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .workflow-cta + .workflow-tip,
+    .finish-stage + .workflow-tip {
+      margin-top: 16px;
+    }
+
+    .finish-stage {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     .publish-card {
@@ -1300,6 +1558,7 @@
       .motion-grid,
       .character-gallery,
       .video-showcase-copy,
+      .reference-video-grid,
       .builder,
       .publish-card {
         grid-template-columns: 1fr;
@@ -1323,8 +1582,26 @@
       }
 
       .rule-strip,
-      .workflow,
       .note-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .workflow-track {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-card {
+        min-height: auto;
+      }
+
+      .workflow-card::after {
+        right: 50%;
+        top: auto;
+        bottom: -13px;
+        transform: translateX(50%) rotate(90deg);
+      }
+
+      .setup-visual {
         grid-template-columns: 1fr 1fr;
       }
 
@@ -1367,8 +1644,10 @@
       .compare-grid,
       .character-gallery,
       .checklist,
-      .workflow,
+      .workflow-track,
+      .reference-video-grid,
       .video-showcase-copy,
+      .setup-visual,
       .slot-grid,
       .note-row {
         grid-template-columns: 1fr;
@@ -1436,7 +1715,7 @@
         <a href="#references">Reference Rules</a>
         <a href="#image-presets">Image Presets</a>
         <a href="#character-examples">Reference Photos</a>
-        <a href="#videos">Video Examples</a>
+        <a href="#videos">Video References</a>
         <a href="#prompt">Prompt Builder</a>
       </div>
       <div class="nav-actions">
@@ -1798,20 +2077,60 @@
 
     <section class="section" id="videos">
       <div class="section-head">
-        <div class="index">04 / Video results</div>
+        <div class="index">04 / Video references</div>
         <div class="section-title">
-          <h2>Output examples made with the prompt builder.</h2>
+          <h2>Clean reference videos give the model a better blueprint.</h2>
           <p>
-            These are real example clips from the workflow: reference video for
-            motion, Image1 for identity, and a strict prompt that keeps the
-            camera, timing, framing, and scene locked.
+            The reference video controls the motion, camera, timing, framing,
+            and scene behavior. Stable footage gives Seedance less chaos to
+            track and usually produces cleaner replacement results.
           </p>
         </div>
       </div>
 
+      <div class="reference-video-grid">
+        <article class="reference-video-card">
+          <div class="reference-video-media">
+            <span class="reference-badge good">Good reference video</span>
+            <video class="reference-video" poster="assets/video-references/reference-good.jpg" muted loop playsinline preload="metadata" aria-label="Good stable reference video example">
+              <source src="assets/video-references/reference-good.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="reference-video-copy">
+            <h3>Clean & Stable</h3>
+            <p>The camera stays completely still, the subject is sharp and well lit, and the lighting stays consistent. The fixed background gives the model a clean blueprint for the person's movement.</p>
+            <div class="quick-bullets" aria-label="Good reference video traits">
+              <span>GOOD &check; Stable camera</span>
+              <span>Good lighting</span>
+              <span>Sharp subject</span>
+              <span>Fixed background</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="reference-video-card">
+          <div class="reference-video-media">
+            <span class="reference-badge bad">Bad reference video</span>
+            <video class="reference-video" poster="assets/video-references/reference-bad.jpg" muted loop playsinline preload="metadata" aria-label="Bad shaky reference video example">
+              <source src="assets/video-references/reference-bad.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="reference-video-copy">
+            <h3>Shaky & Unclear</h3>
+            <p>The camera shakes, the subject blurs during movement, lighting is darker and less consistent, and the framing/background keep changing. This increases face warping, identity drift, flickering, and unstable backgrounds.</p>
+            <div class="quick-bullets" aria-label="Bad reference video traits">
+              <span>BAD &times; Shaky camera</span>
+              <span>Poor lighting</span>
+              <span>Motion blur</span>
+              <span>Changing framing</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
       <div class="video-showcase-copy">
         <div class="video-proof-card">
-          <strong>Built to show quality quickly.</strong>
+          <strong>Results made with this workflow.</strong>
           <p>The collage uses short, vertical clips so creators can immediately see how the helper turns reference-driven prompts into usable AI video results.</p>
         </div>
         <div class="video-proof-card">
@@ -1973,29 +2292,97 @@
       <div class="section-head">
         <div class="index">06 / Creator workflow</div>
         <div class="section-title">
-          <h2>A beginner-safe order of operations.</h2>
+          <h2>The exact order of operations.</h2>
           <p>
-            Teach creators the sequence. The tool works best when the source
-            video and character image are chosen before the prompt is written.
+            Follow this sequence from reference video to finished AI video. Each
+            step matters for getting a cleaner, more realistic result.
           </p>
         </div>
       </div>
 
-      <div class="workflow">
+      <div class="workflow-track" aria-label="Motion video to finished AI video workflow">
         <article class="workflow-card">
           <div class="step">Step 01</div>
-          <h3>Pick the motion video</h3>
-          <p>Choose the clip that already has the body movement, camera, timing, framing, and scene you want.</p>
+          <h3>Choose your motion reference</h3>
+          <p>Pick the movement you want to recreate.</p>
+          <div class="workflow-options">
+            <div class="workflow-option">
+              <span>Option A</span>
+              <strong>Record it yourself</strong>
+              <p>Record yourself performing the movements, camera motion, timing, and framing you want the AI video to follow.</p>
+            </div>
+            <div class="workflow-option">
+              <span>Option B</span>
+              <strong>Use an existing video</strong>
+              <p>Use a suitable reference video from TikTok or another platform that demonstrates the movement and camera style you want. Use content you have permission to use.</p>
+            </div>
+          </div>
+          <div class="workflow-tip">Best results: stable camera, clear lighting, sharp subject, and a simple background.</div>
         </article>
+
         <article class="workflow-card">
           <div class="step">Step 02</div>
-          <h3>Create Image1</h3>
-          <p>Use the image preset prompt to transform the start frame into a clean identity reference with the same pose, angle, framing, and lighting.</p>
+          <h3>Create your character image</h3>
+          <p>Choose what the person in the final video should look like.</p>
+          <div class="workflow-options">
+            <div class="workflow-option">
+              <span>Option A</span>
+              <strong>Start from a reference image</strong>
+              <p>Use a clear reference image you have permission to use from TikTok, Pinterest, or another source.</p>
+            </div>
+            <div class="workflow-option">
+              <span>Option B</span>
+              <strong>Create a new AI character</strong>
+              <p>Use the Image Prompt Builder on this website to generate an entirely new person designed specifically for the video.</p>
+            </div>
+          </div>
+          <div class="workflow-tip">Match the pose, framing, angle, and lighting of the beginning of your motion reference whenever possible.</div>
         </article>
-        <article class="workflow-card">
+
+        <article class="workflow-card video-step">
           <div class="step">Step 03</div>
-          <h3>Paste the strict prompt</h3>
-          <p>Tell Higgsfield to preserve the video 1:1 and replace only the selected person or object.</p>
+          <h3>Set up Higgsfield</h3>
+          <p>Load everything into Seedance Edit.</p>
+          <div class="setup-route" aria-label="Higgsfield setup route">
+            <span>Higgsfield</span>
+            <i>&rarr;</i>
+            <span>Edit Video</span>
+            <i>&rarr;</i>
+            <span>Seedance 2.5 Edit</span>
+          </div>
+          <div class="setup-visual">
+            <div class="setup-screenshot">
+              <img src="assets/interface/seedance-edit-setup.png" alt="Higgsfield Seedance 2.5 Edit setup showing prompt mode, uploaded video, uploaded image, 1080p, high bitrate, and sound off" loading="lazy" />
+            </div>
+            <div class="settings-grid" aria-label="Recommended Seedance setup settings">
+              <span class="setting-pill">Model: Seedance 2.5 Edit</span>
+              <span class="setting-pill">Mode: Prompt</span>
+              <span class="setting-pill">Resolution: 1080p</span>
+              <span class="setting-pill">Bitrate: High</span>
+              <span class="setting-pill">Sound: Off</span>
+            </div>
+          </div>
+          <p>Upload the motion reference video and the character image created in the previous steps.</p>
+        </article>
+
+        <article class="workflow-card prompt-step">
+          <div class="step">Step 04</div>
+          <h3>Add the replacement prompt</h3>
+          <p>Tell the model exactly what to change. Use the reference video as the motion blueprint while replacing only the selected person with the character image.</p>
+          <button class="workflow-cta" type="button" data-jump="#prompt">Build My Video Prompt &rarr;</button>
+          <div class="workflow-tip">Keep the prompt strict. Preserve the original movement, timing, framing, camera motion, environment, and scene whenever possible.</div>
+        </article>
+
+        <article class="workflow-card finish-step">
+          <div class="step">Step 05</div>
+          <h3>Finish the video</h3>
+          <p>Download, edit, and prepare it for posting.</p>
+          <div class="finish-stage" aria-label="Final video finishing stage">
+            <span class="finish-pill">Download result</span>
+            <span class="finish-pill">Edit in CapCut</span>
+            <span class="finish-pill">Prepare for posting</span>
+          </div>
+          <div class="workflow-tip">After Seedance finishes generating the video, download the result and bring it into CapCut for the final edit.</div>
         </article>
       </div>
     </section>
@@ -3146,7 +3533,7 @@
       });
     });
 
-    const resultVideos = document.querySelectorAll(".result-video");
+    const resultVideos = document.querySelectorAll(".result-video, .reference-video");
     if ("IntersectionObserver" in window) {
       const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
