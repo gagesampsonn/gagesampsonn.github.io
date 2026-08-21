@@ -1357,6 +1357,68 @@
       transform: rotate(-45deg);
     }
 
+    .workflow-walkthrough {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: 18px;
+      align-items: center;
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fffefb;
+      box-shadow: 0 14px 36px rgba(16, 16, 16, 0.05);
+    }
+
+    .walkthrough-copy {
+      border-top: 1px solid var(--ink);
+      padding-top: 16px;
+    }
+
+    .walkthrough-copy span {
+      display: inline-flex;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: var(--orange);
+      color: #111;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .walkthrough-copy h3 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .walkthrough-copy p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .loom-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #111;
+      aspect-ratio: 16 / 9;
+    }
+
+    .loom-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
     .guided-step {
       display: grid;
       grid-template-columns: 0.72fr 1.28fr;
@@ -2442,6 +2504,10 @@
         display: none;
       }
 
+      .workflow-walkthrough {
+        grid-template-columns: 1fr;
+      }
+
       .mini-results-gallery {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -2542,6 +2608,14 @@
       .workflow-order-strip {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .workflow-walkthrough {
+        padding: 14px;
+      }
+
+      .walkthrough-copy h3 {
+        font-size: 24px;
       }
 
       .flow-arrow {
@@ -2738,6 +2812,17 @@
         <span class="workflow-order-icon" aria-hidden="true"></span>
         <strong>Follow the order</strong>
         <span>Motion video &rarr; Character image &rarr; Higgsfield &rarr; Prompt &rarr; Generate</span>
+      </div>
+
+      <div class="workflow-walkthrough">
+        <div class="walkthrough-copy">
+          <span>Walkthrough video</span>
+          <h3>Watch the workflow once.</h3>
+          <p>See how the Titans process is used from the motion reference to the character image, prompt, and final video setup.</p>
+        </div>
+        <div class="loom-frame">
+          <iframe src="https://www.loom.com/embed/58d5844542754ee2bdfd734e6e3bc6a7" title="Titans workflow walkthrough video" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
       </div>
     </section>
 
