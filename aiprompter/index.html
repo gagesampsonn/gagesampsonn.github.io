@@ -205,6 +205,37 @@
       margin-top: 28px;
     }
 
+    .hero-principles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+      max-width: 660px;
+    }
+
+    .principle-chip {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 13px;
+      background: rgba(255, 255, 255, 0.64);
+    }
+
+    .principle-chip strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .principle-chip span {
+      color: #555954;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
     .reference-board {
       position: relative;
       display: grid;
@@ -1016,6 +1047,439 @@
       line-height: 1.5;
     }
 
+    .start-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .start-card {
+      position: relative;
+      min-height: 188px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .start-card::after {
+      content: ">";
+      position: absolute;
+      right: -11px;
+      top: 50%;
+      z-index: 2;
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      transform: translateY(-50%);
+    }
+
+    .start-card:last-child::after {
+      display: none;
+    }
+
+    .start-num,
+    .step-kicker,
+    .option-kicker {
+      display: inline-flex;
+      width: fit-content;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .start-card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: -0.035em;
+    }
+
+    .start-card p {
+      margin: 0;
+      color: #555954;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .guided-step {
+      display: grid;
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .step-summary {
+      position: sticky;
+      top: 92px;
+      border-top: 1px solid var(--ink);
+      padding-top: 18px;
+    }
+
+    .step-summary h2 {
+      font-size: clamp(30px, 3.4vw, 46px);
+    }
+
+    .step-summary p {
+      margin: 14px 0 0;
+      color: #555954;
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .control-list,
+    .quality-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .control-list span,
+    .quality-list span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 10px;
+      background: #fff;
+      color: #2f332f;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .path-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: var(--panel);
+    }
+
+    .path-card.dark {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .path-card.blue {
+      background: #263f70;
+      color: #fff;
+    }
+
+    .path-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .path-card p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .path-card.dark p,
+    .path-card.blue p {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .step-note,
+    .final-edit-note {
+      border-left: 4px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: #fff;
+      color: #4e534d;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .step-note strong,
+    .final-edit-note strong {
+      color: var(--ink);
+    }
+
+    .setup-panel {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .setup-steps {
+      display: grid;
+      gap: 9px;
+    }
+
+    .setup-step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: var(--panel);
+    }
+
+    .setup-step span {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .setup-step strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .setup-step p {
+      margin: 0;
+      color: #555954;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .setup-media-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .placeholder-frame {
+      min-height: 145px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(20, 20, 18, 0.28);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(rgba(20, 20, 18, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 20, 18, 0.035) 1px, transparent 1px),
+        #fbfbf8;
+      background-size: 18px 18px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .builder-mode-label {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .advanced-options {
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfbf8;
+    }
+
+    .advanced-options summary {
+      cursor: pointer;
+      padding: 13px 14px;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      list-style: none;
+    }
+
+    .advanced-options summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .advanced-content {
+      padding: 0 14px 14px;
+    }
+
+    .reference-reasons {
+      display: grid;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .reference-reasons span {
+      color: #555954;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .tag.good::before {
+      content: "\2713";
+      margin-right: 5px;
+    }
+
+    .tag.bad::before {
+      content: "\00d7";
+      margin-right: 5px;
+    }
+
+    .case-study-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .case-study-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: var(--panel);
+    }
+
+    .case-study-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .case-study-head h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .case-study-flow {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 26px minmax(0, 0.72fr) 26px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .case-media-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #111;
+    }
+
+    .case-media-label {
+      padding: 9px 10px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .case-media-card.dark .case-media-label {
+      background: #171817;
+      color: #bdbdb8;
+    }
+
+    .case-video,
+    .case-image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #111;
+    }
+
+    .case-image {
+      background: #fff;
+      object-position: center top;
+    }
+
+    .flow-arrow {
+      display: grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .mini-results-gallery {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .review-panel {
+      display: grid;
+      grid-template-columns: 1fr 0.88fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .review-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: var(--panel);
+    }
+
+    .review-card h3 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      letter-spacing: -0.035em;
+    }
+
+    .review-card p {
+      margin: 0;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .quality-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 0;
+    }
+
+    .setup-panel .setup-route span,
+    .setup-panel .setting-pill,
+    .review-card .finish-pill {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .setup-panel .setup-route i {
+      color: var(--muted);
+    }
+
     .builder {
       display: grid;
       grid-template-columns: 360px 1fr;
@@ -1672,7 +2136,10 @@
       .video-showcase-copy,
       .reference-video-grid,
       .builder,
-      .publish-card {
+      .publish-card,
+      .guided-step,
+      .setup-panel,
+      .review-panel {
         grid-template-columns: 1fr;
       }
 
@@ -1685,6 +2152,10 @@
       }
 
       .builder-panel {
+        position: static;
+      }
+
+      .step-summary {
         position: static;
       }
 
@@ -1718,6 +2189,18 @@
       }
 
       .video-collage {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .start-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .start-card::after {
+        display: none;
+      }
+
+      .mini-results-gallery {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
@@ -1761,8 +2244,23 @@
       .video-showcase-copy,
       .setup-visual,
       .slot-grid,
-      .note-row {
+      .note-row,
+      .hero-principles,
+      .start-grid,
+      .option-grid,
+      .control-list,
+      .quality-list,
+      .case-study-flow {
         grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        margin: 0 auto;
+        transform: rotate(90deg);
+      }
+
+      .mini-results-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .video-collage {
@@ -1824,15 +2322,13 @@
         <span>TITANS</span>
       </a>
       <div class="links">
-        <a href="#references">Reference Rules</a>
-        <a href="#image-presets">Image Presets</a>
-        <a href="#character-examples">Reference Photos</a>
-        <a href="#videos">Video References</a>
-        <a href="#prompt">Prompt Builder</a>
+        <a href="#start">Start Here</a>
+        <a href="#character-builder">Character Builder</a>
+        <a href="#prompt">Video Prompt</a>
       </div>
       <div class="nav-actions">
-        <button class="btn secondary" type="button" data-jump="#workflow">Workflow</button>
-        <button class="btn orange" type="button" data-jump="#prompt">Build Prompt</button>
+        <button class="btn secondary" type="button" data-jump="#character-builder">Character Builder</button>
+        <button class="btn orange" type="button" data-jump="#start">Start Here</button>
       </div>
     </nav>
   </header>
@@ -1841,17 +2337,19 @@
     <section class="hero">
       <div>
         <div class="eyebrow"><span class="dot"></span> Higgsfield + Seedance 2.5 Edit</div>
-        <h1>Titans Higgsfield Helper</h1>
+        <h1>Create Realistic AI TikTok Shop Videos</h1>
         <p class="hero-copy">
-          A simple reference workflow for TikTok Shop creators. Pick a clean
-          motion video, create a believable identity image, then use a strict
-          Seedance prompt that tells the model what to preserve and what to replace.
-          <strong>The reference video is the movement. The image reference is
-          the identity.</strong>
+          Turn a motion reference + character image into a realistic AI video
+          using the Titans workflow.
         </p>
+        <div class="hero-principles" aria-label="Titans reference hierarchy">
+          <div class="principle-chip"><strong>Video = Motion</strong><span>Movement, camera, framing, timing, and performance.</span></div>
+          <div class="principle-chip"><strong>Image = Identity</strong><span>Face, hair, body, clothing, product, and character look.</span></div>
+          <div class="principle-chip"><strong>Prompt = Rules</strong><span>What must stay locked and what gets replaced.</span></div>
+        </div>
         <div class="hero-actions">
-          <button class="btn orange" type="button" data-jump="#prompt">Generate the prompt</button>
-          <button class="btn secondary" type="button" data-jump="#character-examples">Check your references</button>
+          <button class="btn orange" type="button" data-jump="#start">START HERE</button>
+          <button class="btn secondary" type="button" data-jump="#prompt">Build Video Prompt</button>
         </div>
       </div>
 
@@ -1892,162 +2390,265 @@
       </div>
     </section>
 
-    <section class="section" id="references">
+    <section class="section" id="start">
       <div class="section-head">
-        <div class="index">01 / Reference rules</div>
+        <div class="index">Start here</div>
         <div class="section-title">
-          <h2>The prompt should not describe the whole video anymore.</h2>
+          <h2>The 5-step Titans workflow.</h2>
           <p>
-            Old text-to-video prompts tried to recreate every visual detail.
-            Reference editing works differently. The uploaded references already
-            carry most of the information. Your prompt should enforce the
-            hierarchy and stop the model from changing the wrong things.
+            Follow this order from top to bottom. Motion video first, character
+            image second, Higgsfield setup third, prompt fourth, final review
+            fifth.
           </p>
         </div>
       </div>
 
-      <div class="rule-strip">
-        <div class="rule-cell">
-          <div class="rule-num">Video controls</div>
-          <h3>Motion</h3>
-          <p>Body movement, gestures, posture, head turns, facial timing, lip movement, pacing, and scene behavior.</p>
+      <div class="start-grid" aria-label="Five step Titans workflow">
+        <article class="start-card">
+          <span class="start-num">01</span>
+          <h3>Get Motion</h3>
+          <p>Record your own reference video or use an existing reference clip you have permission to use.</p>
+        </article>
+        <article class="start-card">
+          <span class="start-num">02</span>
+          <h3>Get Character</h3>
+          <p>Use an existing character/reference photo or create a new character with the Titans Character Builder.</p>
+        </article>
+        <article class="start-card">
+          <span class="start-num">03</span>
+          <h3>Open Higgsfield</h3>
+          <p>Open Higgsfield and select the recommended Seedance workflow.</p>
+        </article>
+        <article class="start-card">
+          <span class="start-num">04</span>
+          <h3>Attach + Prompt</h3>
+          <p>Attach the motion video as <strong>@Video1</strong>, attach the character image as <strong>@Image1</strong>, then generate your prompt below.</p>
+        </article>
+        <article class="start-card">
+          <span class="start-num">05</span>
+          <h3>Generate</h3>
+          <p>Create the video, review the result, make adjustments if necessary, then export.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="motion-reference">
+      <div class="guided-step">
+        <div class="step-summary">
+          <span class="step-kicker">Step 1</span>
+          <h2>STEP 1 - Choose Your Motion Reference</h2>
+          <p>
+            The reference video controls the movement blueprint. It does not
+            need to look like your final character.
+          </p>
+          <div class="control-list" aria-label="Motion reference controls">
+            <span>Movement</span>
+            <span>Camera movement</span>
+            <span>Framing</span>
+            <span>Timing</span>
+            <span>Body positioning</span>
+            <span>Performance</span>
+          </div>
         </div>
-        <div class="rule-cell">
-          <div class="rule-num">Video controls</div>
-          <h3>Camera</h3>
-          <p>Camera angle, framing, movement, perspective, subject scale, composition, background, and timing.</p>
-        </div>
-        <div class="rule-cell">
-          <div class="rule-num">Image controls</div>
-          <h3>Identity</h3>
-          <p>Face, hair, body proportions, skin tone, clothing, colors, and overall person appearance.</p>
-        </div>
-        <div class="rule-cell">
-          <div class="rule-num">Prompt controls</div>
-          <h3>Boundaries</h3>
-          <p>Only replace the person. Do not restage, redesign, improve, reinterpret, or change the scene.</p>
+
+        <div>
+          <div class="option-grid">
+            <article class="path-card dark">
+              <span class="option-kicker">Option A</span>
+              <h3>Record It Yourself</h3>
+              <p>Best for maximum control and originality. Record the exact motion, timing, camera behavior, and framing you want the AI character to perform.</p>
+            </article>
+            <article class="path-card blue">
+              <span class="option-kicker">Option B</span>
+              <h3>Existing Reference Video</h3>
+              <p>Use an existing reference clip that you have permission or rights to use as the motion reference.</p>
+            </article>
+          </div>
+
+          <div class="step-note">
+            <strong>The person in the motion video does not need to look like your final character.</strong>
+            The motion video primarily controls movement and camera behavior.
+          </div>
+
+          <div class="reference-video-grid" aria-label="Good and bad motion reference examples">
+            <article class="reference-video-card">
+              <div class="reference-video-media">
+                <span class="reference-badge good">Good reference video</span>
+                <video class="reference-video" poster="assets/video-references/reference-good.jpg" muted loop playsinline preload="metadata" aria-label="Good stable reference video example">
+                  <source src="assets/video-references/reference-good.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <div class="reference-video-copy">
+                <h3>Clean & Stable</h3>
+                <p>The camera stays still, the subject is sharp and well lit, and the background is fixed.</p>
+                <div class="quick-bullets" aria-label="Good reference video traits">
+                  <span>GOOD &check; Stable camera</span>
+                  <span>Good lighting</span>
+                  <span>Sharp subject</span>
+                  <span>Fixed background</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="reference-video-card">
+              <div class="reference-video-media">
+                <span class="reference-badge bad">Bad reference video</span>
+                <video class="reference-video" poster="assets/video-references/reference-bad.jpg" muted loop playsinline preload="metadata" aria-label="Bad shaky reference video example">
+                  <source src="assets/video-references/reference-bad.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <div class="reference-video-copy">
+                <h3>Shaky & Unclear</h3>
+                <p>Shaky camera, blur, changing lighting, and shifting framing give the model too much unstable information to track.</p>
+                <div class="quick-bullets" aria-label="Bad reference video traits">
+                  <span>BAD &times; Shaky camera</span>
+                  <span>Poor lighting</span>
+                  <span>Motion blur</span>
+                  <span>Changing framing</span>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="image-presets">
+    <section class="section" id="character-builder">
       <div class="section-head">
-        <div class="index">02 / Image character generator</div>
+        <div class="index">Step 2 / Character image</div>
         <div class="section-title">
-          <h2>Pick age, gender, and profession. Let the details roll.</h2>
+          <h2>STEP 2 - Choose or Create Your Character</h2>
           <p>
-            This is mainly for image generation. Use it in ChatGPT, Gemini, or
-            another image model to create the clean Image1 reference. The user
-            controls the age, gender, and profession or major identifier. The
-            site rolls compatible body, face, hair, eyes, skin, outfit, and
-            realism details.
+            Your image controls who appears in the final video. Use a clean
+            existing reference image or create a new Image1 character below.
           </p>
         </div>
       </div>
 
+      <div class="option-grid">
+        <article class="path-card">
+          <span class="option-kicker">Option A</span>
+          <h3>Use an Existing Image</h3>
+          <p>Upload a clean reference image of the person or character you want used.</p>
+        </article>
+        <article class="path-card">
+          <span class="option-kicker">Option B</span>
+          <h3>Create a New Character</h3>
+          <p>Use the Titans Character Builder below to generate a new character reference.</p>
+        </article>
+      </div>
+
       <div class="builder image-preset-builder">
         <form class="builder-panel" id="characterForm">
-          <div class="field">
-            <label for="imagePromptMode">Image prompt type</label>
-            <select id="imagePromptMode">
-              <option value="character">Create new character</option>
-              <option value="avatar">Match existing avatar</option>
-            </select>
-            <p class="form-hint">Use avatar mode when you already have a character image and want to match another reference image's lighting, scale, and phone angle.</p>
-          </div>
-
+          <div class="builder-mode-label">Basic</div>
           <div id="characterFields">
-          <div class="field">
-            <label for="sourceSubject">Source subject</label>
-            <select id="sourceSubject">
-              <option value="man">man</option>
-              <option value="person in the reference image">person in the reference image</option>
-              <option value="woman">woman</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="characterAge">Age</label>
-            <input id="characterAge" type="number" min="19" max="85" value="24" inputmode="numeric" />
-            <p class="form-hint">Use adults only. The prompt will always say adult.</p>
-          </div>
-
-          <div class="field">
-            <label for="characterGender">Gender</label>
-            <select id="characterGender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-            <p class="form-hint">This controls compatible hair, presentation, and outfit wording.</p>
-          </div>
-
-          <div class="field">
-            <label for="professionSelect">Profession or major identifier</label>
-            <select id="professionSelect">
-              <option value="construction">Construction Worker</option>
-              <option value="nurse">Nurse</option>
-              <option value="chef">Chef</option>
-              <option value="warehouse">Warehouse Worker</option>
-              <option value="mechanic">Mechanic</option>
-              <option value="teacher">Teacher</option>
-              <option value="fitnessCoach">Fitness Coach</option>
-              <option value="realEstate">Real Estate Agent</option>
-              <option value="retail">Retail Worker</option>
-              <option value="delivery">Delivery Driver</option>
-              <option value="officeManager">Office Manager</option>
-              <option value="salonStylist">Salon Stylist</option>
-              <option value="bartender">Bartender</option>
-              <option value="security">Security Guard</option>
-              <option value="farmer">Farm Worker</option>
-              <option value="electrician">Electrician</option>
-              <option value="plumber">Plumber</option>
-              <option value="collegeStudent">College Student</option>
-              <option value="suburbanParent">Suburban Parent</option>
-              <option value="creator">TikTok Shop Creator</option>
-              <option value="custom">Custom identifier</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="customProfession">Custom identifier</label>
-            <input id="customProfession" type="text" placeholder="Example: golf dad, skincare founder, boutique owner" />
-            <p class="form-hint">Only used when Custom identifier is selected.</p>
-          </div>
-
-          <div class="field">
-            <label for="productInstruction">Product or outfit detail</label>
-            <textarea id="productInstruction" placeholder="Example: Include the exact red branded baseball cap. Keep it clean, centered, and easy to see."></textarea>
-            <p class="form-hint">If the product is a hat, shirt, jacket, glasses, jewelry, bag, or anything worn/held, describe it here. Otherwise the random outfit may not match what you need to sell.</p>
-          </div>
-          </div>
-
-          <div id="avatarFields" class="is-hidden">
             <div class="field">
-              <label for="avatarPronoun">Avatar pronoun</label>
-              <select id="avatarPronoun">
-                <option value="her">Her</option>
-                <option value="him">Him</option>
-                <option value="them">Them</option>
+              <label for="characterAge">Age</label>
+              <input id="characterAge" type="number" min="19" max="85" value="24" inputmode="numeric" />
+              <p class="form-hint">Use adults only. The prompt will always say adult.</p>
+            </div>
+
+            <div class="field">
+              <label for="characterGender">Gender</label>
+              <select id="characterGender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
-              <p class="form-hint">Controls the Make her / him / them wording.</p>
+              <p class="form-hint">This controls compatible hair, presentation, and outfit wording.</p>
             </div>
 
             <div class="field">
-              <label for="avatarReferenceName">Lighting / scale reference</label>
-              <input id="avatarReferenceName" type="text" value="[reference image]" />
+              <label for="professionSelect">Character / Profession</label>
+              <select id="professionSelect">
+                <option value="construction">Construction Worker</option>
+                <option value="nurse">Nurse</option>
+                <option value="chef">Chef</option>
+                <option value="warehouse">Warehouse Worker</option>
+                <option value="mechanic">Mechanic</option>
+                <option value="teacher">Teacher</option>
+                <option value="fitnessCoach">Fitness Coach</option>
+                <option value="realEstate">Real Estate Agent</option>
+                <option value="retail">Retail Worker</option>
+                <option value="delivery">Delivery Driver</option>
+                <option value="officeManager">Office Manager</option>
+                <option value="salonStylist">Salon Stylist</option>
+                <option value="bartender">Bartender</option>
+                <option value="security">Security Guard</option>
+                <option value="farmer">Farm Worker</option>
+                <option value="electrician">Electrician</option>
+                <option value="plumber">Plumber</option>
+                <option value="collegeStudent">College Student</option>
+                <option value="suburbanParent">Suburban Parent</option>
+                <option value="creator">TikTok Shop Creator</option>
+                <option value="custom">Custom identifier</option>
+              </select>
             </div>
 
             <div class="field">
-              <label for="avatarImageName">Avatar image</label>
-              <input id="avatarImageName" type="text" value="[image of your avatar]" />
-            </div>
-
-            <div class="field">
-              <label for="avatarChanges">Changes to make</label>
-              <textarea id="avatarChanges" placeholder="Example: prettier, more blonde, college girl vibe, blue eyes. With the same lighting on her face and same scale as the blue jacket image."></textarea>
-              <p class="form-hint">Example: prettier, more blonde, college girl vibe, blue eyes. Keep the same face lighting and scale as the reference.</p>
+              <label for="productInstruction">Product or Outfit</label>
+              <textarea id="productInstruction" placeholder="Example: Include the exact red branded baseball cap. Keep it clean, centered, and easy to see."></textarea>
+              <p class="form-hint">If the product is a hat, shirt, jacket, glasses, jewelry, bag, or anything worn/held, describe it here.</p>
             </div>
           </div>
+
+          <details class="advanced-options">
+            <summary>Advanced Options</summary>
+            <div class="advanced-content">
+              <div class="field">
+                <label for="imagePromptMode">Prompt type</label>
+                <select id="imagePromptMode">
+                  <option value="character">Create new character</option>
+                  <option value="avatar">Match existing avatar</option>
+                </select>
+                <p class="form-hint">Use avatar mode when you already have a character image and want to match another reference image's lighting, scale, and phone angle.</p>
+              </div>
+
+              <div id="characterAdvancedFields">
+                <div class="field">
+                  <label for="sourceSubject">Source subject</label>
+                  <select id="sourceSubject">
+                    <option value="man">man</option>
+                    <option value="person in the reference image">person in the reference image</option>
+                    <option value="woman">woman</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="customProfession">Custom identifier</label>
+                  <input id="customProfession" type="text" placeholder="Example: golf dad, skincare founder, boutique owner" />
+                  <p class="form-hint">Only used when Custom identifier is selected.</p>
+                </div>
+              </div>
+
+              <div id="avatarFields" class="is-hidden">
+                <div class="field">
+                  <label for="avatarPronoun">Pronouns</label>
+                  <select id="avatarPronoun">
+                    <option value="her">Her</option>
+                    <option value="him">Him</option>
+                    <option value="them">Them</option>
+                  </select>
+                  <p class="form-hint">Controls the Make her / him / them wording.</p>
+                </div>
+
+                <div class="field">
+                  <label for="avatarReferenceName">Lighting / scale reference</label>
+                  <input id="avatarReferenceName" type="text" value="[reference image]" />
+                </div>
+
+                <div class="field">
+                  <label for="avatarImageName">Avatar image</label>
+                  <input id="avatarImageName" type="text" value="[image of your avatar]" />
+                </div>
+
+                <div class="field">
+                  <label for="avatarChanges">Changes to make</label>
+                  <textarea id="avatarChanges" placeholder="Example: prettier, more blonde, college girl vibe, blue eyes. With the same lighting on her face and same scale as the blue jacket image."></textarea>
+                  <p class="form-hint">Example: prettier, more blonde, college girl vibe, blue eyes. Keep the same face lighting and scale as the reference.</p>
+                </div>
+              </div>
+            </div>
+          </details>
 
           <div class="builder-actions">
             <button class="btn orange" type="submit" id="generateImagePromptBtn">Generate character</button>
@@ -2096,14 +2697,12 @@
 
     <section class="section" id="character-examples">
       <div class="section-head">
-        <div class="index">03 / Character reference photos</div>
+        <div class="index">Character examples</div>
         <div class="section-title">
-          <h2>Strong reference photos look clean, realistic, and ready to use.</h2>
+          <h2>Good vs Bad Character References</h2>
           <p>
-            These example characters are also the Image1 reference-photo
-            examples. Aim for a clear adult person, clean background, believable
-            styling, and enough visible body and clothing information for the
-            video edit to stay stable.
+            Strong Image1 references are simple, realistic, and easy for the
+            model to keep consistent across frames.
           </p>
         </div>
       </div>
@@ -2114,9 +2713,13 @@
             <img src="assets/character-examples/mechanic-worker.png" alt="Adult male mechanic-style worker character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag good">Good character</span>
+            <span class="tag good">Good reference</span>
             <h3>Mechanic-style worker</h3>
-            <p>Clear adult identity, believable workwear texture, visible hands, and a clean studio background that makes the character easy to reuse.</p>
+            <div class="reference-reasons">
+              <span>Clear subject</span>
+              <span>Simple readable outfit</span>
+              <span>Realistic lighting</span>
+            </div>
           </div>
         </article>
 
@@ -2125,9 +2728,13 @@
             <img src="assets/character-examples/light-blue-outfit.png" alt="Adult woman in a light-blue outfit character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag good">Good character</span>
+            <span class="tag good">Good reference</span>
             <h3>Light-blue outfit</h3>
-            <p>Simple front-facing pose, readable clothing color, natural skin texture, and consistent studio lighting for a strong identity reference.</p>
+            <div class="reference-reasons">
+              <span>Clean silhouette</span>
+              <span>Easy clothing shape</span>
+              <span>Natural skin texture</span>
+            </div>
           </div>
         </article>
 
@@ -2136,9 +2743,13 @@
             <img src="assets/character-examples/blonde-college-woman.png" alt="Adult blonde college woman character example on a clean studio background" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag good">Good character</span>
+            <span class="tag good">Good reference</span>
             <h3>Blonde college woman</h3>
-            <p>Distinct hair, outfit, face, and styling details give the image model enough information to keep the character consistent.</p>
+            <div class="reference-reasons">
+              <span>Distinct identity</span>
+              <span>Consistent studio lighting</span>
+              <span>Usable outfit detail</span>
+            </div>
           </div>
         </article>
       </div>
@@ -2159,9 +2770,13 @@
             <img src="assets/character-examples/bad-lowres-proportions.png" alt="Low-quality adult blonde woman character example with off proportions and obvious AI artifacts" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag bad">Bad character</span>
+            <span class="tag bad">Bad reference</span>
             <h3>Low-res and AI-looking</h3>
-            <p>Low resolution, soft detail, off proportions, and obvious AI facial features make the character harder to preserve cleanly in video.</p>
+            <div class="reference-reasons">
+              <span>Low-quality source image</span>
+              <span>Poor proportions</span>
+              <span>Obviously AI-generated appearance</span>
+            </div>
           </div>
         </article>
 
@@ -2170,9 +2785,13 @@
             <img src="assets/character-examples/bad-tactical-worker.png" alt="Over-detailed adult male character example with heavy dirt, straps, pockets, zippers, and difficult hands" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag bad">Bad character</span>
+            <span class="tag bad">Bad reference</span>
             <h3>Texture overload</h3>
-            <p>Too many pockets, straps, zippers, dirt marks, and complicated hand shapes can flicker, smear, or drift during the video edit.</p>
+            <div class="reference-reasons">
+              <span>Too many straps and zippers</span>
+              <span>Complicated hands</span>
+              <span>Heavy texture can flicker</span>
+            </div>
           </div>
         </article>
 
@@ -2181,163 +2800,117 @@
             <img src="assets/character-examples/bad-layered-college-woman.png" alt="Over-detailed adult blonde woman character example with layered clothing, jewelry, hair details, and difficult hands" loading="lazy" />
           </div>
           <div class="character-example-copy">
-            <span class="tag bad">Bad character</span>
+            <span class="tag bad">Bad reference</span>
             <h3>Hard to keep consistent</h3>
-            <p>Layered clothing, jewelry, messy hair detail, and visible fingers create many moving edges that can change from frame to frame.</p>
+            <div class="reference-reasons">
+              <span>Excess jewelry and layers</span>
+              <span>Tiny lace and hair details</span>
+              <span>Hands/fingers are difficult</span>
+            </div>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="section" id="videos">
+    <section class="section" id="higgsfield-setup">
       <div class="section-head">
-        <div class="index">04 / Video references</div>
+        <div class="index">Step 3 / Higgsfield setup</div>
         <div class="section-title">
-          <h2>Clean reference videos give the model a better blueprint.</h2>
+          <h2>STEP 3 - Set Up Higgsfield / Seedance</h2>
           <p>
-            The reference video controls the motion, camera, timing, framing,
-            and scene behavior. Stable footage gives Seedance less chaos to
-            track and usually produces cleaner replacement results.
+            Load the motion video and character image before you paste the
+            Titans prompt. Beginners should match this setup first.
           </p>
         </div>
       </div>
 
-      <div class="reference-video-grid">
-        <article class="reference-video-card">
-          <div class="reference-video-media">
-            <span class="reference-badge good">Good reference video</span>
-            <video class="reference-video" poster="assets/video-references/reference-good.jpg" muted loop playsinline preload="metadata" aria-label="Good stable reference video example">
-              <source src="assets/video-references/reference-good.mp4" type="video/mp4" />
-            </video>
+      <div class="setup-panel">
+        <div class="setup-steps" aria-label="Seedance setup steps">
+          <article class="setup-step">
+            <span>1</span>
+            <div>
+              <strong>Open Higgsfield</strong>
+              <p>Start in the video editing flow.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>2</span>
+            <div>
+              <strong>Select Seedance / recommended editing model</strong>
+              <p>Use the recommended Seedance edit workflow for this helper.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>3</span>
+            <div>
+              <strong>Add motion reference as @Video1</strong>
+              <p>This controls movement, camera, framing, timing, and performance.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>4</span>
+            <div>
+              <strong>Add character image as @Image1</strong>
+              <p>This controls the person, identity, clothing, and product look.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>5</span>
+            <div>
+              <strong>Keep sound/audio generation off during testing</strong>
+              <p>Focus first on clean motion, face, hands, product, and clothing.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>6</span>
+            <div>
+              <strong>Paste the generated Titans prompt</strong>
+              <p>Use the Step 4 builder below after both references are attached.</p>
+            </div>
+          </article>
+          <article class="setup-step">
+            <span>7</span>
+            <div>
+              <strong>Generate</strong>
+              <p>Review the output before exporting or editing.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="setup-media-stack">
+          <div class="setup-route" aria-label="Higgsfield setup route">
+            <span>Higgsfield</span>
+            <i>&rarr;</i>
+            <span>Edit Video</span>
+            <i>&rarr;</i>
+            <span>Seedance 2.5 Edit</span>
           </div>
-          <div class="reference-video-copy">
-            <h3>Clean & Stable</h3>
-            <p>The camera stays completely still, the subject is sharp and well lit, and the lighting stays consistent. The fixed background gives the model a clean blueprint for the person's movement.</p>
-            <div class="quick-bullets" aria-label="Good reference video traits">
-              <span>GOOD &check; Stable camera</span>
-              <span>Good lighting</span>
-              <span>Sharp subject</span>
-              <span>Fixed background</span>
+          <div class="setup-visual">
+            <div class="setup-screenshot">
+              <img src="assets/interface/seedance-edit-setup.png" alt="Higgsfield Seedance 2.5 Edit setup showing prompt mode, uploaded video, uploaded image, 1080p, high bitrate, and sound off" loading="lazy" />
+            </div>
+            <div class="settings-grid" aria-label="Recommended Seedance setup settings">
+              <span class="setting-pill">Model: Seedance 2.5 Edit</span>
+              <span class="setting-pill">Mode: Prompt</span>
+              <span class="setting-pill">Resolution: 1080p</span>
+              <span class="setting-pill">Bitrate: High</span>
+              <span class="setting-pill">Sound: Off</span>
             </div>
           </div>
-        </article>
-
-        <article class="reference-video-card">
-          <div class="reference-video-media">
-            <span class="reference-badge bad">Bad reference video</span>
-            <video class="reference-video" poster="assets/video-references/reference-bad.jpg" muted loop playsinline preload="metadata" aria-label="Bad shaky reference video example">
-              <source src="assets/video-references/reference-bad.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <div class="reference-video-copy">
-            <h3>Shaky & Unclear</h3>
-            <p>The camera shakes, the subject blurs during movement, lighting is darker and less consistent, and the framing/background keep changing. This increases face warping, identity drift, flickering, and unstable backgrounds.</p>
-            <div class="quick-bullets" aria-label="Bad reference video traits">
-              <span>BAD &times; Shaky camera</span>
-              <span>Poor lighting</span>
-              <span>Motion blur</span>
-              <span>Changing framing</span>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <div class="video-showcase-copy">
-        <div class="video-proof-card">
-          <strong>Results made with this workflow.</strong>
-          <p>The collage uses short, vertical clips so creators can immediately see how the helper turns reference-driven prompts into usable AI video results.</p>
+          <div class="placeholder-frame">[Higgsfield screenshot / video here]</div>
+          <div class="placeholder-frame">[Attach @Video1 + @Image1 screen recording here]</div>
         </div>
-        <div class="video-proof-card">
-          <strong>Same simple workflow.</strong>
-          <p>Each result comes from the same core idea: preserve the motion video, replace only the chosen subject or object, and keep the final clip realistic and stable.</p>
-        </div>
-      </div>
-
-      <div class="video-collage" aria-label="AI video examples made with the Titans prompt builder">
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-01.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 1">
-            <source src="assets/video-examples/prompt-result-01.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>01</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-02.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 2">
-            <source src="assets/video-examples/prompt-result-02.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>02</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-03.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 3">
-            <source src="assets/video-examples/prompt-result-03.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>03</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-04.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 4">
-            <source src="assets/video-examples/prompt-result-04.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>04</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-05.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 5">
-            <source src="assets/video-examples/prompt-result-05.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>05</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-06.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 6">
-            <source src="assets/video-examples/prompt-result-06.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>06</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-07.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 7">
-            <source src="assets/video-examples/prompt-result-07.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>07</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-08.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 8">
-            <source src="assets/video-examples/prompt-result-08.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>08</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-09.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 9">
-            <source src="assets/video-examples/prompt-result-09.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>09</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-10.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 10">
-            <source src="assets/video-examples/prompt-result-10.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>10</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-11.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 11">
-            <source src="assets/video-examples/prompt-result-11.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>11</span></div>
-        </article>
-        <article class="video-result-card">
-          <video class="result-video" poster="assets/video-examples/prompt-result-12.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 12">
-            <source src="assets/video-examples/prompt-result-12.mp4" type="video/mp4" />
-          </video>
-          <div class="video-result-meta"><strong>Prompt result</strong><span>12</span></div>
-        </article>
       </div>
     </section>
 
     <section class="section" id="prompt">
       <div class="section-head">
-        <div class="index">05 / Prompt builder</div>
+        <div class="index">Step 4 / Video prompt</div>
         <div class="section-title">
-          <h2>Generate a strict person-replacement prompt.</h2>
+          <h2>STEP 4 - Build Your Video Prompt</h2>
           <p>
-            The output is built for the normal Seedance 2.5 Edit setup:
-            <strong>@Video1</strong> is the base motion video, and
-            <strong>@Image1</strong> is the replacement identity image.
+            The references provide the motion and identity. The prompt tells
+            the model what must remain consistent and what should change.
           </p>
         </div>
       </div>
@@ -2402,110 +2975,146 @@
       </div>
     </section>
 
-    <section class="section" id="workflow">
+    <section class="section" id="generate-review">
       <div class="section-head">
-        <div class="index">06 / Creator workflow</div>
+        <div class="index">Step 5 / Generate + review</div>
         <div class="section-title">
-          <h2>The exact order of operations.</h2>
+          <h2>STEP 5 - Generate & Review</h2>
           <p>
-            Follow this sequence from reference video to finished AI video. Each
-            step matters for getting a cleaner, more realistic result.
+            Run the generation, then check the failure points before exporting
+            or posting.
           </p>
         </div>
       </div>
 
-      <div class="workflow-track" aria-label="Motion video to finished AI video workflow">
-        <article class="workflow-card">
-          <div class="step">Step 01</div>
-          <h3>Choose your motion reference</h3>
-          <p>Pick the movement you want to recreate.</p>
-          <div class="workflow-options">
-            <div class="workflow-option">
-              <span>Option A</span>
-              <strong>Record it yourself</strong>
-              <p>Record yourself performing the movements, camera motion, timing, and framing you want the AI video to follow.</p>
-            </div>
-            <div class="workflow-option">
-              <span>Option B</span>
-              <strong>Use an existing video</strong>
-              <p>Use a suitable reference video from TikTok or another platform that demonstrates the movement and camera style you want. Use content you have permission to use.</p>
-            </div>
+      <div class="review-panel">
+        <article class="review-card">
+          <h3>Before export, check this.</h3>
+          <div class="quality-list" aria-label="Generation review checklist">
+            <span>Identity stayed consistent</span>
+            <span>Hands and face look natural</span>
+            <span>Clothing/product stayed consistent</span>
+            <span>Motion matches the reference</span>
+            <span>Camera movement stayed accurate</span>
+            <span>No flickering or warping</span>
+            <span>Background stayed believable</span>
+            <span>Product details are correct</span>
           </div>
-          <div class="workflow-tip">Best results: stable camera, clear lighting, sharp subject, and a simple background.</div>
         </article>
 
-        <article class="workflow-card">
-          <div class="step">Step 02</div>
-          <h3>Create your character image</h3>
-          <p>Choose what the person in the final video should look like.</p>
-          <div class="workflow-options">
-            <div class="workflow-option">
-              <span>Option A</span>
-              <strong>Start from a reference image</strong>
-              <p>Use a clear reference image you have permission to use from TikTok, Pinterest, or another source.</p>
-            </div>
-            <div class="workflow-option">
-              <span>Option B</span>
-              <strong>Create a new AI character</strong>
-              <p>Use the Image Prompt Builder on this website to generate an entirely new person designed specifically for the video.</p>
-            </div>
-          </div>
-          <div class="workflow-tip">Match the pose, framing, angle, and lighting of the beginning of your motion reference whenever possible.</div>
-        </article>
-
-        <article class="workflow-card video-step">
-          <div class="step">Step 03</div>
-          <h3>Set up Higgsfield</h3>
-          <p>Load everything into Seedance Edit.</p>
-          <div class="setup-route" aria-label="Higgsfield setup route">
-            <span>Higgsfield</span>
-            <i>&rarr;</i>
-            <span>Edit Video</span>
-            <i>&rarr;</i>
-            <span>Seedance 2.5 Edit</span>
-          </div>
-          <div class="setup-visual">
-            <div class="setup-screenshot">
-              <img src="assets/interface/seedance-edit-setup.png" alt="Higgsfield Seedance 2.5 Edit setup showing prompt mode, uploaded video, uploaded image, 1080p, high bitrate, and sound off" loading="lazy" />
-            </div>
-            <div class="settings-grid" aria-label="Recommended Seedance setup settings">
-              <span class="setting-pill">Model: Seedance 2.5 Edit</span>
-              <span class="setting-pill">Mode: Prompt</span>
-              <span class="setting-pill">Resolution: 1080p</span>
-              <span class="setting-pill">Bitrate: High</span>
-              <span class="setting-pill">Sound: Off</span>
-            </div>
-          </div>
-          <p>Upload the motion reference video and the character image created in the previous steps.</p>
-        </article>
-
-        <article class="workflow-card prompt-step">
-          <div class="step">Step 04</div>
-          <h3>Add the replacement prompt</h3>
-          <p>Tell the model exactly what to change. Use the reference video as the motion blueprint while replacing only the selected person with the character image.</p>
-          <button class="workflow-cta" type="button" data-jump="#prompt">Build My Video Prompt &rarr;</button>
-          <div class="workflow-tip">Keep the prompt strict. Preserve the original movement, timing, framing, camera motion, environment, and scene whenever possible.</div>
-        </article>
-
-        <article class="workflow-card finish-step">
-          <div class="step">Step 05</div>
-          <h3>Finish the video</h3>
-          <p>Download, edit, and prepare it for posting.</p>
+        <article class="review-card">
+          <h3>Final Edit</h3>
+          <p>
+            Run the finished video through your normal editing workflow such as
+            CapCut to trim the clip, add captions, sound, overlays, branding,
+            or other final edits.
+          </p>
           <div class="finish-stage" aria-label="Final video finishing stage">
             <span class="finish-pill">Download result</span>
             <span class="finish-pill">Edit in CapCut</span>
             <span class="finish-pill">Prepare for posting</span>
           </div>
-          <div class="workflow-tip">After Seedance finishes generating the video, download the result and bring it into CapCut for final polish, captions, pacing, and posting prep. Follow TikTok's AI disclosure rules when posting AI-generated content.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="case-studies">
+      <div class="section-head">
+        <div class="index">Examples / Reference to result</div>
+        <div class="section-title">
+          <h2>Reference &rarr; Image &rarr; Final Result</h2>
+          <p>
+            The point is simple: this movement plus this character image becomes
+            the final AI video when the prompt keeps the hierarchy locked.
+          </p>
+        </div>
+      </div>
+
+      <div class="case-study-grid">
+        <article class="case-study-card">
+          <div class="case-study-head">
+            <h3>Person Replacement Case Study</h3>
+            <span class="tag good">Complete example</span>
+          </div>
+          <div class="case-study-flow" aria-label="Motion reference plus character image to final AI video">
+            <div class="case-media-card dark">
+              <div class="case-media-label">Motion Reference</div>
+              <video class="case-video result-video" poster="assets/hero-example/hero-motion.jpg" muted loop playsinline preload="metadata" aria-label="Motion reference used for the case study">
+                <source src="assets/hero-example/hero-motion.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">&rarr;</div>
+            <div class="case-media-card">
+              <div class="case-media-label">Character Image</div>
+              <img class="case-image" src="assets/hero-example/hero-character.png" alt="Character image used for the case study" loading="lazy" />
+            </div>
+            <div class="flow-arrow" aria-hidden="true">&rarr;</div>
+            <div class="case-media-card dark">
+              <div class="case-media-label">Final AI Video</div>
+              <video class="case-video result-video" poster="assets/hero-example/hero-result.jpg" muted loop playsinline preload="metadata" aria-label="Final AI video result for the case study">
+                <source src="assets/hero-example/hero-result.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="video-showcase-copy">
+        <div class="video-proof-card">
+          <strong>More results made with this workflow.</strong>
+          <p>These clips stay secondary so the page teaches the process first and shows extra proof after.</p>
+        </div>
+        <div class="video-proof-card">
+          <strong>Same core idea.</strong>
+          <p>Preserve the motion video, replace only the selected subject or object, and keep the final clip stable.</p>
+        </div>
+      </div>
+
+      <div class="mini-results-gallery" aria-label="Additional AI video examples made with the Titans prompt builder">
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-01.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 1">
+            <source src="assets/video-examples/prompt-result-01.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>01</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-02.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 2">
+            <source src="assets/video-examples/prompt-result-02.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>02</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-03.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 3">
+            <source src="assets/video-examples/prompt-result-03.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>03</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-04.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 4">
+            <source src="assets/video-examples/prompt-result-04.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>04</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-05.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 5">
+            <source src="assets/video-examples/prompt-result-05.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>05</span></div>
+        </article>
+        <article class="video-result-card">
+          <video class="result-video" poster="assets/video-examples/prompt-result-06.jpg" muted loop playsinline preload="metadata" aria-label="Prompt builder result video 6">
+            <source src="assets/video-examples/prompt-result-06.mp4" type="video/mp4" />
+          </video>
+          <div class="video-result-meta"><strong>Result</strong><span>06</span></div>
         </article>
       </div>
     </section>
 
     <section class="section" id="publish">
       <div class="section-head">
-        <div class="index">07 / Final check</div>
+        <div class="index">Final quality checklist</div>
         <div class="section-title">
-          <h2>Before posting to TikTok Shop, check the failure points.</h2>
+          <h2>Use it only when the reference hierarchy holds.</h2>
           <p>
             The final export should look like the same reference clip with a
             clean replacement. If identity, hands, face, clothing, or background
@@ -2525,6 +3134,44 @@
           <h3>Use it when the reference hierarchy holds.</h3>
           <p>The motion, camera, timing, framing, and scene match the reference video while the replacement identity stays stable from Image 1.</p>
         </article>
+      </div>
+    </section>
+
+    <section class="section" id="references">
+      <div class="section-head">
+        <div class="index">Advanced / Reference rules</div>
+        <div class="section-title">
+          <h2>Understanding Your References</h2>
+          <p>
+            This is the deeper reason the workflow works. The uploaded
+            references already carry most of the information. Your prompt should
+            enforce the hierarchy and stop the model from changing the wrong
+            things.
+          </p>
+        </div>
+      </div>
+
+      <div class="rule-strip">
+        <div class="rule-cell">
+          <div class="rule-num">Video controls</div>
+          <h3>Motion</h3>
+          <p>Body movement, gestures, posture, head turns, facial timing, lip movement, pacing, and scene behavior.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Video controls</div>
+          <h3>Camera</h3>
+          <p>Camera angle, framing, movement, perspective, subject scale, composition, background, and timing.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Image controls</div>
+          <h3>Identity</h3>
+          <p>Face, hair, body proportions, skin tone, clothing, colors, products, and overall person appearance.</p>
+        </div>
+        <div class="rule-cell">
+          <div class="rule-num">Prompt controls</div>
+          <h3>Boundaries</h3>
+          <p>Only replace the intended subject. Do not restage, redesign, improve, reinterpret, or change the scene.</p>
+        </div>
       </div>
     </section>
   </main>
@@ -3272,6 +3919,7 @@
     const characterForm = document.getElementById("characterForm");
     const imagePromptMode = document.getElementById("imagePromptMode");
     const characterFields = document.getElementById("characterFields");
+    const characterAdvancedFields = document.getElementById("characterAdvancedFields");
     const avatarFields = document.getElementById("avatarFields");
     const sourceSubject = document.getElementById("sourceSubject");
     const characterAge = document.getElementById("characterAge");
@@ -3490,6 +4138,7 @@
     function buildImagePrompt(shouldReroll = false) {
       const isAvatarMode = imagePromptMode.value === "avatar";
       characterFields.classList.toggle("is-hidden", isAvatarMode);
+      characterAdvancedFields.classList.toggle("is-hidden", isAvatarMode);
       avatarFields.classList.toggle("is-hidden", !isAvatarMode);
       slotGrid.classList.toggle("is-hidden", isAvatarMode);
       productPromptWarning.classList.toggle("is-hidden", isAvatarMode);
