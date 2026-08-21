@@ -211,6 +211,118 @@
       gap: 14px;
     }
 
+    .hero-example-board {
+      max-width: 560px;
+      margin-left: auto;
+    }
+
+    .hero-example-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(86px, 0.72fr) minmax(0, 1fr);
+      gap: 12px;
+      align-items: end;
+    }
+
+    .hero-example-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 24px 55px rgba(16, 16, 16, 0.12);
+    }
+
+    .hero-example-video-card {
+      padding: 12px;
+      background: #141414;
+      color: #fff;
+    }
+
+    .hero-example-result {
+      transform: translateY(-18px);
+    }
+
+    .hero-example-image-card {
+      padding: 12px;
+      align-self: center;
+      background: #fff;
+      transform: translateY(26px);
+      box-shadow: 0 28px 54px rgba(0, 0, 0, 0.18);
+    }
+
+    .hero-example-video,
+    .hero-example-image {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+      background: #101110;
+    }
+
+    .hero-example-video {
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+    }
+
+    .hero-example-image {
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-example-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .hero-example-video-card .hero-example-caption {
+      color: #bdbdb8;
+    }
+
+    .hero-example-strip {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: #fff;
+      box-shadow: 0 18px 46px rgba(16, 16, 16, 0.08);
+    }
+
+    .hero-example-strip strong {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .hero-example-lines {
+      display: grid;
+      gap: 7px;
+    }
+
+    .hero-example-lines span {
+      height: 8px;
+      border-radius: 999px;
+      background: #1f1f1f;
+    }
+
+    .hero-example-lines span:nth-child(2) {
+      width: 82%;
+      background: var(--orange);
+    }
+
+    .hero-example-lines span:nth-child(3) {
+      width: 68%;
+      background: #a2a59e;
+    }
+
     .board-card {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -1743,37 +1855,39 @@
         </div>
       </div>
 
-      <div class="reference-board" aria-label="Reference hierarchy visual">
-        <div class="board-card video">
-          <div class="mini-label">
-            <span>@Video1</span>
-            <span>Motion lock</span>
-          </div>
-          <div class="phone-frame">
-            <div class="frame-bars"></div>
-            <div class="person-shape"></div>
-            <div class="motion-lines"><span></span><span></span><span></span></div>
-          </div>
-          <div class="mini-label">
-            <span>Body, camera, timing, framing</span>
-            <span>Preserve 1:1</span>
-          </div>
+      <div class="reference-board hero-example-board" aria-label="Real prompt builder example">
+        <div class="hero-example-grid">
+          <article class="hero-example-card hero-example-video-card">
+            <div class="hero-example-caption">
+              <span>@Video1</span>
+              <span>Motion</span>
+            </div>
+            <video class="hero-example-video" poster="assets/hero-example/hero-motion.jpg" muted loop playsinline preload="metadata" aria-label="Motion reference video example">
+              <source src="assets/hero-example/hero-motion.mp4" type="video/mp4" />
+            </video>
+          </article>
+
+          <article class="hero-example-card hero-example-image-card">
+            <div class="hero-example-caption">
+              <span>@Image1</span>
+            </div>
+            <img class="hero-example-image" src="assets/hero-example/hero-character.png" alt="Character reference image used as Image1" loading="eager" />
+          </article>
+
+          <article class="hero-example-card hero-example-video-card hero-example-result">
+            <div class="hero-example-caption">
+              <span>Result</span>
+              <span>Locked</span>
+            </div>
+            <video class="hero-example-video" poster="assets/hero-example/hero-result.jpg" muted loop playsinline preload="metadata" aria-label="Generated result video example">
+              <source src="assets/hero-example/hero-result.mp4" type="video/mp4" />
+            </video>
+          </article>
         </div>
 
-        <div class="board-card identity">
-          <div class="mini-label">
-            <span>@Image1</span>
-          </div>
-          <div class="identity-preview"></div>
-          <div class="prompt-lines"><span></span><span></span><span></span></div>
-        </div>
-
-        <div class="board-card prompt">
-          <div class="mini-label">
-            <span>Prompt hierarchy</span>
-            <span>Strict text</span>
-          </div>
-          <div class="prompt-lines"><span></span><span></span><span></span></div>
+        <div class="hero-example-strip">
+          <strong>Prompt hierarchy</strong>
+          <div class="hero-example-lines" aria-hidden="true"><span></span><span></span><span></span></div>
         </div>
       </div>
     </section>
@@ -3533,7 +3647,7 @@
       });
     });
 
-    const resultVideos = document.querySelectorAll(".result-video, .reference-video");
+    const resultVideos = document.querySelectorAll(".result-video, .reference-video, .hero-example-video");
     if ("IntersectionObserver" in window) {
       const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
