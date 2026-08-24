@@ -120,6 +120,10 @@
     }
 
     .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       border: 1px solid var(--ink);
       background: var(--ink);
       color: #fff;
@@ -127,6 +131,7 @@
       padding: 10px 14px;
       font-size: 12px;
       font-weight: 800;
+      text-align: center;
     }
 
     .btn.secondary {
@@ -138,6 +143,12 @@
       border-color: var(--orange);
       background: var(--orange);
       color: #111;
+    }
+
+    .btn.external::after {
+      content: "\2197";
+      font-size: 11px;
+      font-weight: 900;
     }
 
     .shell {
@@ -1314,6 +1325,26 @@
       line-height: 1.52;
     }
 
+    .start-card-link {
+      display: inline-flex;
+      width: fit-content;
+      margin-top: 16px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: rgba(243, 107, 33, 0.12);
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .start-card-link::after {
+      content: "\2197";
+      margin-left: 6px;
+      color: var(--orange);
+    }
+
     .workflow-order-strip {
       display: flex;
       align-items: center;
@@ -1782,6 +1813,10 @@
 
     .setup-panel .setup-route i {
       color: var(--muted);
+    }
+
+    .section-action {
+      margin-top: 18px;
     }
 
     .builder {
@@ -2790,6 +2825,7 @@
           </div>
           <h3>Open Higgsfield</h3>
           <p>Open Higgsfield and select the recommended Seedance workflow.</p>
+          <a class="start-card-link" href="https://higgsfield.ai?fpr=gage80" target="_blank" rel="noopener sponsored">Open Higgsfield</a>
         </article>
         <article class="start-card">
           <div class="start-top">
@@ -3215,6 +3251,7 @@
             Load the motion video and character image before you paste the
             Titans prompt. Beginners should match this setup first.
           </p>
+          <a class="btn orange external section-action" href="https://higgsfield.ai?fpr=gage80" target="_blank" rel="noopener sponsored">Open Higgsfield / Seedance</a>
         </div>
       </div>
 
