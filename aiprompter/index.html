@@ -3256,7 +3256,9 @@
                 <option value="plumber">Plumber</option>
                 <option value="collegeStudent">College Student</option>
                 <option value="suburbanParent">Suburban Parent</option>
+                <option value="retired">Retired</option>
                 <option value="creator">TikTok Shop Creator</option>
+                <option value="none">None</option>
                 <option value="custom">Custom identifier</option>
               </select>
             </div>
@@ -3354,7 +3356,7 @@
           <div class="note-row">
             <div class="mini-note"><strong>Use the start frame.</strong>This gives the image model the exact original pose and angle.</div>
             <div class="mini-note"><strong>Image first.</strong>This prompt creates Image1. The Seedance prompt below handles the video replacement.</div>
-            <div class="mini-note"><strong>Reroll details.</strong>Same age, gender, and profession can produce different bodies, faces, hair, eyes, and outfits.</div>
+            <div class="mini-note"><strong>Reroll details.</strong>Same age, gender, and profession can produce different realistic combinations without leaving that character context.</div>
           </div>
           <div class="preset-chips" aria-label="Preset detail examples">
             <span>age</span>
@@ -3362,7 +3364,7 @@
             <span>profession</span>
             <span>weighted body</span>
             <span>compatible face</span>
-            <span>random hair</span>
+            <span>age-compatible hair</span>
             <span>random eyes</span>
             <span>outfit</span>
             <span>product detail</span>
@@ -4055,7 +4057,297 @@
       }
     };
 
+    const ageProfiles = [
+      {
+        min: 19,
+        max: 29,
+        body: [
+          { text: "natural young-adult build", weight: 30 },
+          { text: "slim youthful adult build", weight: 20 },
+          { text: "average healthy adult build", weight: 24 },
+          { text: "athletic but realistic young-adult build", weight: 16 },
+          { text: "soft natural young-adult build", weight: 10 }
+        ],
+        face: [
+          { text: "youthful adult facial structure with natural proportions", weight: 30 },
+          { text: "fresh adult features with subtle facial asymmetry", weight: 24 },
+          { text: "soft young-adult facial features", weight: 20 },
+          { text: "defined but natural young-adult features", weight: 16 },
+          { text: "friendly expressive young-adult face", weight: 10 }
+        ],
+        maleHair: [
+          { text: "dense short brown hair", weight: 24 },
+          { text: "dense short black hair", weight: 22 },
+          { text: "full textured dark hair", weight: 18 },
+          { text: "short natural buzzcut", weight: 14 },
+          { text: "medium-length brown hair with healthy density", weight: 12 },
+          { text: "clean shaved hairstyle", weight: 10 }
+        ],
+        femaleHair: [
+          { text: "long brown hair with healthy natural density", weight: 22 },
+          { text: "long blonde hair with realistic strands", weight: 18 },
+          { text: "shoulder-length brunette hair with soft volume", weight: 18 },
+          { text: "dense black hair in a neat ponytail", weight: 16 },
+          { text: "soft wavy medium-length hair", weight: 14 },
+          { text: "curly shoulder-length hair with natural volume", weight: 12 }
+        ],
+        skin: [
+          { text: "believable young-adult skin with visible pores", weight: 30 },
+          { text: "healthy natural skin texture with subtle variation", weight: 26 },
+          { text: "smooth but realistic adult skin texture", weight: 20 },
+          { text: "natural undertones and authentic skin detail", weight: 14 },
+          { text: "lightly textured young-adult skin", weight: 10 }
+        ],
+        maleOutfit: [
+          { text: "current casual menswear with realistic fabric folds", weight: 26 },
+          { text: "clean tee and practical casual pants", weight: 24 },
+          { text: "simple layered young-adult outfit", weight: 20 },
+          { text: "casual hoodie and jeans with natural texture", weight: 16 },
+          { text: "plain studio-friendly young men's outfit", weight: 14 }
+        ],
+        femaleOutfit: [
+          { text: "current casual womenswear with realistic fabric folds", weight: 26 },
+          { text: "clean top and practical casual pants", weight: 24 },
+          { text: "simple layered young-adult outfit", weight: 20 },
+          { text: "soft sweater and jeans with natural texture", weight: 16 },
+          { text: "plain studio-friendly young women's outfit", weight: 14 }
+        ]
+      },
+      {
+        min: 30,
+        max: 44,
+        body: [
+          { text: "balanced adult build", weight: 30 },
+          { text: "average realistic adult build", weight: 26 },
+          { text: "fit but natural adult build", weight: 18 },
+          { text: "soft everyday adult build", weight: 14 },
+          { text: "stocky natural adult build", weight: 12 }
+        ],
+        face: [
+          { text: "settled adult facial structure with natural expression lines", weight: 30 },
+          { text: "balanced adult features with subtle maturity", weight: 26 },
+          { text: "confident natural adult face", weight: 20 },
+          { text: "soft adult features with realistic asymmetry", weight: 14 },
+          { text: "defined adult features with believable texture", weight: 10 }
+        ],
+        maleHair: [
+          { text: "short brown hair with natural density", weight: 24 },
+          { text: "short black hair with realistic texture", weight: 22 },
+          { text: "neatly styled dark hair", weight: 18 },
+          { text: "short buzzcut with a natural hairline", weight: 14 },
+          { text: "brown hair with subtle early gray at the temples", weight: 12 },
+          { text: "clean shaved hairstyle", weight: 10 }
+        ],
+        femaleHair: [
+          { text: "shoulder-length brown hair with natural volume", weight: 24 },
+          { text: "long dark hair with realistic strands", weight: 20 },
+          { text: "neatly styled blonde hair", weight: 18 },
+          { text: "dark hair pulled back with a few natural flyaways", weight: 16 },
+          { text: "medium-length wavy hair", weight: 14 },
+          { text: "brunette hair with a few subtle silver strands", weight: 8 }
+        ],
+        skin: [
+          { text: "realistic adult skin with visible pores", weight: 30 },
+          { text: "natural skin variation with faint expression lines", weight: 26 },
+          { text: "healthy adult skin texture with authentic undertones", weight: 22 },
+          { text: "lightly textured skin with believable detail", weight: 14 },
+          { text: "subtle sun and smile-line texture", weight: 8 }
+        ],
+        maleOutfit: genderPools.male.outfit,
+        femaleOutfit: genderPools.female.outfit
+      },
+      {
+        min: 45,
+        max: 59,
+        body: [
+          { text: "average middle-aged build", weight: 30 },
+          { text: "sturdy natural middle-aged build", weight: 24 },
+          { text: "soft realistic middle-aged build", weight: 20 },
+          { text: "fit but age-appropriate build", weight: 16 },
+          { text: "stocky middle-aged build", weight: 10 }
+        ],
+        face: [
+          { text: "mature facial structure with visible expression lines", weight: 32 },
+          { text: "natural middle-aged features with subtle age lines", weight: 28 },
+          { text: "defined mature face with realistic asymmetry", weight: 18 },
+          { text: "soft mature features with smile lines", weight: 14 },
+          { text: "weathered but healthy middle-aged features", weight: 8 }
+        ],
+        maleHair: [
+          { text: "salt-and-pepper short hair", weight: 28 },
+          { text: "brown hair with visible gray at the temples", weight: 22 },
+          { text: "short silver-streaked dark hair", weight: 20 },
+          { text: "slightly thinning salt-and-pepper hair", weight: 14 },
+          { text: "neatly shaved head with a mature hairline", weight: 10 },
+          { text: "short gray hair", weight: 6 }
+        ],
+        femaleHair: [
+          { text: "shoulder-length brunette hair with visible silver strands", weight: 24 },
+          { text: "soft salt-and-pepper layered hair", weight: 22 },
+          { text: "neatly styled brown hair with gray at the temples", weight: 20 },
+          { text: "silver-streaked dark hair pulled back", weight: 16 },
+          { text: "short mature layered hairstyle", weight: 10 },
+          { text: "natural gray shoulder-length hair", weight: 8 }
+        ],
+        skin: [
+          { text: "mature realistic skin with visible pores and expression lines", weight: 32 },
+          { text: "natural middle-aged skin texture with smile lines", weight: 26 },
+          { text: "believable skin variation with subtle age spots", weight: 18 },
+          { text: "healthy mature skin with authentic texture", weight: 16 },
+          { text: "lightly weathered skin with realistic undertones", weight: 8 }
+        ],
+        maleOutfit: [
+          { text: "age-appropriate smart-casual menswear", weight: 28 },
+          { text: "clean button-up shirt with practical pants", weight: 24 },
+          { text: "comfortable layered adult outfit", weight: 20 },
+          { text: "simple polo and casual pants", weight: 16 },
+          { text: "plain studio-friendly mature outfit", weight: 12 }
+        ],
+        femaleOutfit: [
+          { text: "age-appropriate smart-casual womenswear", weight: 28 },
+          { text: "clean blouse with practical pants", weight: 24 },
+          { text: "comfortable cardigan and casual outfit", weight: 20 },
+          { text: "simple mature daytime outfit", weight: 16 },
+          { text: "plain studio-friendly mature outfit", weight: 12 }
+        ]
+      },
+      {
+        min: 60,
+        max: 69,
+        body: [
+          { text: "natural older-adult build", weight: 34 },
+          { text: "sturdy but age-appropriate older build", weight: 24 },
+          { text: "soft realistic older-adult build", weight: 20 },
+          { text: "lean active older-adult build", weight: 14 },
+          { text: "stocky older-adult build", weight: 8 }
+        ],
+        face: [
+          { text: "older-adult facial structure with clear expression lines", weight: 34 },
+          { text: "mature features with forehead and smile lines", weight: 28 },
+          { text: "soft older facial features with realistic age detail", weight: 18 },
+          { text: "defined mature face with natural age spots", weight: 12 },
+          { text: "weathered but healthy older-adult face", weight: 8 }
+        ],
+        maleHair: [
+          { text: "short silver hair with a mature hairline", weight: 30 },
+          { text: "mostly gray salt-and-pepper hair", weight: 26 },
+          { text: "thinning gray hair", weight: 18 },
+          { text: "short white-gray hair", weight: 14 },
+          { text: "balding head with silver hair at the sides", weight: 8 },
+          { text: "clean shaved head with an age-appropriate hairline", weight: 4 }
+        ],
+        femaleHair: [
+          { text: "soft silver shoulder-length hair", weight: 28 },
+          { text: "mostly gray layered hair", weight: 26 },
+          { text: "short neatly styled silver hair", weight: 18 },
+          { text: "white-gray hair pulled back neatly", weight: 14 },
+          { text: "thinning gray hair with soft volume", weight: 8 },
+          { text: "salt-and-pepper mature bob", weight: 6 }
+        ],
+        skin: [
+          { text: "older realistic skin with visible pores, age spots, and expression lines", weight: 36 },
+          { text: "mature skin texture with natural wrinkles and undertones", weight: 28 },
+          { text: "believable older-adult skin with smile and forehead lines", weight: 20 },
+          { text: "healthy age-appropriate skin with authentic variation", weight: 12 },
+          { text: "lightly weathered older skin texture", weight: 4 }
+        ],
+        maleOutfit: [
+          { text: "comfortable age-appropriate menswear with realistic folds", weight: 30 },
+          { text: "clean polo or button-up with relaxed pants", weight: 26 },
+          { text: "mature smart-casual layered outfit", weight: 20 },
+          { text: "simple sweater with practical pants", weight: 16 },
+          { text: "plain studio-friendly older men's outfit", weight: 8 }
+        ],
+        femaleOutfit: [
+          { text: "comfortable age-appropriate womenswear with realistic folds", weight: 30 },
+          { text: "clean blouse or knit top with relaxed pants", weight: 26 },
+          { text: "mature smart-casual layered outfit", weight: 20 },
+          { text: "simple cardigan with practical pants", weight: 16 },
+          { text: "plain studio-friendly older women's outfit", weight: 8 }
+        ]
+      },
+      {
+        min: 70,
+        max: 85,
+        body: [
+          { text: "natural senior build with age-appropriate proportions", weight: 36 },
+          { text: "soft realistic senior build", weight: 24 },
+          { text: "lean active senior build", weight: 18 },
+          { text: "sturdy but age-appropriate senior build", weight: 14 },
+          { text: "slightly stooped natural senior build", weight: 8 }
+        ],
+        face: [
+          { text: "senior facial structure with natural wrinkles and expression lines", weight: 36 },
+          { text: "soft elderly features with realistic age detail", weight: 26 },
+          { text: "defined senior face with forehead lines and age spots", weight: 18 },
+          { text: "warm senior features with smile lines", weight: 14 },
+          { text: "weathered but healthy elderly facial features", weight: 6 }
+        ],
+        maleHair: [
+          { text: "thin white hair with an age-appropriate hairline", weight: 30 },
+          { text: "short silver hair with visible thinning", weight: 26 },
+          { text: "mostly bald head with white hair at the sides", weight: 20 },
+          { text: "fine gray hair with reduced density", weight: 14 },
+          { text: "clean bald head with natural age detail", weight: 10 }
+        ],
+        femaleHair: [
+          { text: "soft white hair with age-appropriate density", weight: 30 },
+          { text: "short silver layered hair", weight: 26 },
+          { text: "fine gray hair in a neat mature style", weight: 20 },
+          { text: "white-gray hair pulled into a soft low bun", weight: 14 },
+          { text: "thinning silver hair with gentle volume", weight: 10 }
+        ],
+        skin: [
+          { text: "realistic senior skin with wrinkles, pores, and natural age spots", weight: 38 },
+          { text: "elderly skin texture with authentic lines and tonal variation", weight: 28 },
+          { text: "soft mature skin with visible forehead and smile lines", weight: 18 },
+          { text: "weathered senior skin with believable detail", weight: 10 },
+          { text: "healthy age-appropriate skin with realistic translucency", weight: 6 }
+        ],
+        maleOutfit: [
+          { text: "comfortable senior menswear with clean realistic fabric", weight: 32 },
+          { text: "soft button-up shirt with relaxed practical pants", weight: 24 },
+          { text: "age-appropriate cardigan over a simple shirt", weight: 20 },
+          { text: "clean polo with comfortable trousers", weight: 16 },
+          { text: "plain studio-friendly senior men's outfit", weight: 8 }
+        ],
+        femaleOutfit: [
+          { text: "comfortable senior womenswear with clean realistic fabric", weight: 32 },
+          { text: "soft blouse with relaxed practical pants", weight: 24 },
+          { text: "age-appropriate cardigan over a simple top", weight: 20 },
+          { text: "clean knit top with comfortable trousers", weight: 16 },
+          { text: "plain studio-friendly senior women's outfit", weight: 8 }
+        ]
+      }
+    ];
+
     const professionBuckets = {
+      none: {
+        ...genericBucket,
+        label: "None",
+        noun: "",
+        neutral: true
+      },
+      retired: {
+        ...genericBucket,
+        label: "Retired",
+        noun: "retiree",
+        retired: true,
+        maleOutfit: [
+          { text: "comfortable retired menswear with a clean polo and relaxed pants", weight: 30 },
+          { text: "casual button-up shirt with practical trousers", weight: 24 },
+          { text: "soft sweater over an everyday shirt", weight: 20 },
+          { text: "relaxed daytime outfit with age-appropriate styling", weight: 16 },
+          { text: "simple studio-friendly retiree outfit", weight: 10 }
+        ],
+        femaleOutfit: [
+          { text: "comfortable retired womenswear with a clean knit top and relaxed pants", weight: 30 },
+          { text: "casual blouse with practical trousers", weight: 24 },
+          { text: "soft cardigan over an everyday top", weight: 20 },
+          { text: "relaxed daytime outfit with age-appropriate styling", weight: 16 },
+          { text: "simple studio-friendly retiree outfit", weight: 10 }
+        ]
+      },
       construction: {
         label: "Construction Worker",
         noun: "construction worker",
@@ -4756,16 +5048,18 @@
         const noun = customProfession.value.trim() || "person";
         return {
           ...genericBucket,
+          id: "custom",
           label: noun,
           noun,
           custom: true
         };
       }
 
-      return professionBuckets[selected] || professionBuckets.construction;
+      const bucket = professionBuckets[selected] || professionBuckets.construction;
+      return { ...bucket, id: selected };
     }
 
-    function getAttributeItems(bucket, key, gender) {
+    function getBaseAttributeItems(bucket, key, gender) {
       const genderKey = `${gender}${key.charAt(0).toUpperCase()}${key.slice(1)}`;
       if (bucket[genderKey]) {
         return bucket[genderKey];
@@ -4775,28 +5069,155 @@
         return genderPools.female.hair;
       }
 
-      if (key === "outfit" && bucket.custom && genderPools[gender]?.outfit) {
+      if (key === "outfit" && (bucket.custom || bucket.neutral) && genderPools[gender]?.outfit) {
         return genderPools[gender].outfit;
       }
 
       return bucket[key] || genderPools[gender]?.[key] || genericBucket[key];
     }
 
+    function getAgeProfile(age) {
+      return ageProfiles.find((profile) => age >= profile.min && age <= profile.max)
+        || ageProfiles[0];
+    }
+
+    function scaledPool(items, multiplier) {
+      return items.map((item) => ({
+        ...item,
+        weight: Math.max(1, Math.round((item.weight || 1) * multiplier))
+      }));
+    }
+
+    function filterCompatibleItems(items, key, age, bucket, gender) {
+      const conflicts = [];
+
+      if (age < 30) {
+        if (key === "body") conflicts.push(/middle-aged|older-adult|senior|elderly/i);
+        if (key === "face") conflicts.push(/mature|middle-aged|older|senior|elderly|weathered|tired/i);
+        if (key === "hair") conflicts.push(/gray|grey|white|silver|salt-and-pepper|thinning|balding/i);
+        if (key === "skin") conflicts.push(/mature|middle-aged|older|senior|elderly|age spots|wrinkles|weathered/i);
+      }
+
+      if (age >= 60) {
+        if (key === "body") conflicts.push(/youthful|young-adult|college|very muscular/i);
+        if (key === "face") conflicts.push(/youthful|young-adult|fresh|college/i);
+        if (key === "outfit") conflicts.push(/cute but modest|fitted top|oversized hoodie|athletic college/i);
+      }
+
+      if (age >= 70 && key === "hair") {
+        conflicts.push(/\b(?:brown|black|blonde|auburn|dark)\b/i);
+      }
+
+      const filtered = items.filter((item) => (
+        !conflicts.some((pattern) => pattern.test(item.text))
+      ));
+
+      if (filtered.length) {
+        return filtered;
+      }
+
+      const profile = getAgeProfile(age);
+      const ageKey = `${gender}${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+      return profile[ageKey] || profile[key] || getBaseAttributeItems(bucket, key, gender);
+    }
+
+    function getContextualAttributeItems(bucket, key, gender, age) {
+      const profile = getAgeProfile(age);
+      const ageKey = `${gender}${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+      const ageItems = profile[ageKey] || profile[key] || [];
+      const baseItems = filterCompatibleItems(
+        getBaseAttributeItems(bucket, key, gender),
+        key,
+        age,
+        bucket,
+        gender
+      );
+
+      if (key === "eyes" || key === "realism") {
+        return baseItems;
+      }
+
+      if (key === "hair" && age >= 60) {
+        return ageItems;
+      }
+
+      if (["body", "face", "skin"].includes(key) && age >= 70) {
+        return ageItems;
+      }
+
+      if (key === "outfit") {
+        if (bucket.id === "collegeStudent" && age >= 60) {
+          return gender === "female"
+            ? [
+              { text: "mature campus outfit with a clean blouse and practical pants", weight: 36 },
+              { text: "comfortable cardigan with a simple student-ready outfit", weight: 32 },
+              { text: "age-appropriate casual outfit for an older college student", weight: 32 }
+            ]
+            : [
+              { text: "mature campus outfit with a clean polo and practical pants", weight: 36 },
+              { text: "comfortable sweater with a simple student-ready outfit", weight: 32 },
+              { text: "age-appropriate casual outfit for an older college student", weight: 32 }
+            ];
+        }
+
+        if (bucket.neutral) {
+          return ageItems;
+        }
+
+        if (bucket.retired) {
+          return [
+            ...scaledPool(baseItems, 1.4),
+            ...scaledPool(ageItems, 0.8)
+          ];
+        }
+
+        return baseItems;
+      }
+
+      if (age >= 60) {
+        return [
+          ...scaledPool(ageItems, 2.2),
+          ...scaledPool(baseItems, 0.35)
+        ];
+      }
+
+      if (age >= 45) {
+        return [
+          ...scaledPool(ageItems, 1.6),
+          ...scaledPool(baseItems, 0.65)
+        ];
+      }
+
+      return [
+        ...scaledPool(ageItems, 1.2),
+        ...scaledPool(baseItems, 0.8)
+      ];
+    }
+
+    function hasManualOutfitInstruction() {
+      const instruction = productInstruction.value.trim();
+      return /\b(?:wear|wearing|outfit|shirt|tee|top|blouse|dress|jacket|coat|hoodie|sweater|pants|jeans|shorts|skirt|uniform|scrubs|apron|hat|cap|glasses|jewelry|bag)\b/i.test(instruction);
+    }
+
     function rollCharacter() {
       const bucket = getBucket();
       const gender = getGender();
+      const age = getAge();
+      const outfit = hasManualOutfitInstruction()
+        ? "the exact manually specified outfit with age-appropriate supporting styling"
+        : weightedPick(getContextualAttributeItems(bucket, "outfit", gender, age));
       return {
-        age: getAge(),
+        age,
         gender,
         genderLabel: genderPools[gender].label,
         noun: bucket.noun,
-        body: weightedPick(getAttributeItems(bucket, "body", gender)),
-        face: weightedPick(getAttributeItems(bucket, "face", gender)),
-        hair: weightedPick(getAttributeItems(bucket, "hair", gender)),
-        eyes: weightedPick(getAttributeItems(bucket, "eyes", gender)),
-        skin: weightedPick(getAttributeItems(bucket, "skin", gender)),
-        outfit: weightedPick(getAttributeItems(bucket, "outfit", gender)),
-        realism: weightedPick(getAttributeItems(bucket, "realism", gender))
+        body: weightedPick(getContextualAttributeItems(bucket, "body", gender, age)),
+        face: weightedPick(getContextualAttributeItems(bucket, "face", gender, age)),
+        hair: weightedPick(getContextualAttributeItems(bucket, "hair", gender, age)),
+        eyes: weightedPick(getContextualAttributeItems(bucket, "eyes", gender, age)),
+        skin: weightedPick(getContextualAttributeItems(bucket, "skin", gender, age)),
+        outfit,
+        realism: weightedPick(getContextualAttributeItems(bucket, "realism", gender, age))
       };
     }
 
@@ -4871,7 +5292,13 @@
       const source = sourceSubject.value || "man";
       const sourcePronoun = getSourcePronoun(source);
       const product = productInstruction.value.trim();
-      const target = `${roll.age}-year-old adult ${roll.genderLabel} ${roll.noun} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
+      const identity = [
+        `${roll.age}-year-old`,
+        "adult",
+        roll.genderLabel,
+        roll.noun
+      ].filter(Boolean).join(" ");
+      const target = `${identity} with ${roll.face}, ${roll.hair}, ${roll.eyes}, ${roll.skin}, ${roll.body}, and ${roll.outfit}`;
       const productLine = product
         ? `Specific product/outfit requirement: ${product}. Keep this product or outfit detail clear, accurate, visible, and consistent with the character.`
         : "";
