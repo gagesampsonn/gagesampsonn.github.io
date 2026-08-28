@@ -2004,6 +2004,10 @@
       align-items: start;
     }
 
+    .video-prompt-builder:not(.has-result) {
+      grid-template-columns: minmax(0, 720px);
+    }
+
     .builder-panel,
     .output-panel {
       background: var(--panel);
@@ -2670,6 +2674,10 @@
 
       .builder-panel {
         position: static;
+      }
+
+      .video-prompt-builder:not(.has-result) {
+        grid-template-columns: 1fr;
       }
 
       .step-summary {
@@ -3530,8 +3538,8 @@
           <article class="setup-step">
             <span>4</span>
             <div>
-              <strong>Add character image as @Image1</strong>
-              <p>This controls the person, identity, clothing, and product look.</p>
+              <strong>Add replacement reference as @Image1</strong>
+              <p>This controls the defining appearance of the selected person, outfit, vehicle, product, or environment.</p>
             </div>
           </article>
           <article class="setup-step">
@@ -3595,16 +3603,17 @@
         </div>
       </div>
 
-      <div class="builder">
+      <div class="builder video-prompt-builder">
         <form class="builder-panel" id="promptForm">
           <div class="field">
-            <label for="mode">Prompt mode</label>
+            <label for="mode">What are you replacing?</label>
             <select id="mode">
-              <option value="person">Replace person with Image 1</option>
-              <option value="clothing">Replace clothing only</option>
-              <option value="product">Replace product or object only</option>
-              <option value="background">Replace background only</option>
-              <option value="characterMotion">Keep Image 1 identity, use video motion</option>
+              <option value="person">Person</option>
+              <option value="clothing">Clothing / Outfit</option>
+              <option value="vehicle">Vehicle</option>
+              <option value="product">Object / Product</option>
+              <option value="background">Background / Environment</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
@@ -3618,34 +3627,23 @@
           </div>
 
           <div class="field">
-            <label for="extra">Optional extra instruction</label>
+            <label for="extra" id="extraLabel">Optional replacement details</label>
             <textarea id="extra" placeholder="Example: Keep the exact blue hoodie from Image 1. Do not change the kitchen background."></textarea>
+            <p class="form-hint" id="extraHint">Add a concrete detail only when the replacement needs it.</p>
           </div>
 
           <div class="builder-actions">
-            <button class="btn orange" type="submit">Update prompt</button>
+            <button class="btn orange" type="submit">Generate Prompt</button>
             <button class="btn secondary" type="button" id="resetBtn">Reset</button>
           </div>
         </form>
 
-        <section class="output-panel" aria-label="Generated prompt">
+        <section class="output-panel" id="promptResult" aria-label="Generated prompt" hidden>
           <div class="output-toolbar">
             <span>Generated replacement prompt</span>
             <button class="btn secondary" type="button" id="copyBtn">Copy prompt</button>
           </div>
           <pre class="prompt-output" id="promptOutput"></pre>
-          <div class="seedance-example" aria-label="Seedance prompt example">
-            <div class="seedance-example-head">
-              <span>What it should look like</span>
-              <span>Seedance 2.5 Edit</span>
-            </div>
-            <div class="seedance-prompt">
-              <p>Use <span class="ref-chip">@Video1</span> as the base video and motion reference. Replace only the person in <span class="ref-chip">@Video1</span> with the person from <span class="ref-chip">@Image1</span>.</p>
-              <p>Preserve the original video's body movement, hand gestures, head movement, facial performance, lip movement, timing, pacing, camera angle, framing, lighting, background, and scene as closely as possible.</p>
-              <p>Only change the person's appearance. Keep the motion, camera, timing, background, and composition unchanged.</p>
-              <p>Make the result photorealistic, natural, and temporally consistent. Avoid face warping, flickering, identity drift, changing clothing, body morphing, or frame-to-frame appearance changes.</p>
-            </div>
-          </div>
           <div class="note-row">
             <div class="mini-note"><strong>Attach first.</strong>Select the reference video and image inside Seedance before pasting.</div>
             <div class="mini-note"><strong>Use @ references.</strong>Choose Video1 and Image1 from the @ menu so the green chips appear.</div>
@@ -5363,45 +5361,54 @@
 
     const modeCopy = {
       person: {
-        open: (video, image) => `Use ${video} as the base video and exact motion reference. Replace only the person in ${video} with the person from ${image}.`,
-        preserve: "Preserve the original video's exact body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior as closely as possible.",
-        replace: (image) => `The person must maintain the face, hairstyle, body proportions, clothing, colors, and overall identity from ${image} consistently throughout the entire video.`,
-        only: "Only change the person's appearance. Do not reinterpret, restage, improve, or change the original motion, camera, composition, scene, background, lighting behavior, or timing."
+        replacement: "person",
+        videoRules: "Preserve all body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, and eye movement from @Video1.",
+        imageRules: "Preserve the face, hairstyle, body proportions, clothing, colors, and identity from @Image1."
       },
       clothing: {
-        open: (video, image) => `Use ${video} as the exact person, motion, camera, timing, and scene reference. Replace only the clothing with the outfit from ${image}.`,
-        preserve: "Preserve the reference video's face, hair, body proportions, skin, gestures, posture, head movement, facial expressions, timing, pacing, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
-        replace: (image) => `The new clothing must maintain the garment type, fit, fabric texture, colors, logos, and styling from ${image} consistently throughout the entire video.`,
-        only: "Only replace the clothing. Do not change the person's identity, face, hair, body, motion, camera, composition, scene, background, or timing."
+        replacement: "clothing / outfit",
+        videoRules: "Preserve the original person's face, hair, body, identity, motion, pose, and anatomy from @Video1.",
+        imageRules: "Maintain the exact clothing design, fit, colors, textures, logos, and details from @Image1."
+      },
+      vehicle: {
+        replacement: "vehicle",
+        videoRules: "Preserve the vehicle's placement, movement, speed, wheel motion, direction, perspective, camera relationship, reflections, and interaction with the environment from @Video1.",
+        imageRules: "Maintain the exact vehicle model, shape, colors, wheels, trim, and details from @Image1."
       },
       product: {
-        open: (video, image) => `Use ${video} as the exact motion, hand interaction, camera, timing, and scene reference. Replace only the product or object in the reference video with ${image}.`,
-        preserve: "Preserve the reference video's hand movement, grip, object position, occlusion, shadows, reflections, timing, pacing, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
-        replace: (image) => `The replacement product must maintain the shape, proportions, material, label design, colors, logo placement, and overall appearance from ${image} consistently throughout the entire video.`,
-        only: "Only replace the product or object. Do not change the person, hands, motion, scene, camera, background, lighting behavior, or timing."
+        replacement: "object / product",
+        videoRules: "Preserve the object's position, movement, scale, orientation, interaction with hands or the environment, and timing from @Video1.",
+        imageRules: "Maintain the exact shape, materials, colors, branding, and details from @Image1."
       },
       background: {
-        open: (video, image) => `Use ${video} as the exact subject, motion, camera, timing, and foreground reference. Replace only the background or environment with ${image}.`,
-        preserve: "Preserve the reference video's foreground subject identity, body movement, gestures, posture, facial expressions, mouth and lip movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, and subject scale.",
-        replace: (image) => `The background must maintain the environment, layout, depth, colors, lighting direction, and overall appearance from ${image} consistently throughout the entire video.`,
-        only: "Only replace the background. Do not change the foreground subject, motion, camera, timing, framing, or performance."
+        replacement: "background / environment",
+        videoRules: "Preserve the people, objects, actions, camera movement, framing, timing, and foreground subjects from @Video1.",
+        imageRules: "Maintain the environment's architecture, colors, materials, lighting style, and visual identity from @Image1.",
+        changesEnvironment: true
       },
-      characterMotion: {
-        open: (video, image) => `Use ${image} as the character identity reference and ${video} as the exact 1:1 motion, camera, timing, and scene reference.`,
-        preserve: "Preserve the reference video's body movements, gestures, posture, head movement, facial expressions, mouth and lip movement, eye movement, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, and lighting behavior.",
-        replace: (image) => `The character must maintain the face, hairstyle, body proportions, clothing, colors, and overall identity from ${image} consistently throughout the entire video.`,
-        only: "Transfer the character identity onto the reference motion. Do not change the motion, camera, scene, composition, background, lighting behavior, timing, or pacing."
+      other: {
+        replacement: "specifically identified replacement",
+        videoRules: "Preserve every person, object, action, movement, camera property, timing detail, and scene element in @Video1 except the specifically identified replacement.",
+        imageRules: "Use @Image1 only as the defining visual reference for the specifically identified replacement.",
+        custom: true
       }
     };
 
     const strictnessCopy = {
-      strict: "Preserve the reference video as closely as possible 1:1. The reference video is law. Do not reinterpret, restage, improve, stylize, or creatively alter the original motion, camera, composition, scene, timing, or pacing.",
-      natural: "Preserve the reference video's timing, camera, framing, scene behavior, and primary motion. Allow only tiny physical corrections needed to make the replacement reference fit naturally.",
-      adaptive: "Preserve the main motion, camera, pacing, and composition from the reference video while allowing natural fit adaptation when the replacement reference requires it."
+      strict: "Treat these preservation rules as strict 1:1 constraints.",
+      natural: "",
+      adaptive: "Within the tiny-correction limit, prioritize natural contact, occlusion, and physical fit for difficult replacements."
     };
 
     const promptOutput = document.getElementById("promptOutput");
+    const promptResult = document.getElementById("promptResult");
     const promptForm = document.getElementById("promptForm");
+    const videoPromptBuilder = promptForm.closest(".video-prompt-builder");
+    const modeSelect = document.getElementById("mode");
+    const strictnessSelect = document.getElementById("strictness");
+    const extraInput = document.getElementById("extra");
+    const extraLabel = document.getElementById("extraLabel");
+    const extraHint = document.getElementById("extraHint");
     const copyBtn = document.getElementById("copyBtn");
     const resetBtn = document.getElementById("resetBtn");
 
@@ -5444,28 +5451,59 @@
       copyText(imagePromptOutput.textContent, copyImagePromptBtn, "Copy image prompt");
     });
 
+    function invalidatePrompt() {
+      promptOutput.textContent = "";
+      promptResult.hidden = true;
+      videoPromptBuilder.classList.remove("has-result");
+    }
+
+    function syncReplacementDetailsField() {
+      const isOther = modeSelect.value === "other";
+      extraInput.required = isOther;
+      extraLabel.textContent = isOther
+        ? "Describe what you are replacing"
+        : "Optional replacement details";
+      extraHint.textContent = isOther
+        ? "Required for Other. Identify the exact element that @Image1 should replace."
+        : "Add a concrete detail only when the replacement needs it.";
+      extraInput.placeholder = isOther
+        ? "Example: Replace only the wall-mounted television with the television from Image 1."
+        : "Example: Keep the exact blue hoodie from Image 1. Do not change the kitchen background.";
+    }
+
     function buildPrompt() {
-      const mode = document.getElementById("mode").value;
+      const mode = modeSelect.value;
       const video = "@Video1";
       const image = "@Image1";
-      const strictness = document.getElementById("strictness").value;
-      const extra = document.getElementById("extra").value.trim();
+      const strictness = strictnessSelect.value;
+      const extra = extraInput.value.replace(/\s+/g, " ").trim();
       const copy = modeCopy[mode] || modeCopy.person;
+      const opening = copy.custom
+        ? `Use ${video} as the base video and exact motion reference. Replace only the specifically identified replacement in ${video} with the corresponding replacement from ${image}. The specifically identified replacement is: ${extra}.`
+        : `Use ${video} as the base video and exact motion reference. Replace only the ${copy.replacement} in ${video} with the corresponding ${copy.replacement} from ${image}.`;
+      const sceneRules = copy.changesEnvironment
+        ? "Preserve the original video's exact motion, timing, pacing, positioning, camera angle, camera movement, framing, perspective, foreground lighting behavior, and scene behavior as closely as possible."
+        : "Preserve the original video's exact motion, timing, pacing, positioning, camera angle, camera movement, framing, perspective, environment, background, lighting behavior, and scene behavior as closely as possible.";
 
       const sections = [
-        copy.open(video, image),
-        copy.preserve,
-        copy.replace(image),
-        copy.only,
+        opening,
+        copy.videoRules,
+        sceneRules,
+        "The replacement must consistently maintain the defining appearance, proportions, colors, materials, details, and overall identity shown in @Image1 throughout the entire video.",
+        copy.imageRules,
+        `Only change the ${copy.replacement}. Do not reinterpret, restage, improve, or unnecessarily modify anything else from ${video}.`,
+        "Preserve the reference video's timing, camera, framing, scene behavior, and primary motion. Allow only tiny physical corrections needed for the replacement to fit naturally.",
         strictnessCopy[strictness] || strictnessCopy.strict,
-        "Prioritize photorealism, natural integration, and temporal consistency. Prevent identity drift, face warping, body morphing, clothing changes, flickering, inconsistent hair, changing proportions, object warping, unstable edges, or frame-to-frame appearance changes."
-      ];
+        "Prioritize photorealism, natural integration, and temporal consistency. Prevent warping, morphing, flickering, unstable edges, changing proportions, inconsistent appearance, or frame-to-frame changes."
+      ].filter(Boolean);
 
-      if (extra) {
+      if (extra && !copy.custom) {
         sections.splice(1, 0, `Additional instruction: ${extra}. This is subordinate to the reference hierarchy above.`);
       }
 
       promptOutput.textContent = sections.join("\n\n");
+      promptResult.hidden = false;
+      videoPromptBuilder.classList.add("has-result");
     }
 
     promptForm.addEventListener("submit", (event) => {
@@ -5473,9 +5511,12 @@
       buildPrompt();
     });
 
-    ["mode", "strictness", "extra"].forEach((id) => {
-      document.getElementById(id).addEventListener("input", buildPrompt);
+    modeSelect.addEventListener("change", () => {
+      syncReplacementDetailsField();
+      invalidatePrompt();
     });
+    strictnessSelect.addEventListener("change", invalidatePrompt);
+    extraInput.addEventListener("input", invalidatePrompt);
 
     copyBtn.addEventListener("click", async () => {
       copyText(promptOutput.textContent, copyBtn, "Copy prompt");
@@ -5483,7 +5524,8 @@
 
     resetBtn.addEventListener("click", () => {
       promptForm.reset();
-      buildPrompt();
+      syncReplacementDetailsField();
+      invalidatePrompt();
     });
 
     document.querySelectorAll("[data-jump]").forEach((button) => {
@@ -5507,7 +5549,8 @@
       resultVideos.forEach((video) => videoObserver.observe(video));
     }
 
-    buildPrompt();
+    syncReplacementDetailsField();
+    invalidatePrompt();
   </script>
 </body>
 </html>
