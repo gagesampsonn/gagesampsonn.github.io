@@ -966,6 +966,184 @@
       text-transform: uppercase;
     }
 
+    .tiktok-downloader {
+      margin: 18px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      background: var(--panel);
+    }
+
+    .tiktok-downloader-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    .tiktok-downloader-head h3 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    .tiktok-downloader-head p {
+      margin: 0;
+      max-width: 620px;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .tiktok-tool-label {
+      flex: 0 0 auto;
+      border: 1px solid var(--orange);
+      border-radius: 999px;
+      padding: 6px 8px;
+      color: #8b3510;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tiktok-input-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .tiktok-input-row .btn {
+      min-width: 124px;
+    }
+
+    .tiktok-input-row .btn:disabled {
+      cursor: wait;
+      opacity: 0.68;
+    }
+
+    .tiktok-status {
+      min-height: 18px;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .tiktok-status.error {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .tiktok-result {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+      border-top: 1px solid var(--faint);
+      padding-top: 18px;
+    }
+
+    .tiktok-result-media {
+      overflow: hidden;
+      width: 150px;
+      aspect-ratio: 9 / 16;
+      border-radius: 6px;
+      background: #111;
+    }
+
+    .tiktok-result-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tiktok-result-placeholder {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      padding: 16px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .tiktok-result-copy {
+      min-width: 0;
+      align-self: center;
+    }
+
+    .tiktok-result-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tiktok-username {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .tiktok-quality,
+    .tiktok-resolution {
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .tiktok-quality {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .tiktok-resolution {
+      border: 1px solid var(--line);
+      color: #343832;
+    }
+
+    .tiktok-title {
+      display: -webkit-box;
+      overflow: hidden;
+      margin: 0 0 16px;
+      color: #555954;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .tiktok-download-btn {
+      width: 100%;
+      min-height: 48px;
+      font-size: 14px;
+    }
+
+    .tiktok-download-note {
+      display: block;
+      margin-top: 9px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .tiktok-video1-note {
+      margin: 14px 0 0;
+      color: #4f544e;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
     .video-collage {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2543,6 +2721,14 @@
         grid-template-columns: 1fr;
       }
 
+      .tiktok-result {
+        grid-template-columns: 124px minmax(0, 1fr);
+      }
+
+      .tiktok-result-media {
+        width: 124px;
+      }
+
       .mini-results-gallery {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -2595,6 +2781,28 @@
       .quality-list,
       .case-study-flow {
         grid-template-columns: 1fr;
+      }
+
+      .tiktok-downloader-head {
+        display: block;
+      }
+
+      .tiktok-tool-label {
+        display: inline-flex;
+        margin-top: 12px;
+      }
+
+      .tiktok-input-row,
+      .tiktok-result {
+        grid-template-columns: 1fr;
+      }
+
+      .tiktok-input-row .btn {
+        min-height: 46px;
+      }
+
+      .tiktok-result-media {
+        width: min(100%, 240px);
       }
 
       .workflow-start .section-title h2 {
@@ -2893,6 +3101,45 @@
               <h3>Existing Reference Video</h3>
               <p>Use an existing reference clip that you have permission or rights to use as the motion reference.</p>
             </article>
+          </div>
+
+          <div class="tiktok-downloader" id="tiktokDownloader">
+            <div class="tiktok-downloader-head">
+              <div>
+                <h3>Download a TikTok Reference Video</h3>
+                <p>Paste a public TikTok video link to get the highest-quality clean version available.</p>
+              </div>
+              <span class="tiktok-tool-label">Option B Tool</span>
+            </div>
+
+            <form id="tiktokForm" novalidate>
+              <div class="field">
+                <label for="tiktokUrl">TikTok Video Link</label>
+                <div class="tiktok-input-row">
+                  <input id="tiktokUrl" name="tiktokUrl" type="text" inputmode="url" autocomplete="url" placeholder="Paste TikTok video link..." required />
+                  <button class="btn orange" id="tiktokResolveBtn" type="submit">Get Video</button>
+                </div>
+              </div>
+              <p class="tiktok-status" id="tiktokStatus" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="tiktok-result is-hidden" id="tiktokResult">
+              <div class="tiktok-result-media">
+                <img id="tiktokThumbnail" alt="TikTok reference video preview" />
+                <span class="tiktok-result-placeholder is-hidden" id="tiktokPreviewFallback">TikTok video ready</span>
+              </div>
+              <div class="tiktok-result-copy">
+                <div class="tiktok-result-meta">
+                  <span class="tiktok-username" id="tiktokUsername"></span>
+                  <span class="tiktok-quality" id="tiktokQuality"></span>
+                  <span class="tiktok-resolution" id="tiktokResolution"></span>
+                </div>
+                <p class="tiktok-title" id="tiktokTitle"></p>
+                <a class="btn orange tiktok-download-btn" id="tiktokDownloadBtn" href="#">Download HD Video</a>
+                <span class="tiktok-download-note">No watermark &bull; Highest quality available</span>
+                <p class="tiktok-video1-note">After downloading, upload the MP4 to Higgsfield as <strong>@Video1</strong>. It becomes the motion, camera, framing, timing, and performance reference for your generation.</p>
+              </div>
+            </div>
           </div>
 
           <div class="step-note">
@@ -3613,6 +3860,97 @@
   </footer>
 
   <script>
+    const TIKTOK_API_BASE = "https://app.titansagency.co";
+    const tiktokForm = document.getElementById("tiktokForm");
+    const tiktokUrl = document.getElementById("tiktokUrl");
+    const tiktokResolveBtn = document.getElementById("tiktokResolveBtn");
+    const tiktokStatus = document.getElementById("tiktokStatus");
+    const tiktokResult = document.getElementById("tiktokResult");
+    const tiktokThumbnail = document.getElementById("tiktokThumbnail");
+    const tiktokPreviewFallback = document.getElementById("tiktokPreviewFallback");
+    const tiktokUsername = document.getElementById("tiktokUsername");
+    const tiktokQuality = document.getElementById("tiktokQuality");
+    const tiktokResolution = document.getElementById("tiktokResolution");
+    const tiktokTitle = document.getElementById("tiktokTitle");
+    const tiktokDownloadBtn = document.getElementById("tiktokDownloadBtn");
+
+    function setTikTokStatus(message, isError = false) {
+      tiktokStatus.textContent = message;
+      tiktokStatus.classList.toggle("error", isError);
+    }
+
+    function setTikTokLoading(isLoading) {
+      tiktokResolveBtn.disabled = isLoading;
+      tiktokResolveBtn.textContent = isLoading ? "Finding HD video..." : "Get Video";
+    }
+
+    function showTikTokResult(video) {
+      tiktokUsername.textContent = video.username || "TikTok creator";
+      tiktokQuality.textContent = video.quality || "Best available";
+      tiktokResolution.textContent = video.width && video.height
+        ? `${video.width} x ${video.height}`
+        : "Best available";
+      tiktokTitle.textContent = video.title || "TikTok reference video";
+      tiktokDownloadBtn.href = video.downloadUrl;
+      tiktokDownloadBtn.textContent = video.quality === "HD"
+        ? "Download HD Video"
+        : "Download Video";
+
+      if (video.thumbnail) {
+        tiktokThumbnail.src = video.thumbnail;
+        tiktokThumbnail.classList.remove("is-hidden");
+        tiktokPreviewFallback.classList.add("is-hidden");
+      } else {
+        tiktokThumbnail.removeAttribute("src");
+        tiktokThumbnail.classList.add("is-hidden");
+        tiktokPreviewFallback.classList.remove("is-hidden");
+      }
+
+      tiktokResult.classList.remove("is-hidden");
+    }
+
+    tiktokThumbnail.addEventListener("error", () => {
+      tiktokThumbnail.classList.add("is-hidden");
+      tiktokPreviewFallback.classList.remove("is-hidden");
+    });
+
+    tiktokForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const url = tiktokUrl.value.trim();
+      tiktokResult.classList.add("is-hidden");
+      if (!url) {
+        setTikTokStatus("Paste a TikTok video link first.", true);
+        tiktokUrl.focus();
+        return;
+      }
+
+      setTikTokLoading(true);
+      setTikTokStatus("Finding HD video...");
+      try {
+        const response = await fetch(`${TIKTOK_API_BASE}/api/tiktok/resolve`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) {
+          throw new Error(data.error?.message || "The TikTok video could not be loaded.");
+        }
+
+        showTikTokResult(data);
+        setTikTokStatus("Video ready to download.");
+      } catch (error) {
+        setTikTokStatus(
+          error instanceof Error
+            ? error.message
+            : "The TikTok video could not be loaded. Try again.",
+          true
+        );
+      } finally {
+        setTikTokLoading(false);
+      }
+    });
+
     const genericBucket = {
       label: "Custom Identifier",
       noun: "person",
