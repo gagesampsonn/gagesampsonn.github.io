@@ -341,6 +341,19 @@ $ asterix-dump capture.pcap
 $ asterix-dump --json capture.pcap | jq -c 'select(.category == 48) | .records[] | [.I240, .I090.FL]'
 ```
 
+## Browser demo
+
+`web/` builds a self-contained demo page. It contains the library compiled to
+JavaScript with Emscripten, a synthetic radar feed, a radar display and a
+record inspector. Visitors can also decode their own pcap, pcapng, raw or hex
+files; decoding happens in their browser. The JavaScript build decodes
+byte-for-byte like the native one.
+
+```sh
+source /path/to/emsdk/emsdk_env.sh
+python3 web/build.py        # writes build/web/asterix-demo.html
+```
+
 ## Design
 
 Each category is described by a table of its UAP (`src/cat034.cpp`,
@@ -389,4 +402,5 @@ tests/             unit tests (self-contained, no framework needed)
 examples/          minimal usage example
 fuzz/              libFuzzer harness
 scripts/           differential test against libasterix
+web/               browser demo: C interface, page, demo feed generator, build script
 ```

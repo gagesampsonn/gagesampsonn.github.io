@@ -1,0 +1,1143 @@
+<title>ASTERIX Radar Decoder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #edf1f4;
+    --panel: #fbfcfd;
+    --ink: #13202b;
+    --ink-2: #4a5a67;
+    --muted: #6d7c88;
+    --line: #d4dce2;
+    --chip: #e2e9ee;
+    --accent: #0a6b85;
+    --accent-ink: #ffffff;
+    --accent-soft: #d6ebf1;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --serious: #ec835a;
+    --critical: #d03b3b;
+    --critical-soft: #fbe9e9;
+    /* The scope is an instrument display: dark in both themes. */
+    --scope-bg: #0f171d;
+    --scope-panel: #141e25;
+    --scope-ring: #243440;
+    --scope-spoke: #1b2831;
+    --scope-text: #d6e0e7;
+    --scope-text-2: #8fa1ad;
+    --series-ms: #3987e5;
+    --series-ac: #d95926;
+    --series-psr: #199e70;
+    --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+    --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0b1117;
+      --panel: #111a21;
+      --ink: #e4ebf0;
+      --ink-2: #a6b4bf;
+      --muted: #7f8e9a;
+      --line: #23313b;
+      --chip: #1a2630;
+      --accent: #4cb6d4;
+      --accent-ink: #06222b;
+      --accent-soft: #15313b;
+      --critical-soft: #2c1719;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0b1117;
+    --panel: #111a21;
+    --ink: #e4ebf0;
+    --ink-2: #a6b4bf;
+    --muted: #7f8e9a;
+    --line: #23313b;
+    --chip: #1a2630;
+    --accent: #4cb6d4;
+    --accent-ink: #06222b;
+    --accent-soft: #15313b;
+    --critical-soft: #2c1719;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 15px/1.5 var(--font-body);
+    padding-inline: 16px;
+  }
+  .page {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+    display: grid;
+    gap: 22px;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.05; letter-spacing: 0.005em; }
+  h2 { font-size: 1.3rem; line-height: 1.2; letter-spacing: 0.01em; }
+  p { margin: 0; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- header ---------- */
+  .intro { display: grid; gap: 14px; }
+  .eyebrow {
+    font: 600 0.78rem/1.2 var(--font-body);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .lede { max-width: 68ch; color: var(--ink-2); font-size: 1.05rem; }
+  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .facts li {
+    background: var(--chip);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+  }
+  .facts b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- workbench ---------- */
+  .workbench { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 920px) { .workbench { grid-template-columns: minmax(0, 1fr); } }
+
+  .scope-card {
+    background: var(--scope-panel);
+    color: var(--scope-text);
+    border-radius: 14px;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+    color-scheme: dark;
+  }
+  .scope-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; }
+  .scope-head h2 { color: var(--scope-text); }
+  .scope-meta { font: 400 0.85rem/1.3 var(--font-mono); color: var(--scope-text-2); }
+  .scope-wrap { position: relative; width: 100%; max-width: 100%; aspect-ratio: 1 / 1; }
+  #scope { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 10px; background: var(--scope-bg); touch-action: manipulation; }
+  .scope-empty {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px;
+    color: var(--scope-text-2); font-size: 0.95rem; pointer-events: none;
+  }
+  .tip {
+    position: absolute; z-index: 2; pointer-events: none;
+    background: #0a1015; color: var(--scope-text);
+    border: 1px solid var(--scope-ring); border-radius: 8px;
+    padding: 8px 10px; font: 400 0.8rem/1.45 var(--font-mono);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35); min-width: 170px;
+  }
+  .tip b { font-weight: 500; color: #ffffff; }
+  .tip .k { color: var(--scope-text-2); }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .controls input[type="range"] { flex: 1 1 160px; accent-color: #4cb6d4; min-width: 0; }
+  .play {
+    background: #4cb6d4; color: #06222b; border: 0; border-radius: 8px;
+    padding: 6px 14px; font-weight: 600; cursor: pointer; min-width: 92px;
+  }
+  .play:hover { background: #6cc6de; }
+  .clock { font: 500 0.88rem/1 var(--font-mono); color: var(--scope-text); font-variant-numeric: tabular-nums; }
+  .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; color: var(--scope-text-2); cursor: pointer; }
+  .toggle input { accent-color: #4cb6d4; }
+  .legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.85rem; color: var(--scope-text-2); }
+  .legend li { display: inline-flex; align-items: center; gap: 7px; }
+  .sym { width: 10px; height: 10px; display: inline-block; flex: none; }
+  .sym.ms { background: var(--series-ms); border-radius: 2px; }
+  .sym.ac { background: var(--series-ac); transform: rotate(45deg) scale(0.85); }
+  .sym.psr { background:
+      linear-gradient(var(--series-psr), var(--series-psr)) center / 100% 2px no-repeat,
+      linear-gradient(var(--series-psr), var(--series-psr)) center / 2px 100% no-repeat; }
+  .sym.emg { border: 2px solid var(--critical); border-radius: 50%; width: 12px; height: 12px; }
+
+  /* ---------- side panel ---------- */
+  .side { display: grid; gap: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .hint { color: var(--muted); font-size: 0.85rem; }
+  .samples { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip-btn {
+    border: 1px solid var(--line); background: transparent; border-radius: 999px;
+    padding: 5px 13px; cursor: pointer; font-size: 0.9rem; color: var(--ink-2);
+  }
+  .chip-btn:hover { border-color: var(--accent); color: var(--ink); }
+  .chip-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .drop {
+    display: grid; gap: 4px; place-items: center; text-align: center;
+    border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 14px; cursor: pointer;
+    color: var(--ink-2); font-size: 0.92rem; transition: border-color 0.15s, background 0.15s;
+  }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--accent-soft); }
+  .drop strong { color: var(--ink); font-weight: 600; }
+  .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+  details.hexbox summary { cursor: pointer; color: var(--ink-2); font-size: 0.92rem; }
+  details.hexbox[open] summary { margin-bottom: 8px; }
+  textarea {
+    width: 100%; min-height: 120px; resize: vertical; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg); padding: 10px; font: 400 0.8rem/1.5 var(--font-mono); word-break: break-all;
+  }
+  .row-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+  .btn {
+    background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px;
+    padding: 7px 16px; font-weight: 600; cursor: pointer;
+  }
+  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+  .source-note { font-size: 0.85rem; color: var(--muted); }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(74px, 1fr)); gap: 12px; margin: 0; }
+  .stats div { display: grid; gap: 2px; }
+  .stats dt { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .stats dd { margin: 0; font: 600 1.45rem/1.1 var(--font-body); }
+  .stats dd.bad { color: var(--critical); }
+  .breakdown { display: flex; flex-wrap: wrap; gap: 6px; }
+  .breakdown span { background: var(--chip); border-radius: 6px; padding: 2px 8px; font: 400 0.8rem/1.6 var(--font-mono); color: var(--ink-2); }
+  .sub { display: grid; gap: 8px; }
+  .sub h3 { font: 600 0.78rem/1.2 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .status-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .status-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 0.92rem; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.85rem; }
+  .pill i { font-style: normal; width: 16px; height: 16px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 0.7rem; color: #fff; }
+  .pill.good i { background: var(--good); }
+  .pill.warning i { background: var(--warning); color: #3a2800; }
+  .pill.serious i { background: var(--serious); }
+  .pill.critical i { background: var(--critical); }
+  .service { font-size: 0.92rem; color: var(--ink-2); }
+
+  /* ---------- records ---------- */
+  .records { display: grid; gap: 12px; }
+  .records-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .search {
+    border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 5px 13px;
+    width: 220px; max-width: 100%; font-size: 0.9rem;
+  }
+  .selection { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-soft); color: var(--ink); border-radius: 999px; padding: 4px 6px 4px 12px; font-size: 0.88rem; }
+  .selection button { border: 0; background: transparent; cursor: pointer; font-size: 1rem; line-height: 1; padding: 2px 6px; color: var(--ink-2); }
+  .table-wrap { overflow: auto; max-height: min(640px, 75vh); background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 600 0.75rem/1.2 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); position: sticky; top: 0; z-index: 1; background: var(--panel); }
+  tbody tr.rec { cursor: pointer; }
+  tbody tr.rec:hover { background: var(--accent-soft); }
+  tbody tr.rec.open { background: var(--accent-soft); }
+  td.num, td.time, td.src { font-family: var(--font-mono); font-size: 0.82rem; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+  td.sum { font-family: var(--font-mono); font-size: 0.82rem; min-width: 320px; }
+  .cat { display: inline-block; background: var(--chip); border-radius: 5px; padding: 0 7px; font: 500 0.78rem/1.6 var(--font-mono); }
+  tr.err td { background: var(--critical-soft); border-left: 3px solid var(--critical); }
+  tr.err .msg { font-family: var(--font-mono); font-size: 0.82rem; }
+  .err-icon { color: var(--critical); font-weight: 700; margin-right: 6px; }
+  tr.detail > td { background: var(--bg); padding: 14px 16px 18px; }
+  .items { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px 18px; }
+  .item { display: grid; gap: 2px; align-content: start; min-width: 0; }
+  .item-id { font: 500 0.75rem/1.3 var(--font-mono); color: var(--accent); }
+  .item-name { font-size: 0.8rem; color: var(--muted); }
+  .item-val { font: 400 0.82rem/1.5 var(--font-mono); overflow-wrap: anywhere; }
+  .item-val .k { color: var(--muted); }
+  .raw { margin-top: 14px; display: grid; gap: 6px; }
+  .raw pre, .json pre {
+    margin: 0; padding: 10px 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    font: 400 0.78rem/1.55 var(--font-mono); white-space: pre-wrap; word-break: break-all; max-height: 320px; overflow: auto;
+  }
+  .detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .more-row { display: flex; justify-content: center; }
+  .count { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---------- footer ---------- */
+  .how { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .how div { display: grid; gap: 6px; align-content: start; }
+  .how h3 { font-size: 1.05rem; }
+  .how p { color: var(--ink-2); font-size: 0.93rem; }
+  footer.fine { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drop { transition: none; }
+  }
+</style>
+
+<div class="page">
+  <header class="intro">
+    <p class="eyebrow">EUROCONTROL ASTERIX &middot; CAT 034 &middot; CAT 048 &middot; CAT 063</p>
+    <h1>ASTERIX Radar Decoder</h1>
+    <p class="lede">A C++17 library that decodes radar surveillance messages: target reports, radar service messages and sensor status. This page runs the library compiled to JavaScript. Replay the demo radar feed, paste hex, or drop in your own capture file.</p>
+    <ul class="facts">
+      <li><b>Runs in your browser.</b> Files are decoded locally and never uploaded.</li>
+      <li><b>Checked against two reference decoders</b> on 60,000+ records</li>
+      <li id="version-fact">Library version &hellip;</li>
+    </ul>
+  </header>
+
+  <section class="workbench">
+    <div class="scope-card" aria-labelledby="scope-title">
+      <div class="scope-head">
+        <h2 id="scope-title">Radar display</h2>
+        <span class="scope-meta" id="scope-meta">Loading decoder&hellip;</span>
+      </div>
+      <div class="scope-wrap" id="scope-wrap">
+        <canvas id="scope" role="img" aria-label="Plan position display of decoded CAT048 target reports. The records table below lists the same data."></canvas>
+        <div class="scope-empty" id="scope-empty">Decoding the demo feed&hellip;</div>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <div class="controls">
+        <button class="play" id="play" type="button">Replay</button>
+        <input type="range" id="timeline" min="0" max="1000" value="1000" aria-label="Replay time">
+        <output class="clock" id="clock" for="timeline">&mdash;</output>
+        <label class="toggle"><input type="checkbox" id="labels" checked> Labels</label>
+      </div>
+      <ul class="legend" aria-label="Legend">
+        <li><span class="sym ms"></span>Mode S</li>
+        <li><span class="sym ac"></span>Mode A/C only</li>
+        <li><span class="sym psr"></span>Primary radar only</li>
+        <li><span class="sym emg"></span>Emergency squawk</li>
+      </ul>
+    </div>
+
+    <div class="side">
+      <section class="card" aria-labelledby="input-title">
+        <div class="card-head">
+          <h2 id="input-title">Input</h2>
+          <span class="hint">pcap &middot; pcapng &middot; raw &middot; hex</span>
+        </div>
+        <div class="samples" role="group" aria-label="Sample data">
+          <button class="chip-btn" type="button" data-sample="feed" aria-pressed="true">Demo radar feed</button>
+          <button class="chip-btn" type="button" data-sample="plot" aria-pressed="false">One target report</button>
+          <button class="chip-btn" type="button" data-sample="status" aria-pressed="false">Sensor status</button>
+          <button class="chip-btn" type="button" data-sample="broken" aria-pressed="false">Corrupted data</button>
+        </div>
+        <label class="drop" id="drop" for="file">
+          <span><strong>Drop a capture file here</strong> or click to choose one</span>
+          <span class="hint">UDP payloads in .pcap / .pcapng, raw ASTERIX, or hex text</span>
+          <input type="file" id="file">
+        </label>
+        <details class="hexbox" id="hexbox">
+          <summary>Edit or paste hex (one datagram per line)</summary>
+          <textarea id="hex" spellcheck="false" aria-label="Hex input"></textarea>
+          <div class="row-actions">
+            <button class="btn" type="button" id="decode-hex">Decode hex</button>
+            <span class="hint">Spaces, 0x prefixes and # comments are ignored.</span>
+          </div>
+        </details>
+        <p class="source-note" id="source-note">Demo radar feed: fictional traffic generated to the specifications.</p>
+      </section>
+
+      <section class="card" aria-labelledby="result-title">
+        <div class="card-head">
+          <h2 id="result-title">Decoded</h2>
+          <span class="hint" id="timing"></span>
+        </div>
+        <dl class="stats">
+          <div><dt>Datagrams</dt><dd id="st-datagrams">&ndash;</dd></div>
+          <div><dt>Data blocks</dt><dd id="st-blocks">&ndash;</dd></div>
+          <div><dt>Records</dt><dd id="st-records">&ndash;</dd></div>
+          <div><dt>Errors</dt><dd id="st-errors">&ndash;</dd></div>
+        </dl>
+        <div class="breakdown" id="breakdown"></div>
+        <div class="sub" id="sensors-box" hidden>
+          <h3>Sensor status (CAT063)</h3>
+          <ul class="status-list" id="sensors"></ul>
+        </div>
+        <div class="sub" id="service-box" hidden>
+          <h3>Radar service (CAT034)</h3>
+          <p class="service" id="service"></p>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="records" aria-labelledby="records-title">
+    <div class="records-head">
+      <h2 id="records-title">Records</h2>
+      <div class="filters">
+        <div class="samples" role="group" aria-label="Filter by category" id="cat-filter">
+          <button class="chip-btn" type="button" data-cat="all" aria-pressed="true">All</button>
+          <button class="chip-btn" type="button" data-cat="48" aria-pressed="false">CAT048</button>
+          <button class="chip-btn" type="button" data-cat="34" aria-pressed="false">CAT034</button>
+          <button class="chip-btn" type="button" data-cat="63" aria-pressed="false">CAT063</button>
+          <button class="chip-btn" type="button" data-cat="err" aria-pressed="false">Errors</button>
+        </div>
+        <input class="search" id="search" type="search" placeholder="Callsign, squawk, address&hellip;" aria-label="Search records">
+        <span class="selection" id="selection" hidden><span id="selection-text"></span><button type="button" id="clear-selection" aria-label="Show all tracks">&times;</button></span>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">#</th><th scope="col">Time UTC</th><th scope="col">Cat</th><th scope="col">Source</th><th scope="col">Decoded</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="more-row"><span class="count" id="count"></span></div>
+    <div class="more-row"><button class="btn ghost" type="button" id="more" hidden>Show more</button></div>
+  </section>
+
+  <section class="how" aria-label="How it works">
+    <div>
+      <h3>The library</h3>
+      <p>Dependency-free C++17. Each category is a table of its data items; one bounds-checked engine decodes all of them, so malformed input is reported, never read out of bounds. <a href="https://github.com/gagesampsonn/gagesampsonn.github.io/tree/claude/cpp-asterisks-decoder-mhmjp9/asterix" target="_blank" rel="noopener">Source code</a></p>
+    </div>
+    <div>
+      <h3>In this page</h3>
+      <p>Emscripten compiles the same C++ sources to JavaScript. The page carries the compiled decoder, so decoding happens on your device. Its output is byte-identical to the native build.</p>
+    </div>
+    <div>
+      <h3>Verified</h3>
+      <p>62 unit tests, 60,000 random records compared field by field with libasterix, a real radar recording checked against two independent decoders, and 1.6 million fuzzed inputs without a crash.</p>
+    </div>
+  </section>
+
+  <footer class="fine">Supports CAT048 edition 1.32, CAT034 edition 1.29 and CAT063 edition 1.7, plus their earlier compatible editions. The demo radar feed is synthetic: fictional flights generated for this page.</footer>
+</div>
+
+<script>/*@ASTERIX_MODULE@*/</script>
+<script type="text/plain" id="demo-feed">/*@DEMO_FEED@*/</script>
+<script>
+"use strict";
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------------------------------------------------------------- samples
+  const SAMPLES = {
+    feed: () => $("demo-feed").textContent.trim(),
+    plot: () => [
+      "# CAT048 target report: Mode S roll-call plot of DLH65A at FL330",
+      "30 00 30 fd f7 02 19 c9 35 6d 4d a0 c5 af f1 e0 02 00 05 28 3c 66 0c 10 c2 36 d4 18 20 01 c0 78 00 31 bc 00 00 40 0d eb 07 b9 58 2e 41 00 20 f5",
+    ].join("\n"),
+    status: () => {
+      const lines = SAMPLES.feed().split("\n").filter((l) => /^3f/i.test(l.trim()));
+      return ["# CAT063 sensor status from an SDPS: one sensor operational, one degraded with PSR NOGO", lines[0] || "",
+              "# CAT034 north marker with system status, message counts and radar position",
+              SAMPLES.feed().split("\n").filter((l) => /^22[0-9a-f]{4}ef/i.test(l.trim()))[1] || ""].join("\n");
+    },
+    broken: () => [
+      "# 1. A valid CAT048 target report",
+      "30 00 30 fd f7 02 19 c9 35 6d 4d a0 c5 af f1 e0 02 00 05 28 3c 66 0c 10 c2 36 d4 18 20 01 c0 78 00 31 bc 00 00 40 0d eb 07 b9 58 2e 41 00 20 f5",
+      "# 2. The same report cut short: LEN says 48 octets, only 40 arrived",
+      "30 00 30 fd f7 02 19 c9 35 6d 4d a0 c5 af f1 e0 02 00 05 28 3c 66 0c 10 c2 36 d4 18 20 01 c0 78 00 31 bc 00 00 40",
+      "# 3. CAT063 record flagging spare field FRN 12, then an intact CAT034 block in the same datagram",
+      "3f 00 0a 80 10 c8 01 08 00 01 22 00 10 f6 19 0e 02 3a 69 2b 40 88 40 40 80 00",
+      "# 4. CAT034 system status flagging a spare subfield",
+      "22 00 09 84 10 2a 60 00 00",
+    ].join("\n"),
+  };
+
+  // ---------------------------------------------------------------- decoder
+  const modulePromise = createAsterixModule();
+  modulePromise.then((M) => {
+    $("version-fact").innerHTML = "Library <b>v" + esc(M.UTF8ToString(M._asterix_web_version())) + "</b>";
+  });
+
+  async function decodeBytes(bytes) {
+    const M = await modulePromise;
+    const t0 = performance.now();
+    const ptr = M._asterix_web_alloc(bytes.length);
+    M.HEAPU8.set(bytes, ptr);
+    const out = M._asterix_web_decode(ptr, bytes.length);
+    const text = M.UTF8ToString(out);
+    M._asterix_web_free(out);
+    // Time the decoder on its own (best of three), without the page's JSON output.
+    let ms = performance.now() - t0;
+    for (let i = 0; i < 3; i++) {
+      const t = performance.now();
+      M._asterix_web_count(ptr, bytes.length);
+      ms = Math.min(ms, performance.now() - t);
+    }
+    M._asterix_web_free(ptr);
+    return { result: JSON.parse(text), ms };
+  }
+
+  // ---------------------------------------------------------------- formatting
+  const pad = (n, w = 2) => String(n).padStart(w, "0");
+  function fmtTod(s) {
+    if (s == null || !isFinite(s)) return "";
+    const ms = Math.round(s * 1000);
+    const h = Math.floor(ms / 3600000), m = Math.floor(ms / 60000) % 60, sec = Math.floor(ms / 1000) % 60;
+    return `${pad(h)}:${pad(m)}:${pad(sec)}.${pad(ms % 1000, 3)}`;
+  }
+  const num = (v, d = 3) => (Number.isInteger(v) ? String(v) : Number(v.toFixed(d)).toString());
+
+  const ITEM_NAMES = {
+    48: { I010: "Data source", I140: "Time of day", I020: "Target report descriptor", I040: "Measured position (polar)",
+          I070: "Mode-3/A code", I090: "Flight level", I130: "Radar plot characteristics", I220: "Aircraft address",
+          I240: "Aircraft identification", I250: "BDS register data", I161: "Track number", I042: "Calculated position (Cartesian)",
+          I200: "Calculated track velocity", I170: "Track status", I210: "Track quality", I030: "Warning / error conditions",
+          I080: "Mode-3/A code confidence", I100: "Mode-C code and confidence", I110: "Height measured by 3D radar",
+          I120: "Radial Doppler speed", I230: "Communications / ACAS capability", I260: "ACAS resolution advisory",
+          I055: "Mode-1 code", I050: "Mode-2 code", I065: "Mode-1 code confidence", I060: "Mode-2 code confidence",
+          SP: "Special purpose field", RE: "Reserved expansion field" },
+    34: { I010: "Data source", I000: "Message type", I030: "Time of day", I020: "Sector number", I041: "Antenna rotation period",
+          I050: "System configuration and status", I060: "System processing mode", I070: "Message count values",
+          I100: "Generic polar window", I110: "Data filter", I120: "3D position of data source", I090: "Collimation error",
+          RE: "Reserved expansion field", SP: "Special purpose field" },
+    63: { I010: "Data source (SDPS)", I015: "Service identification", I030: "Time of message", I050: "Sensor identifier",
+          I060: "Sensor configuration and status", I070: "Time stamping bias", I080: "SSR / Mode S range gain and bias",
+          I081: "SSR / Mode S azimuth bias", I090: "PSR range gain and bias", I091: "PSR azimuth bias",
+          I092: "PSR elevation bias", RE: "Reserved expansion field", SP: "Special purpose field" },
+  };
+  const UNITS = { RHO: "NM", THETA: "°", X: "NM", Y: "NM", HDG: "°", SRL: "°", PRL: "°", APD: "°", SAM: "dBm", PAM: "dBm",
+                  RPD: "NM", SIGX: "NM", SIGY: "NM", SIGV: "NM/s", SIGH: "°", "3DH": "ft", RHOST: "NM", RHOEND: "NM",
+                  THETAST: "°", THETAEND: "°", HGT: "m", LAT: "°", LON: "°", RNG: "NM", AZM: "°", SRB: "NM", PRB: "NM",
+                  DOP: "m/s", AMB: "m/s", FRQ: "MHz" };
+  const SCALAR_UNITS = { 48: { I140: "s" }, 34: { I030: "s", I020: "°", I041: "s" }, 63: { I030: "s", I070: "ms", I081: "°", I091: "°", I092: "°" } };
+  const TYP048 = ["No detection", "Single PSR", "Single SSR", "SSR + PSR", "Mode S all-call", "Mode S roll-call", "Mode S all-call + PSR", "Mode S roll-call + PSR"];
+  const MSG034 = { 1: "North marker", 2: "Sector crossing", 3: "Geographical filtering", 4: "Jamming strobe", 5: "Solar storm", 6: "SSR jamming strobe", 7: "Mode S jamming strobe" };
+  const CON063 = ["Operational", "Degraded", "Initialization", "Not connected"];
+  const CDM = ["maintaining", "climbing", "descending", "unknown"];
+
+  function fmtLeaf(key, v) {
+    if (typeof v === "number") {
+      if (key === "GSP") return `${num(v, 5)} NM/s <span class="k">(${num(v * 3600, 1)} kt)</span>`;
+      const u = UNITS[key];
+      return esc(num(v, 5)) + (u ? (u === "°" ? "°" : " " + u) : "");
+    }
+    return esc(v);
+  }
+  function fmtValue(cat, item, v) {
+    if (v === null || typeof v !== "object") {
+      let s = typeof v === "number" ? esc(num(v, 5)) : item === "I240" ? esc(JSON.stringify(v)) : esc(v);
+      const u = (SCALAR_UNITS[cat] || {})[item];
+      if (u === "s" && typeof v === "number") s += ` s <span class="k">(${fmtTod(v)} UTC)</span>`;
+      else if (u) s += u === "°" ? "°" : " " + u;
+      if (cat === 34 && item === "I000" && MSG034[v]) s += ` <span class="k">${MSG034[v]}</span>`;
+      return s;
+    }
+    if (Array.isArray(v)) {
+      if (v.every((x) => typeof x !== "object")) return esc(v.join(", "));
+      return v.map((x, i) => `<div><span class="k">[${i}]</span> ${fmtValue(cat, item, x)}</div>`).join("");
+    }
+    return Object.entries(v).map(([k, x]) => {
+      if (x !== null && typeof x === "object") return `<div><span class="k">${esc(k)}</span> {${fmtValue(cat, item, x)}}</div>`;
+      let extra = "";
+      if (cat === 48 && item === "I020" && k === "TYP") extra = ` <span class="k">${TYP048[x]}</span>`;
+      if (cat === 48 && item === "I170" && k === "CDM") extra = ` <span class="k">${CDM[x]}</span>`;
+      if (cat === 63 && item === "I060" && k === "CON") extra = ` <span class="k">${CON063[x]}</span>`;
+      return `<span class="k">${esc(k)}</span> ${fmtLeaf(k, x)}${extra}`;
+    }).join(" &middot; ");
+  }
+
+  // ---------------------------------------------------------------- state
+  let model = null;
+  let catFilter = "all";
+  let search = "";
+  let selectedTrack = null;
+  let shown = 0;
+  const PAGE = 200;
+
+  function buildModel(res, ms, label) {
+    const rows = [];
+    const plots = [];
+    const tracks = new Map();
+    const radars = new Map();
+    const norths = [];
+    const sensors = new Map();
+    let service = null;
+    const catCounts = {};
+
+    res.datagrams.forEach((d) => {
+      d.blocks.forEach((b) => {
+        const cat = b.category;
+        b.records.forEach((data, ri) => {
+          const summary = b.summaries[ri] || "";
+          const src = data.I010 ? `${data.I010.SAC}/${data.I010.SIC}` : "";
+          const time = cat === 48 ? data.I140 : data.I030;
+          catCounts[cat] = (catCounts[cat] || 0) + 1;
+          const row = { kind: "rec", i: rows.length, cat, src, time, summary, data, datagram: d, block: b, track: null };
+          rows.push(row);
+          if (cat === 48) {
+            const key = src + ":" + (data.I161 ? "T" + data.I161.TRN : data.I220 ? "A" + data.I220 : data.I070 ? "S" + data.I070.MODE3A : "R" + row.i);
+            row.track = key;
+            let tr = tracks.get(key);
+            if (!tr) { tr = { key, src, plots: [], end: null }; tracks.set(key, tr); }
+            if (data.I170 && data.I170.TRE === 1 && time != null) tr.end = time;
+            if (data.I040 && time != null) {
+              const typ = data.I020 ? data.I020.TYP : null;
+              const kind = typ === 1 ? "psr" : typ === 2 || typ === 3 ? "ac" : typ >= 4 ? "ms"
+                         : data.I220 ? "ms" : data.I070 ? "ac" : "psr";
+              const p = {
+                t: time, rho: data.I040.RHO, theta: data.I040.THETA, kind, row: row.i, track: tr,
+                callsign: data.I240 ? data.I240.trim() : "", squawk: data.I070 ? data.I070.MODE3A : "",
+                fl: data.I090 ? data.I090.FL : null, gs: data.I200 ? data.I200.GSP * 3600 : null,
+                hdg: data.I200 ? data.I200.HDG : null, cdm: data.I170 ? data.I170.CDM : 0,
+                addr: data.I220 || "", trn: data.I161 ? data.I161.TRN : null, typ,
+              };
+              tr.plots.push(p);
+              plots.push(p);
+              radars.set(src, (radars.get(src) || 0) + 1);
+            }
+          } else if (cat === 34) {
+            if (data.I000 === 1 && time != null) norths.push({ src, t: time, period: data.I041 || null });
+            if (data.I000 === 1 || !service) service = { src, data };
+          } else if (cat === 63 && data.I050) {
+            sensors.set(`${data.I050.SAC}/${data.I050.SIC}`, { data, time });
+          }
+        });
+      });
+      d.errors.forEach((e) => {
+        rows.push({ kind: "err", i: rows.length, cat: e.category, src: "", time: null, error: e, datagram: d });
+      });
+    });
+    res.inputErrors.forEach((msg) => rows.push({ kind: "err", i: rows.length, cat: 0, src: "", time: null, error: { code: "InputError", message: msg, offset: null, category: 0 } }));
+
+    for (const tr of tracks.values()) tr.plots.sort((a, b) => a.t - b.t);
+    let radar = null, best = 0;
+    for (const [src, n] of radars) if (n > best) { best = n; radar = src; }
+    const scopePlots = plots.filter((p) => p.track.src === radar);
+    const scopeNorths = norths.filter((n) => n.src === radar).sort((a, b) => a.t - b.t);
+    let period = scopeNorths.find((n) => n.period)?.period || null;
+    if (!period && scopeNorths.length > 1) period = scopeNorths[1].t - scopeNorths[0].t;
+    const times = scopePlots.map((p) => p.t);
+    return {
+      label, res, ms, rows, catCounts, sensors, service, radar,
+      tracks: [...tracks.values()].filter((t) => t.src === radar && t.plots.length),
+      plots: scopePlots, norths: scopeNorths, period: period || 4.8,
+      tMin: times.length ? Math.min(...times) : 0, tMax: times.length ? Math.max(...times) : 0,
+      maxRho: scopePlots.reduce((m, p) => Math.max(m, p.rho), 0),
+    };
+  }
+
+  // ---------------------------------------------------------------- results panel
+  function renderStats() {
+    const t = model.res.totals;
+    $("st-datagrams").textContent = t.datagrams.toLocaleString();
+    $("st-blocks").textContent = t.blocks.toLocaleString();
+    $("st-records").textContent = t.records.toLocaleString();
+    const errs = t.errors + model.res.inputErrors.length;
+    $("st-errors").textContent = errs.toLocaleString();
+    $("st-errors").classList.toggle("bad", errs > 0);
+    $("timing").textContent = `${model.res.format} input · ${t.octets.toLocaleString()} octets decoded in ${model.ms < 1 ? model.ms.toFixed(2) : model.ms.toFixed(1)} ms`;
+    const parts = Object.keys(model.catCounts).sort().map((c) => `<span>CAT${pad(c, 3)} &times; ${model.catCounts[c].toLocaleString()}</span>`);
+    if (model.res.capture) {
+      const c = model.res.capture;
+      parts.push(`<span>${c.packets.toLocaleString()} packets, ${c.udp.toLocaleString()} UDP</span>`);
+    }
+    if (t.truncated) parts.push(`<span>showing the first 20,000 records</span>`);
+    $("breakdown").innerHTML = parts.join("");
+
+    const sensorItems = [...model.sensors.entries()].sort().map(([id, s]) => {
+      const st = s.data.I060 || {};
+      const con = st.CON ?? 0;
+      const cls = ["good", "warning", "serious", "critical"][con];
+      const icon = ["&#10003;", "!", "&hellip;", "&times;"][con];
+      const nogo = ["PSR", "SSR", "MDS", "ADS", "MLT"].filter((k) => st[k] === 1);
+      return `<li><span class="mono">Sensor ${esc(id)}</span><span class="pill ${cls}"><i aria-hidden="true">${icon}</i>${CON063[con]}</span>` +
+             (nogo.length ? `<span class="hint">${nogo.join(", ")} NOGO</span>` : `<span class="hint">all subsystems GO</span>`) + `</li>`;
+    });
+    $("sensors").innerHTML = sensorItems.join("");
+    $("sensors-box").hidden = sensorItems.length === 0;
+
+    if (model.service) {
+      const d = model.service.data;
+      const bits = [`Radar ${esc(model.service.src)}`];
+      if (d.I041) bits.push(`rotation ${num(d.I041, 3)} s`);
+      if (d.I050 && d.I050.COM) {
+        const c = d.I050.COM;
+        bits.push(c.NOGO ? "operational use inhibited" : "released for operational use");
+        bits.push(`processor chain ${c.RDPC ? 2 : 1}`);
+        if (c.OVLRDP || c.OVLXMT) bits.push("overload reported");
+      }
+      if (d.I120) bits.push(`site ${num(d.I120.LAT, 4)}°, ${num(d.I120.LON, 4)}°, ${d.I120.HGT} m`);
+      if (d.I070) bits.push(`${d.I070.reduce((s, x) => s + x.COUNT, 0)} reports in the last scan`);
+      $("service").textContent = bits.join(" · ");
+    }
+    $("service-box").hidden = !model.service;
+  }
+
+  // ---------------------------------------------------------------- records table
+  function matches(row) {
+    if (catFilter === "err" && row.kind !== "err") return false;
+    if (catFilter !== "all" && catFilter !== "err" && String(row.cat) !== catFilter) return false;
+    if (selectedTrack && row.track !== selectedTrack.key) return false;
+    if (search) {
+      const hay = row.kind === "err" ? row.error.message + " " + row.error.code : row.summary;
+      if (!hay.toUpperCase().includes(search)) return false;
+    }
+    return true;
+  }
+
+  function rowHtml(row) {
+    if (row.kind === "err") {
+      const e = row.error;
+      const where = e.offset != null ? ` at offset ${e.offset}` : "";
+      const item = e.item ? ` in ${esc(e.item)}` : "";
+      const dg = row.datagram ? `datagram ${row.datagram.index}` : "input";
+      return `<tr class="err"><td class="num">${row.i + 1}</td><td class="time"></td><td>${e.category ? `<span class="cat">${pad(e.category, 3)}</span>` : ""}</td>` +
+             `<td class="src">${dg}</td><td class="msg"><span class="err-icon" aria-hidden="true">&#9888;</span><b>${esc(e.code)}</b>${item}${where}: ${esc(e.message)}</td></tr>`;
+    }
+    const text = row.summary.replace(/^CAT\d{3} \S+ (?:\d\d:\d\d:\d\d\.\d{3} )?/, "");
+    return `<tr class="rec" data-i="${row.i}" tabindex="0" aria-expanded="false"><td class="num">${row.i + 1}</td><td class="time">${fmtTod(row.time)}</td>` +
+           `<td><span class="cat">${pad(row.cat, 3)}</span></td><td class="src">${esc(row.src)}</td><td class="sum">${esc(text)}</td></tr>`;
+  }
+
+  function renderRows(reset) {
+    const list = model.rows.filter(matches);
+    if (reset) shown = Math.min(PAGE, list.length);
+    $("rows").innerHTML = list.slice(0, shown).map(rowHtml).join("") ||
+      `<tr><td colspan="5" class="hint">No records match the current filter.</td></tr>`;
+    $("count").textContent = list.length ? `Showing ${Math.min(shown, list.length).toLocaleString()} of ${list.length.toLocaleString()} rows` : "";
+    $("more").hidden = shown >= list.length;
+  }
+
+  function detailHtml(row) {
+    const names = ITEM_NAMES[row.cat] || {};
+    const items = Object.entries(row.data).map(([k, v]) =>
+      `<div class="item"><span class="item-id">${k === "SP" || k === "RE" ? k : `I${pad(row.cat, 3)}/${k.slice(1)}`}</span>` +
+      `<span class="item-name">${esc(names[k] || "")}</span><div class="item-val">${fmtValue(row.cat, k, v)}</div></div>`).join("");
+    const hex = row.block.hex.match(/.{1,2}/g).join(" ");
+    const where = row.datagram.src ? `, packet ${row.datagram.index} from ${esc(row.datagram.src)}` : `, datagram ${row.datagram.index}`;
+    return `<tr class="detail"><td colspan="5"><div class="items">${items}</div>` +
+           `<div class="raw"><span class="item-name">Data block: CAT${pad(row.block.category, 3)}, ${row.block.length} octets at offset ${row.block.offset}${where}</span><pre>${hex}</pre></div>` +
+           `<div class="detail-actions"><button class="btn ghost" type="button" data-copy="${row.i}">Copy record JSON</button></div>` +
+           `<div class="json" hidden><pre></pre></div></td></tr>`;
+  }
+
+  function toggleDetail(tr) {
+    const next = tr.nextElementSibling;
+    if (next && next.classList.contains("detail")) {
+      next.remove();
+      tr.classList.remove("open");
+      tr.setAttribute("aria-expanded", "false");
+      return;
+    }
+    const row = model.rows[Number(tr.dataset.i)];
+    tr.insertAdjacentHTML("afterend", detailHtml(row));
+    tr.classList.add("open");
+    tr.setAttribute("aria-expanded", "true");
+  }
+
+  $("rows").addEventListener("click", (ev) => {
+    const copy = ev.target.closest("[data-copy]");
+    if (copy) {
+      const row = model.rows[Number(copy.dataset.copy)];
+      const text = JSON.stringify(row.data, null, 2);
+      const box = copy.closest("td").querySelector(".json");
+      const done = () => { copy.textContent = "Copied"; setTimeout(() => (copy.textContent = "Copy record JSON"), 1500); };
+      const fallback = () => {
+        box.hidden = false;
+        const pre = box.querySelector("pre");
+        pre.textContent = text;
+        const range = document.createRange();
+        range.selectNodeContents(pre);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        copy.textContent = "Selected: press Ctrl+C / Cmd+C";
+      };
+      try {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } catch (e) {
+        fallback();
+      }
+      return;
+    }
+    const tr = ev.target.closest("tr.rec");
+    if (tr) toggleDetail(tr);
+  });
+  $("rows").addEventListener("keydown", (ev) => {
+    if ((ev.key === "Enter" || ev.key === " ") && ev.target.matches("tr.rec")) {
+      ev.preventDefault();
+      toggleDetail(ev.target);
+    }
+  });
+  $("more").addEventListener("click", () => { shown += PAGE; renderRows(false); });
+  $("cat-filter").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button[data-cat]");
+    if (!b) return;
+    catFilter = b.dataset.cat;
+    for (const x of $("cat-filter").querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
+    renderRows(true);
+  });
+  $("search").addEventListener("input", (ev) => { search = ev.target.value.trim().toUpperCase(); renderRows(true); });
+  $("clear-selection").addEventListener("click", () => selectTrack(null));
+
+  // ---------------------------------------------------------------- radar scope
+  const canvas = $("scope");
+  const ctx = canvas.getContext("2d");
+  const css = getComputedStyle(document.documentElement);
+  const C = {
+    bg: css.getPropertyValue("--scope-bg").trim(), ring: css.getPropertyValue("--scope-ring").trim(),
+    spoke: css.getPropertyValue("--scope-spoke").trim(), text: css.getPropertyValue("--scope-text").trim(),
+    text2: css.getPropertyValue("--scope-text-2").trim(), critical: css.getPropertyValue("--critical").trim(),
+    ms: css.getPropertyValue("--series-ms").trim(), ac: css.getPropertyValue("--series-ac").trim(),
+    psr: css.getPropertyValue("--series-psr").trim(),
+  };
+  const MONO = '500 11px "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+  let T = 0;              // replay clock, seconds of day
+  let playing = false;
+  let lastFrame = 0;
+  let geom = null;
+  let hits = [];
+  let showLabels = true;
+
+  function niceSpacing(maxRange) {
+    for (const s of [5, 10, 20, 25, 50, 100]) if (maxRange / s <= 6) return s;
+    return 200;
+  }
+
+  function sweepAngle(t) {
+    if (!model.norths.length) return null;
+    let n = null;
+    for (const x of model.norths) { if (x.t <= t) n = x; else break; }
+    if (!n) return null;
+    const frac = ((t - n.t) / model.period) % 1;
+    return frac * 360;
+  }
+
+  function currentScan(t) {
+    let k = 0;
+    for (const x of model.norths) { if (x.t <= t) k++; else break; }
+    return k;
+  }
+
+  function isEmergency(p) { return p.squawk === "7700" || p.squawk === "7600" || p.squawk === "7500"; }
+
+  function drawSymbol(x, y, kind, color) {
+    ctx.lineWidth = 2;
+    if (kind === "ms") {
+      ctx.fillStyle = color;
+      ctx.strokeStyle = C.bg;
+      ctx.beginPath();
+      ctx.rect(x - 4.5, y - 4.5, 9, 9);
+      ctx.fill();
+      ctx.stroke();
+    } else if (kind === "ac") {
+      ctx.fillStyle = color;
+      ctx.strokeStyle = C.bg;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 6); ctx.lineTo(x + 6, y); ctx.lineTo(x, y + 6); ctx.lineTo(x - 6, y); ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = C.bg;
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(x - 6, y); ctx.lineTo(x + 6, y); ctx.moveTo(x, y - 6); ctx.lineTo(x, y + 6);
+      ctx.stroke();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  function draw() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, Math.round(rect.width * dpr)), h = Math.max(1, Math.round(rect.height * dpr));
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = rect.width, H = rect.height;
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, W, H);
+    hits = [];
+    if (!model || !model.plots.length) { geom = null; return; }
+
+    const cx = W / 2, cy = H / 2;
+    const R = Math.min(W, H) / 2 - 26;
+    const spacing = niceSpacing(model.maxRho * 1.04);
+    const maxRange = Math.max(spacing, Math.ceil((model.maxRho * 1.04) / spacing) * spacing);
+    const k = R / maxRange;
+    geom = { cx, cy, k };
+    const toXY = (rho, theta) => {
+      const a = (theta * Math.PI) / 180;
+      return [cx + rho * Math.sin(a) * k, cy - rho * Math.cos(a) * k];
+    };
+
+    // Azimuth spokes and range rings (solid hairlines).
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = C.spoke;
+    for (let a = 0; a < 360; a += 30) {
+      const [x, y] = toXY(maxRange, a);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+    }
+    ctx.strokeStyle = C.ring;
+    for (let r = spacing; r <= maxRange + 1e-9; r += spacing) {
+      ctx.beginPath(); ctx.arc(cx, cy, r * k, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.font = MONO;
+    ctx.fillStyle = C.text2;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (let a = 0; a < 360; a += 30) {
+      const [x, y] = toXY(maxRange + 13 / k, a);
+      ctx.fillText(pad(a, 3), x, y);
+    }
+    ctx.textAlign = "left";
+    const placed = [];
+    ctx.globalAlpha = 0.75;
+    for (let r = spacing; r <= maxRange + 1e-9; r += spacing) {
+      const [x, y] = toXY(r, 45);
+      const text = `${r} NM`;
+      ctx.fillText(text, x + 4, y - 7);
+      placed.push({ x: x + 2, y: y - 14, w: ctx.measureText(text).width + 4, h: 14 });
+    }
+    ctx.globalAlpha = 1;
+
+    // Antenna sweep, from the CAT034 north markers and rotation period.
+    const sweep = sweepAngle(T);
+    if (sweep != null) {
+      const a = ((sweep - 90) * Math.PI) / 180;
+      const trail = (24 * Math.PI) / 180;
+      const g = ctx.createConicGradient ? ctx.createConicGradient(a - trail, cx, cy) : null;
+      if (g) {
+        g.addColorStop(0, "rgba(76, 182, 212, 0)");
+        g.addColorStop(trail / (2 * Math.PI), "rgba(76, 182, 212, 0.16)");
+        g.addColorStop(trail / (2 * Math.PI) + 0.0001, "rgba(76, 182, 212, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, R, a - trail, a); ctx.closePath(); ctx.fill();
+      }
+      ctx.strokeStyle = "rgba(76, 182, 212, 0.7)";
+      ctx.lineWidth = 1.5;
+      const [x, y] = toXY(maxRange, sweep);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+    }
+
+    // Radar site.
+    ctx.fillStyle = C.text2;
+    ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
+
+    // Targets: trail of earlier plots, then the latest plot with its label.
+    const staleAfter = model.period * 2.5;
+    const labels = [];
+    for (const tr of model.tracks) {
+      let last = -1;
+      for (let i = 0; i < tr.plots.length && tr.plots[i].t <= T; i++) last = i;
+      if (last < 0) continue;
+      const p = tr.plots[last];
+      const selected = selectedTrack && selectedTrack.key === tr.key;
+      const color = C[p.kind];
+      const trailLen = selected ? last : Math.min(last, 12);
+      for (let i = last - trailLen; i < last; i++) {
+        const q = tr.plots[i];
+        const [x, y] = toXY(q.rho, q.theta);
+        ctx.globalAlpha = selected ? 0.85 : 0.18 + 0.6 * ((i - (last - trailLen)) / Math.max(1, trailLen));
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(x, y, 1.8, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      const ended = tr.end != null && tr.end <= T;
+      if (ended || T - p.t > staleAfter) continue;
+      const [x, y] = toXY(p.rho, p.theta);
+      if (isEmergency(p)) {
+        ctx.strokeStyle = C.critical;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.stroke();
+      }
+      if (selected) {
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.stroke();
+      }
+      drawSymbol(x, y, p.kind, color);
+      hits.push({ x, y, p, tr });
+      if (showLabels) labels.push({ x, y, p });
+    }
+
+    // Label blocks: first free position around the target, with a leader line.
+    ctx.font = MONO;
+    ctx.textBaseline = "alphabetic";
+    const compact = R < 210;  // small screens: callsign and level only
+    const overlaps = (a) => placed.some((b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h);
+    for (const L of labels) {
+      const p = L.p;
+      const emg = isEmergency(p);
+      const line1 = (emg ? "  " : "") + (p.callsign || (p.squawk ? "A" + p.squawk : p.kind === "psr" ? "PSR" : ""));
+      const trend = p.cdm === 1 ? "\u2191" : p.cdm === 2 ? "\u2193" : " ";
+      const line2 = (p.fl != null ? `FL${pad(Math.round(p.fl), 3)}${trend}` : "") + (p.gs != null && !compact ? ` ${Math.round(p.gs)}kt` : "");
+      const line3 = emg ? (compact ? p.squawk : `${p.squawk} EMERG`) : "";
+      const lines = [line1, line2, line3].filter(Boolean);
+      const tw = Math.max(...lines.map((s) => ctx.measureText(s).width));
+      const th = lines.length * 13;
+      const candidates = [[14, -th - 8], [14, 10], [-14 - tw, -th - 8], [-14 - tw, 10], [24, -th / 2], [-24 - tw, -th / 2]];
+      let box = null;
+      for (const [dx, dy] of candidates) {
+        const b = { x: L.x + dx - 2, y: L.y + dy - 2, w: tw + 4, h: th + 4 };
+        if (b.x < 2 || b.y < 2 || b.x + b.w > W - 2 || b.y + b.h > H - 2) continue;
+        if (!overlaps(b)) { box = b; break; }
+      }
+      if (!box) continue;
+      placed.push(box);
+      const ax = box.x + (box.x > L.x ? 0 : box.w), ay = box.y + (box.y > L.y ? 0 : box.h);
+      ctx.strokeStyle = C.text2;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(L.x, L.y); ctx.lineTo(ax, ay); ctx.stroke();
+      lines.forEach((s, i) => {
+        ctx.fillStyle = i === 0 ? C.text : C.text2;
+        ctx.fillText(s, box.x + 2, box.y + 2 + 11 + i * 13);
+      });
+      if (emg) {
+        const tx = box.x + 2, ty = box.y + 4;
+        ctx.fillStyle = C.critical;
+        ctx.beginPath(); ctx.moveTo(tx + 4, ty); ctx.lineTo(tx + 8.5, ty + 8.5); ctx.lineTo(tx - 0.5, ty + 8.5); ctx.closePath(); ctx.fill();
+      }
+    }
+  }
+
+  function updateClock() {
+    if (!model || !model.plots.length) { $("clock").textContent = "—"; return; }
+    const scans = model.norths.length;
+    const scan = currentScan(T);
+    $("clock").textContent = `${fmtTod(T).slice(0, 10)} UTC` + (scans ? ` · scan ${Math.max(1, scan)}/${scans}` : "");
+    const span = model.tMax - model.tMin;
+    $("timeline").value = span > 0 ? String(Math.round(((T - model.tMin) / span) * 1000)) : "1000";
+  }
+
+  function frame(now) {
+    if (!playing) return;
+    const dt = Math.min(0.1, (now - lastFrame) / 1000);
+    lastFrame = now;
+    const speed = Math.max(1, (model.tMax - model.tMin) / 24);
+    T = Math.min(model.tMax, T + dt * speed);
+    draw();
+    updateClock();
+    if (T >= model.tMax) { stop(); return; }
+    requestAnimationFrame(frame);
+  }
+  function stop() {
+    playing = false;
+    $("play").textContent = "Replay";
+  }
+  $("play").addEventListener("click", () => {
+    if (!model || !model.plots.length) return;
+    if (playing) { stop(); $("play").textContent = "Resume"; return; }
+    if (T >= model.tMax) T = model.tMin;
+    playing = true;
+    $("play").textContent = "Pause";
+    lastFrame = performance.now();
+    requestAnimationFrame(frame);
+  });
+  $("timeline").addEventListener("input", (ev) => {
+    if (!model || !model.plots.length) return;
+    stop();
+    T = model.tMin + (Number(ev.target.value) / 1000) * (model.tMax - model.tMin);
+    draw();
+    updateClock();
+  });
+  $("labels").addEventListener("change", (ev) => { showLabels = ev.target.checked; draw(); });
+
+  function nearest(ev) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
+    let best = null, bestD = 16 * 16;
+    for (const h of hits) {
+      const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
+      if (d < bestD) { bestD = d; best = h; }
+    }
+    return { best, mx, my, rect };
+  }
+  canvas.addEventListener("pointermove", (ev) => {
+    const { best, mx, my, rect } = nearest(ev);
+    const tip = $("tip");
+    canvas.style.cursor = best ? "pointer" : "default";
+    if (!best) { tip.hidden = true; return; }
+    const p = best.p;
+    const rows = [
+      ["Callsign", p.callsign || "—"], ["Squawk", p.squawk || "—"], ["Mode S", p.addr || "—"],
+      ["Altitude", p.fl != null ? `FL${num(p.fl, 2)} ${CDM[p.cdm] || ""}` : "—"],
+      ["Speed", p.gs != null ? `${Math.round(p.gs)} kt, ${num(p.hdg, 1)}°` : "—"],
+      ["Position", `${num(p.rho, 2)} NM, ${num(p.theta, 2)}°`], ["Track", p.trn ?? "—"],
+      ["Detection", p.typ != null ? TYP048[p.typ] : "—"],
+    ];
+    tip.innerHTML = rows.map(([k, v]) => `<div><span class="k">${k}</span> <b>${esc(v)}</b></div>`).join("") +
+      (isEmergency(p) ? `<div><b>&#9888; Emergency squawk ${esc(p.squawk)}</b></div>` : "") +
+      `<div class="k">Click to list this track's records</div>`;
+    tip.hidden = false;
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = mx + 16, y = my + 16;
+    if (x + tw > rect.width) x = mx - tw - 16;
+    if (y + th > rect.height) y = my - th - 16;
+    tip.style.left = Math.max(4, x) + "px";
+    tip.style.top = Math.max(4, y) + "px";
+  });
+  canvas.addEventListener("pointerleave", () => { $("tip").hidden = true; });
+  canvas.addEventListener("click", (ev) => {
+    const { best } = nearest(ev);
+    selectTrack(best ? (selectedTrack && selectedTrack.key === best.tr.key ? null : best.tr) : null);
+  });
+
+  function selectTrack(tr) {
+    selectedTrack = tr;
+    if (tr) {
+      const p = tr.plots[tr.plots.length - 1];
+      $("selection-text").textContent = `Track ${p.callsign || (p.squawk ? "A" + p.squawk : p.trn ?? "")}`;
+    }
+    $("selection").hidden = !tr;
+    draw();
+    renderRows(true);
+  }
+
+  new ResizeObserver(() => draw()).observe($("scope-wrap"));
+
+  // ---------------------------------------------------------------- loading input
+  async function load(bytes, label, note) {
+    stop();
+    $("scope-meta").textContent = "Decoding…";
+    let decoded;
+    try {
+      decoded = await decodeBytes(bytes);
+    } catch (e) {
+      $("scope-meta").textContent = "The decoder failed to load.";
+      $("scope-empty").hidden = false;
+      $("scope-empty").textContent = "The decoder could not start in this browser: " + e;
+      return;
+    }
+    model = buildModel(decoded.result, decoded.ms, label);
+    selectedTrack = null;
+    $("selection").hidden = true;
+    T = model.tMax;
+    $("source-note").textContent = note;
+    const radarText = model.radar ? `Radar ${model.radar} · ${model.tracks.length} tracks · ${model.plots.length.toLocaleString()} plots` : "No CAT048 target reports";
+    $("scope-meta").textContent = radarText;
+    $("scope-empty").hidden = model.plots.length > 0;
+    $("scope-empty").textContent = model.plots.length ? "" : "No CAT048 target reports with a position in this input. The records table lists everything that was decoded.";
+    renderStats();
+    renderRows(true);
+    draw();
+    updateClock();
+  }
+
+  const encoder = new TextEncoder();
+  function loadText(text, label, note) {
+    $("hex").value = text;
+    load(encoder.encode(text), label, note);
+  }
+
+  const SAMPLE_NOTES = {
+    feed: "Demo radar feed: fictional traffic generated to the specifications, 40 antenna scans. Press Replay to watch it arrive.",
+    plot: "One CAT048 target report: the published example message for DLH65A.",
+    status: "CAT063 sensor status reports and a CAT034 north marker from the demo feed.",
+    broken: "Four datagrams: one valid, three damaged. Decoding reports each problem and carries on with the next data block.",
+  };
+  function pressSample(name) {
+    for (const b of document.querySelectorAll("[data-sample]")) b.setAttribute("aria-pressed", String(b.dataset.sample === name));
+  }
+  document.querySelector(".samples").addEventListener("click", (ev) => {
+    const b = ev.target.closest("button[data-sample]");
+    if (!b) return;
+    pressSample(b.dataset.sample);
+    loadText(SAMPLES[b.dataset.sample](), b.dataset.sample, SAMPLE_NOTES[b.dataset.sample]);
+  });
+  $("decode-hex").addEventListener("click", () => {
+    pressSample(null);
+    load(encoder.encode($("hex").value), "hex", "Your hex input.");
+  });
+
+  async function loadFile(file) {
+    if (!file) return;
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    pressSample(null);
+    $("hex").value = "";
+    load(bytes, file.name, `${file.name}: ${bytes.length.toLocaleString()} octets, decoded on this device.`);
+  }
+  $("file").addEventListener("change", (ev) => loadFile(ev.target.files[0]));
+  const drop = $("drop");
+  ["dragenter", "dragover"].forEach((t) => drop.addEventListener(t, (ev) => { ev.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((t) => drop.addEventListener(t, () => drop.classList.remove("over")));
+  drop.addEventListener("drop", (ev) => { ev.preventDefault(); loadFile(ev.dataTransfer.files[0]); });
+
+  loadText(SAMPLES.feed(), "feed", SAMPLE_NOTES.feed);
+})();
+</script>
