@@ -1769,5 +1769,232 @@ window.INTEL = {
    "n": 25
   }
  },
- "captured_at": "2026-10-25T21:38:05.933225+00:00"
+ "captured_at": "2026-10-25T21:38:05.933225+00:00",
+ "grids": {
+  "fbfragrances": "assets/creators/fbfragrances-popular.jpg",
+  "perfumerism": "assets/creators/perfumerism-recent-grid.jpg",
+  "fragranceknowledge": "assets/creators/fragranceknowledge-popular.jpg",
+  "paulreactss": "assets/creators/paulreactss-popular.jpg",
+  "thecologneboy": "assets/creators/thecologneboy-popular.jpg",
+  "jeremyfragrance": "assets/creators/jeremyfragrance-popular.jpg",
+  "curlyscents": "assets/creators/curlyscents-recent-grid.jpg",
+  "comedicscents": "assets/creators/comedicscents-recent-grid.jpg",
+  "jurysfragrance": "assets/creators/jurysfragrance-recent-grid.jpg",
+  "oliviaolfactory": "assets/creators/oliviaolfactory-recent-grid.jpg",
+  "tjtalksscents": "assets/creators/tjtalksscents-recent-grid.jpg",
+  "rossperfumes": "assets/creators/rossperfumes-recent-grid.jpg",
+  "alexperfume": "assets/creators/alexperfume-recent-grid.jpg"
+ },
+ "bank": [
+  {
+   "creator": "Jeremy Fragrance",
+   "handle": "jeremyfragrance",
+   "followers": "9.9M",
+   "grid": "assets/creators/jeremyfragrance-popular.jpg",
+   "url": "https://www.tiktok.com/@jeremyfragrance"
+  },
+  {
+   "creator": "Paul | Fragrance Influencer",
+   "handle": "paulreactss",
+   "followers": "3M",
+   "grid": "assets/creators/paulreactss-popular.jpg",
+   "url": "https://www.tiktok.com/@paulreactss"
+  },
+  {
+   "creator": "TheCologneBoy",
+   "handle": "thecologneboy",
+   "followers": "2.2M",
+   "grid": "assets/creators/thecologneboy-popular.jpg",
+   "url": "https://www.tiktok.com/@thecologneboy"
+  },
+  {
+   "creator": "Rosendo Duarte",
+   "handle": "perfumex_",
+   "followers": "1.6M",
+   "grid": "assets/creators/perfumex_-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@perfumex_"
+  },
+  {
+   "creator": "Alex Perfumes",
+   "handle": "alexperfume",
+   "followers": "1.4M",
+   "grid": "assets/creators/alexperfume-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@alexperfume"
+  },
+  {
+   "creator": "Matías Ross",
+   "handle": "rossperfumes",
+   "followers": "1.3M",
+   "grid": "assets/creators/rossperfumes-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@rossperfumes"
+  },
+  {
+   "creator": "Fragrance knowledge",
+   "handle": "fragranceknowledge",
+   "followers": "1.1M",
+   "grid": "assets/creators/fragranceknowledge-popular.jpg",
+   "url": "https://www.tiktok.com/@fragranceknowledge"
+  },
+  {
+   "creator": "FBFragrances",
+   "handle": "fbfragrances",
+   "followers": "967.9K",
+   "grid": "assets/creators/fbfragrances-popular.jpg",
+   "url": "https://www.tiktok.com/@fbfragrances"
+  },
+  {
+   "creator": "KAT ★ Perfumes & Beauty",
+   "handle": "katfragrance",
+   "followers": "683.4K",
+   "grid": "assets/creators/katfragrance-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@katfragrance"
+  },
+  {
+   "creator": "IG: perfumerism",
+   "handle": "perfumerism",
+   "followers": "657.2K",
+   "grid": "assets/creators/perfumerism-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@perfumerism"
+  },
+  {
+   "creator": "Matt Fragrance",
+   "handle": "matt.fragc",
+   "followers": "597K",
+   "grid": "assets/creators/matt.fragc-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@matt.fragc"
+  },
+  {
+   "creator": "Funmi Monet",
+   "handle": "funmimonet",
+   "followers": "570.3K",
+   "grid": "assets/creators/funmimonet-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@funmimonet"
+  },
+  {
+   "creator": "oliviaolfactory",
+   "handle": "oliviaolfactory",
+   "followers": "514.8K",
+   "grid": "assets/creators/oliviaolfactory-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@oliviaolfactory"
+  },
+  {
+   "creator": "School of Scent",
+   "handle": "schoolofscent",
+   "followers": "510.9K",
+   "grid": "assets/creators/schoolofscent-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@schoolofscent"
+  },
+  {
+   "creator": "CurlyFragrance",
+   "handle": "curlyfragrance",
+   "followers": "493.8K",
+   "grid": "assets/creators/curlyfragrance-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@curlyfragrance"
+  },
+  {
+   "creator": "Emelia | Professor Perfume",
+   "handle": "professorperfume",
+   "followers": "407.4K",
+   "grid": "assets/creators/professorperfume-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@professorperfume"
+  },
+  {
+   "creator": "Irene Wainman",
+   "handle": "perfumetiktok",
+   "followers": "378.2K",
+   "grid": "assets/creators/perfumetiktok-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@perfumetiktok"
+  },
+  {
+   "creator": "TFK",
+   "handle": "thatfragrancekid",
+   "followers": "367.3K",
+   "grid": "assets/creators/thatfragrancekid-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@thatfragrancekid"
+  },
+  {
+   "creator": "Jus de Rose | Perfume Reviews",
+   "handle": "jusderose",
+   "followers": "345.4K",
+   "grid": "assets/creators/jusderose-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@jusderose"
+  },
+  {
+   "creator": "aromatix.neeb",
+   "handle": "aromatix.neeb",
+   "followers": "330K",
+   "grid": "assets/creators/aromatix.neeb-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@aromatix.neeb"
+  },
+  {
+   "creator": "TJTalksScents",
+   "handle": "tjtalksscents",
+   "followers": "300.1K",
+   "grid": "assets/creators/tjtalksscents-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@tjtalksscents"
+  },
+  {
+   "creator": "ComedicScents",
+   "handle": "comedicscents",
+   "followers": "254.7K",
+   "grid": "assets/creators/comedicscents-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@comedicscents"
+  },
+  {
+   "creator": "Petra | Fragrance Lover",
+   "handle": "petra.mocanu",
+   "followers": "215K",
+   "grid": "assets/creators/petra.mocanu-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@petra.mocanu"
+  },
+  {
+   "creator": "Demi Rawling",
+   "handle": "demi.rawling",
+   "followers": "209.6K",
+   "grid": "assets/creators/demi.rawling-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@demi.rawling"
+  },
+  {
+   "creator": "JurysFragrance",
+   "handle": "jurysfragrance",
+   "followers": "206.8K",
+   "grid": "assets/creators/jurysfragrance-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@jurysfragrance"
+  },
+  {
+   "creator": "Jaben4Real",
+   "handle": "jaben4real",
+   "followers": "180.5K",
+   "grid": "assets/creators/jaben4real-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@jaben4real"
+  },
+  {
+   "creator": "(SSF) Strong Style Fragrances",
+   "handle": "strongstylefragrances",
+   "followers": "150.6K",
+   "grid": "assets/creators/strongstylefragrances-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@strongstylefragrances"
+  },
+  {
+   "creator": "CURLY SCENTS",
+   "handle": "curlyscents",
+   "followers": "147.9K",
+   "grid": "assets/creators/curlyscents-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@curlyscents"
+  },
+  {
+   "creator": "EauDeRagnar",
+   "handle": "eauderagnar",
+   "followers": "135.2K",
+   "grid": "assets/creators/eauderagnar-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@eauderagnar"
+  },
+  {
+   "creator": "RottenRebel",
+   "handle": "rottenrebel",
+   "followers": "124.9K",
+   "grid": "assets/creators/rottenrebel-recent-grid.jpg",
+   "url": "https://www.tiktok.com/@rottenrebel"
+  }
+ ]
 };
