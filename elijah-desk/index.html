@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Fragtok Intel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Albert+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Phone-first. Everything is a titled row that expands; nothing else is on screen until tapped. Light cream only. */
+:root{--bg:#f7f3e9;--fg:#1a1916;--fg-2:#5b574f;--line:#dcd5c6;--accent:#9c7a2e;--accent-ink:#6f561f;--display:"Newsreader",Georgia,"Times New Roman",serif;--body:"Albert Sans","Helvetica Neue",Helvetica,Arial,sans-serif;--mono:"Albert Sans","Helvetica Neue",Helvetica,Arial,sans-serif;color-scheme:light}
+:root[data-theme="dark"]{color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+[hidden]{display:none!important}
+h1,h2,h3,p,ul,ol{margin:0}
+.wrap{width:min(760px,100%);margin-inline:auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:28px 72px}
+.mono{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-2)}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:26px}
+.top .brand{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:.04em}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(36px,9vw,64px);line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
+.deck{margin-top:14px;color:var(--fg-2);font-size:16px;max-width:48ch}
+h2.sec{font-family:var(--display);font-weight:500;font-size:clamp(26px,6.5vw,36px);line-height:1.1;margin-top:48px;padding-bottom:10px;border-bottom:1px solid var(--fg)}
+.sec-note{margin-top:10px;color:var(--fg-2);font-size:14.5px;max-width:60ch}
+/* rows */
+details.row{border-bottom:1px solid var(--line)}
+details.row>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr 34px;gap:14px;align-items:start;padding-block:18px;min-height:64px}
+details.row>summary::-webkit-details-marker{display:none}
+details.row>summary .t{font-family:var(--display);font-weight:500;font-size:clamp(21px,5.4vw,26px);line-height:1.18;text-wrap:balance}
+details.row>summary .s{margin-top:6px;font-size:15px;color:var(--fg-2);max-width:56ch}
+details.row>summary .pm{font-family:var(--body);font-weight:400;font-size:30px;line-height:1;color:var(--accent-ink);text-align:right;padding-top:2px}
+details.row[open]>summary .pm::before{content:"–"}
+details.row:not([open])>summary .pm::before{content:"+"}
+.body{padding-bottom:24px;display:grid;gap:14px}
+.body p{max-width:60ch}
+.body .open{font-size:15px;color:var(--fg-2)}
+.body .open b{color:var(--accent-ink);font-weight:600;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+.links{display:grid;gap:10px;font-size:15.5px}
+.links a{display:inline;border-bottom:1px solid var(--line)}
+.links .m{display:block;font-family:var(--mono);font-size:12.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--fg-2);margin-top:2px}
+.strip{display:flex;flex-wrap:wrap;gap:8px}
+.ev{position:relative;background:#0e0f0e;overflow:hidden;display:block;border-radius:2px}
+.ev img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.ev.post{width:calc(33.333% - 6px);aspect-ratio:9/14}
+.ev.wide{width:100%;max-width:340px;aspect-ratio:3.1}
+.ev.wide img{object-fit:contain;object-position:center}
+.ev.shot{width:calc(50% - 4px);aspect-ratio:4/3}
+.ev .cap{position:absolute;left:0;right:0;bottom:0;padding:5px 7px;font-family:var(--body);font-weight:600;font-size:11px;letter-spacing:.03em;background:rgba(14,15,14,.82);color:#f3f1ea;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* creator posts inside a row */
+.posts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 12px}
+@media(min-width:620px){.posts{grid-template-columns:repeat(3,1fr)}}
+.pc{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pc .ev{width:100%;aspect-ratio:9/14}
+.pc .cap{font-size:14px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.pc .num{font-family:var(--display);font-weight:600;font-size:24px;line-height:1}
+.pc .num i{font-style:normal;font-family:var(--body);font-weight:500;font-size:.55em;color:var(--accent-ink);margin-left:6px}
+.pc .st{font-size:12.5px;color:var(--fg-2);line-height:1.5}
+.pc a.lnk{font-size:12.5px;font-weight:600;border-bottom:1px solid var(--line);align-self:flex-start;padding-bottom:2px}
+/* threads */
+.th{display:grid;grid-template-columns:54px 1fr;gap:12px;padding-block:11px;border-top:1px solid var(--line);font-size:15.5px}
+.th:first-child{border-top:0}
+.th .sc{font-family:var(--display);font-weight:600;font-size:21px;line-height:1.1}
+.th .sc span{display:block;font-family:var(--body);font-weight:500;font-size:11px;color:var(--fg-2)}
+.th a{border-bottom:1px solid var(--line)}
+.th .m{font-size:12.5px;color:var(--fg-2);margin-top:3px}
+.foot{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:14px;color:var(--fg-2);display:grid;gap:8px;max-width:70ch}
+.foot a{border-bottom:1px solid var(--line)}
+dialog{border:0;padding:0;width:min(98vw,1000px);max-height:96vh;background:var(--bg);color:var(--fg)}
+dialog::backdrop{background:rgba(10,12,11,.85)}
+.dt{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px}
+.dt button,.dt a{font-size:14px;font-weight:600;border-bottom:1px solid var(--line);padding:6px 0}
+.di{background:#0b0c0b;display:flex;justify-content:center;max-height:80vh;overflow:auto}
+.di img{max-height:80vh;width:auto;max-width:100%;object-fit:contain}
+</style>
+
+<div class="wrap" id="top">
+  <header class="top"><span class="brand">ELIJAH</span><span class="mono" id="week-label"></span></header>
+  <h1>What Fragtok is talking about.</h1>
+  <p class="deck" id="captured"></p>
+
+  <h2 class="sec" id="topics">Hot right now</h2>
+  <div id="topic-list"></div>
+
+  <h2 class="sec" id="posts">What the other creators posted</h2>
+  <p class="sec-note">Tap a creator. Each post shows the view count from their profile on Oct 25 and how it compares with their usual post this month.</p>
+  <div id="creator-list"></div>
+
+  <h2 class="sec" id="reddit">On Reddit this week</h2>
+  <div id="reddit-list"></div>
+
+  <h2 class="sec" id="comments">In Elijah's comments</h2>
+  <div id="comment-list"></div>
+
+  <h2 class="sec" id="folder">Everything from the folder</h2>
+  <p class="sec-note">Every screenshot in the handoff pack, grouped. Tap to open full size.</p>
+  <div id="folder-list"></div>
+
+  <footer class="foot">
+    <p id="method"></p>
+    <p>Research files: <a href="./intel.json" target="_blank" rel="noopener">intel.json</a> · <a href="./docs/WHAT_CHANGED.md" target="_blank" rel="noopener">what changed</a></p>
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-t"><div class="dt"><span id="dlg-t" class="mono">Capture</span><span><a id="dlg-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Open post</a> &nbsp; <button type="button" id="dlg-x">Close</button></span></div><div class="di"><img id="dlg-i" alt=""></div></dialog>
+
+<script src="./intel.js"></script>
+<script>
+(() => {
+  'use strict';
+  const I = window.INTEL; const $ = (s) => document.querySelector(s);
+  const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x !== undefined && x !== null) n.textContent = String(x); return n; };
+  if (!I) { $('#topic-list').append(el('p', 'deck', 'intel.js did not load. Keep the site folder together.')); return; }
+  const safeImg = (v) => { const p = String(v || ''); return /^assets\//.test(p) && !p.includes('..') ? p : null; };
+  const safeUrl = (v) => { try { const u = new URL(String(v)); return ['http:', 'https:'].includes(u.protocol) ? u.href : null; } catch { return null; } };
+  const dlg = $('#dlg'); let last = null;
+  function open(path, title, url, trigger) { last = trigger; $('#dlg-i').src = path; $('#dlg-i').alt = title; $('#dlg-t').textContent = title; const a = $('#dlg-link'); const h = safeUrl(url); a.hidden = !h; if (h) a.href = h; dlg.showModal(); $('#dlg-x').focus(); }
+  function ev(path, title, cls, cap, url) { const b = el('button', 'ev ' + cls); b.type = 'button'; b.setAttribute('aria-label', 'Enlarge: ' + title); const im = el('img'); im.src = path; im.alt = title; im.loading = 'lazy'; im.decoding = 'async'; im.addEventListener('error', () => { b.hidden = true; }); b.append(im); if (cap) b.append(el('span', 'cap', cap)); b.addEventListener('click', (e) => { e.preventDefault(); open(path, title, url, b); }); return b; }
+  function row(title, sub, bodyNode, id) { const d = el('details', 'row'); if (id) d.id = id; const s = el('summary'); const t = el('div'); t.append(el('div', 't', title)); if (sub) t.append(el('div', 's', sub)); s.append(t, el('span', 'pm')); d.append(s); const b = el('div', 'body'); b.append(bodyNode); d.append(b); return d; }
+  const link = (text, url) => { const a = el('a', '', text); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
+  const P = {}; I.posts.forEach((p) => { P[p.slug] = p; }); const T = {}; I.threads.forEach((t) => { T[t.url] = t; });
+  const num = (s) => { s = String(s || '').replace(/,/g, ''); const m = s.match(/^([\d.]+)([KM]?)$/i); return m ? parseFloat(m[1]) * ({ K: 1e3, M: 1e6 }[m[2].toUpperCase()] || 1) : 0; };
+  const firstSentence = (s) => { const m = String(s).match(/^(.*?[.!?])(\s|$)/); let t = m ? m[1] : String(s); if (t.length > 110) t = t.slice(0, 107).replace(/\s+\S*$/, '') + '…'; return t; };
+  const cleanCap = (c) => (c || '').replace(/#\S+/g, '').replace(/\s+/g, ' ').trim();
+
+  $('#week-label').textContent = I.meta.week_label; $('#captured').textContent = I.meta.captured; $('#method').textContent = I.meta.method;
+
+  // topics: title + one line collapsed; everything else on tap
+  I.topics.forEach((t, i) => {
+    const b = document.createDocumentFragment();
+    const tease = firstSentence(t.summary); const rest = !tease.endsWith('…') && t.summary.startsWith(tease) ? t.summary.slice(tease.length).trim() : t.summary;
+    b.append(el('p', '', rest || t.summary));
+    if (t.open) { const o = el('p', 'open'); o.append(el('b', '', 'Not established'), document.createTextNode(t.open)); b.append(o); }
+    const s = el('div', 'strip');
+    (t.posts || []).forEach((slug) => { const p = P[slug]; if (p && safeImg(p.screenshot)) s.append(ev(p.screenshot, p.creator + ' · ' + cleanCap(p.caption || slug).slice(0, 80), 'post', p.creator, p.url)); });
+    (t.comments || []).forEach((id) => { const c = I.comments[id]; if (c && safeImg(c.screenshot)) s.append(ev(c.screenshot, 'Real comment under: ' + (c.source_title || ''), 'wide', '', c.source_url)); });
+    (t.images || []).forEach((im) => { if (safeImg(im)) s.append(ev(im, t.title, 'shot', 'Source')); });
+    if (s.childElementCount) b.append(s);
+    const links = el('div', 'links');
+    (t.posts || []).forEach((slug) => { const p = P[slug]; if (!p) return; const r = el('p'); r.append(link(p.creator + ': ' + cleanCap(p.caption || slug).slice(0, 80), p.url), el('span', 'm', p.views + ' · ' + p.multiple + ' usual · ' + p.posted)); links.append(r); });
+    (t.threads || []).forEach((u) => { const th = T[u]; const r = el('p'); r.append(link(th ? 'r/' + th.sub + ': ' + th.title : u, u)); if (th) r.append(el('span', 'm', th.score + ' pts · ' + th.comments + ' comments · ' + th.created.slice(5).replace('-', '/'))); links.append(r); });
+    if (links.childElementCount) b.append(links);
+    $('#topic-list').append(row(t.title, firstSentence(t.summary), b, 'topic-' + (i + 1)));
+  });
+
+  // creators: one row per creator, posts inside
+  const byCreator = {}; I.posts.forEach((p) => { (byCreator[p.handle] = byCreator[p.handle] || []).push(p); });
+  Object.values(byCreator).sort((a, b) => Math.max(...b.map((p) => num(p.views))) - Math.max(...a.map((p) => num(p.views)))).forEach((list) => {
+    list.sort((a, b) => num(b.views) - num(a.views)); const p0 = list[0];
+    const grid = el('div', 'posts');
+    list.forEach((p) => { const c = el('div', 'pc'); if (safeImg(p.screenshot)) c.append(ev(p.screenshot, p.creator + ' · ' + cleanCap(p.caption || p.slug).slice(0, 80), '', p.posted, p.url)); c.append(el('p', 'cap', cleanCap(p.caption) || '(caption not captured)')); const n = el('p', 'num', p.views); n.append(el('i', '', p.multiple + ' usual')); c.append(n); const st = p.stats || {}; const parts = [st.likes && st.likes !== '0' ? st.likes + ' likes' : '', st.comments && st.comments !== '0' ? st.comments + ' comments' : '', st.shares && /\d/.test(st.shares) ? st.shares + ' shares' : ''].filter(Boolean); if (parts.length) c.append(el('p', 'st', parts.join(' · '))); if (p.note) c.append(el('p', 'st', p.note)); const lk = link('Open on TikTok', p.url); lk.classList.add('lnk'); c.append(lk); grid.append(c); });
+    const top = list[0]; $('#creator-list').append(row(p0.creator, '@' + p0.handle + (p0.followers ? ' · ' + p0.followers : '') + ' · ' + list.length + (list.length === 1 ? ' post' : ' posts') + ' · best ' + top.views + ' (' + top.multiple + ' usual)', grid, 'creator-' + p0.handle));
+  });
+
+  // reddit: one row per subreddit
+  const bySub = {}; I.threads.forEach((t) => { (bySub[t.sub] = bySub[t.sub] || []).push(t); });
+  Object.entries(bySub).forEach(([sub, list]) => {
+    const wrap = el('div'); list.forEach((t) => { const r = el('div', 'th'); const sc = el('div', 'sc', t.score); sc.append(el('span', '', 'pts')); r.append(sc); const b = el('div'); b.append(link(t.title, t.url), el('p', 'm', t.comments + ' comments · ' + t.created.slice(5).replace('-', '/'))); r.append(b); wrap.append(r); });
+    const shot = I.community[sub]; if (shot && safeImg(shot.screenshot)) { const s = el('div', 'strip'); s.style.marginTop = '12px'; s.append(ev(shot.screenshot, 'r/' + sub + ' top this week, Oct 25', 'shot', 'r/' + sub, shot.url)); wrap.append(s); }
+    $('#reddit-list').append(row('r/' + sub, list.length + ' top threads this week · ' + list[0].title, wrap, 'reddit-' + sub));
+  });
+
+  // comments: one row per source post
+  const groups = {}; Object.values(I.comments).forEach((c) => { (groups[c.source_url] = groups[c.source_url] || { title: c.source_title, url: c.source_url, items: [] }).items.push(c); });
+  Object.values(groups).forEach((g, i) => { const s = el('div', 'strip'); g.items.forEach((c) => { if (safeImg(c.screenshot)) s.append(ev(c.screenshot, (c.author || 'Viewer') + ': ' + c.quote, 'wide', '', g.url)); }); const wrap = el('div'); wrap.append(s); const l = el('div', 'links'); l.style.marginTop = '12px'; const r = el('p'); r.append(link('Open the post', g.url)); l.append(r); wrap.append(l); $('#comment-list').append(row(g.title.replace(/\s*·\s*source kit.*$/, ''), g.items.length + (g.items.length === 1 ? ' comment' : ' comments') + ' · “' + g.items[0].quote.slice(0, 60) + (g.items[0].quote.length > 60 ? '…' : '') + '”', wrap, 'comments-' + (i + 1))); });
+
+  // the whole folder, grouped
+  const A = I.archive || {};
+  [['comments', 'Comment screenshots', 'wide'], ['sources', 'Topic and Noel sources', 'shot'], ['frames', 'Elijah archive frames', 'post'], ['grids', 'Creator profile grids', 'shot']].forEach(([key, title, cls]) => {
+    const items = A[key] || []; if (!items.length) return;
+    const wrap = el('div'); const s = el('div', 'strip');
+    items.forEach((it) => { if (!safeImg(it.file)) return; const b = ev(it.file, it.title + (it.note ? ' · ' + it.note : ''), cls, cls === 'wide' ? '' : it.title.slice(0, 28), it.url); s.append(b); });
+    wrap.append(s); $('#folder-list').append(row(title, items.length + ' images', wrap, 'folder-' + key));
+  });
+
+  $('#dlg-x').addEventListener('click', () => dlg.close()); dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); }); dlg.addEventListener('close', () => { if (last) last.focus(); });
+  if (location.hash) { const t = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t && t.tagName === 'DETAILS') t.open = true; }
+})();
+</script>
+
+</body>
+</html>
